@@ -63,6 +63,13 @@ bullets: that is the published-figures table below and Milestone 3.
   where the retailers' 81500 data says 0.646. The library keeps 0.646 with
   that note.
 
+**Loads without a published comparison yet.** The .408 CheyTac 419 gr
+solid (G1 0.949, 2752 fps, CheyTac) and the 6.5 Creedmoor 147 gr ELD Match
+(G7 0.351, 2695 fps, Hornady) are in the library and fly on the same
+validated model, but no published drop table for them has been checked. For
+the .408 solid, Miller's rule (fitted to lead-core bullets) under-states the
+stability of a longer monolithic bullet, and its length is estimated.
+
 ## Point mass: numerics
 
 | Check | Expected | Engine |
