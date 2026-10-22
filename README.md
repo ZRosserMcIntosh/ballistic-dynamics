@@ -36,7 +36,7 @@ listed here is claimed.
 | Frames | SI inside; ENU world as Aviation's; line of fire x downrange, y left, z up (ISO 8855's order, as OpenRoad) ([ADR 0001](docs/decisions/0001-frames-and-units.md)) | `tests/test_foundations.cpp` |
 | Browser | WebAssembly build (wasi-sdk 25, no exceptions or RTTI, 230 KB) with a C ABI: the air, wind layers, zeroing, firing, bullet-time state, range cards; Node smoke test | `web/`, `web/smoke_test.mjs` |
 
-38 test cases, on Linux (gcc, clang, sanitizers), macOS, Windows and WASM in
+40 test cases, on Linux (gcc, clang, sanitizers), macOS, Windows and WASM in
 CI. What each scenario gives against its reference is in
 [docs/validation.md](docs/validation.md); how far each model goes, and its main
 gap, in [docs/physics.md](docs/physics.md) and the
@@ -51,7 +51,7 @@ git clone --recurse-submodules https://github.com/ZRosserMcIntosh/ballistic-dyna
 # or, in an existing clone: git submodule update --init
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build
-./build/tests/bd_tests                  # 38 test cases
+./build/tests/bd_tests                  # 40 test cases
 ./build/tests/bd_tests "point mass"     # a filter
 BD_VERBOSE=1 ./build/tests/bd_tests validation   # the comparison tables
 ./build/bdemo list                      # the data library, with provenance

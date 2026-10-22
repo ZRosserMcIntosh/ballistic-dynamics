@@ -17,6 +17,7 @@
 #include "bd/library.hpp"
 #include "bd/solver.hpp"
 #include "bd/spin.hpp"
+#include "bd/wake.hpp"
 #include "bd/units.hpp"
 
 #define BD_EXPORT extern "C" __attribute__((visibility("default")))
@@ -37,6 +38,7 @@ struct Sim {
     int flags = 0;           // 1 spin, 2 Earth rotation
     std::string text;
     std::vector<double> sample;
+    std::vector<float> wake;
 };
 
 Sim* g = nullptr;
@@ -398,6 +400,25 @@ BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeig
     o += ']';
     putText(o);
     return sim().text.c_str();
+}
+
+// The round's wake (the trace) at engine time t: float32, the count, then 6
+// per stretch: x, y, z (ENU), half-width (m), deficit (strength), age (s).
+// Stretches every `spacing` m, up to `maxAge` s old; mass (kg) and diameter
+// (m) of the bullet.
+BD_EXPORT const float* bd_wake(double t, double spacing, double maxAge, double mass, double diameter) {
+    Sim& S = sim();
+    S.wake.assign(1, 0.0f);
+    if (S.round) {
+        WakeParams p;
+        p.spacing = spacing;
+        p.maxAge = maxAge;
+        for (const WakeElement& e : wakeAt(*S.round, mass, diameter, t, p))
+            for (double v : {e.position.x, e.position.y, e.position.z, e.radius, e.deficit, e.age})
+                S.wake.push_back(static_cast<float>(v));
+        S.wake[0] = static_cast<float>((S.wake.size() - 1) / 6);
+    }
+    return S.wake.data();
 }
 
 // 9 doubles: pressure, temperature, density, speed of sound, relative humidity,
