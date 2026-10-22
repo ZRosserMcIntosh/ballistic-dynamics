@@ -91,6 +91,32 @@
         "barrel_in": "published: CheyTac M200, 29 in barrel",
         "sight_height_in": "estimated: a large tactical scope on the M200's raised rail, about 2.4 in over the bore"
       }
+    },
+    {
+      "id": "m9130_pu",
+      "name": "Mosin–Nagant M91/30 sniper with the 3.5× PU",
+      "twist_in": 9.45,
+      "twist_direction": "right",
+      "barrel_in": 28.7,
+      "sight_height_in": 1.9,
+      "provenance": {
+        "twist_in": "published: Mosin–Nagant rifling 1 turn in 240 mm (9.45 in)",
+        "barrel_in": "published: M91/30 barrel 730 mm (28.7 in)",
+        "sight_height_in": "estimated: the PU on its side mount, centred over the bore about 1.9 in up"
+      }
+    },
+    {
+      "id": "svd_pso1",
+      "name": "Dragunov SVD with the 4× PSO-1",
+      "twist_in": 9.45,
+      "twist_direction": "right",
+      "barrel_in": 24.4,
+      "sight_height_in": 2.7,
+      "provenance": {
+        "twist_in": "published: SVD rifling 1 turn in 240 mm (9.45 in) since 1975 (320 mm before)",
+        "barrel_in": "published: SVD barrel 620 mm (24.4 in)",
+        "sight_height_in": "estimated: the PSO-1 on the left side rail, about 2.7 in over the bore (its small offset to the left is not modelled)"
+      }
     }
   ]
 }
