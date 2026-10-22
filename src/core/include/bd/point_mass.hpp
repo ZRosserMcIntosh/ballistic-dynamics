@@ -89,6 +89,7 @@ public:
     FlightSample stateAt(Real t) const;
     const std::vector<FlightSample>& trace() const { return trace_; }
     const DragModel& drag() const { return drag_; }
+    const AirSource& air() const { return air_; }
     const PointMassOptions& options() const { return o_; }
 
     // Milestone 3 read-outs.

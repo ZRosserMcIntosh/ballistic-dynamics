@@ -179,6 +179,29 @@ dynamically unstable through the transonic zone (the real cause of most
 transonic trouble) is not caught yet. Litz's jump regression is fitted near
 Sg ≈ 1.75. The bullet lengths are estimated.
 
+## 4c. The wake: the trace
+
+What a spotter sees as the trace is the round's wake: a thin tube of
+stirred, slower, slightly warmer air left along the path, which bends the
+light behind it. `wakeAt` (`bd/wake.hpp`) returns it at any instant as
+stretches shed every half metre or so, each where the round was, aged since,
+carried by the wind where it is, with the self-similar far wake of an
+axisymmetric body (Pope, *Turbulent Flows*, §5.5): with the drag as a
+momentum thickness θ = √(C_D A / 2π) and x = U·age the distance the body has
+gone on,
+
+```
+r½(x) = a θ (x/θ)^(1/3)        u₀/U = b (x/θ)^(−2/3)
+```
+
+so a trace widens as the cube root of its age and fades as its two-thirds
+power. **Main gap:** the coefficients a = 0.6 and b = 1.2 are estimated at
+the order of the measured values; the near wake (the first few hundred
+diameters) is held at the bullet's radius; the trace's optical strength is
+taken as proportional to the velocity deficit, not computed from the
+temperature and density in the wake; no wake vortex shedding or spin swirl;
+the wind carrying it is sampled now at where it was shed.
+
 ## 5. Every round unique — not started (Milestone 4)
 
 Lot muzzle velocity and spread, powder temperature, barrel length, cold
