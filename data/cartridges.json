@@ -1,0 +1,16 @@
+{
+  "comment": "Ballistic Dynamics cartridges: a projectile and its published muzzle velocity with the barrel it was measured in.",
+  "cartridges": [
+    {
+      "id": "fgmm_308_175",
+      "name": ".308 Win Federal Gold Medal Match 175 gr SMK (GM308M2)",
+      "projectile": "smk_308_175",
+      "muzzle_velocity_fps": 2600,
+      "test_barrel_in": 24,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Federal Premium catalogue, GM308M2, 2600 fps",
+        "test_barrel_in": "published: Federal Premium ballistics are from a 24 in test barrel for .308 Win"
+      }
+    }
+  ]
+}

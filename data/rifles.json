@@ -1,0 +1,18 @@
+{
+  "comment": "Ballistic Dynamics rifles: twist, barrel and the optic's height over the bore.",
+  "rifles": [
+    {
+      "id": "m24_sws",
+      "name": "M24 Sniper Weapon System (7.62x51 mm)",
+      "twist_in": 11.25,
+      "twist_direction": "right",
+      "barrel_in": 24,
+      "sight_height_in": 1.75,
+      "provenance": {
+        "twist_in": "published: American Rifleman, The Remington M24 Sniper Weapon System (2016): 5R rifling, one turn in 11.25 in, right hand",
+        "barrel_in": "published: American Rifleman (2016), 24 in free-floated barrel",
+        "sight_height_in": "estimated: a 30 mm tube scope in low rings over a Remington 700 action sits about 1.5 to 2 in above the bore"
+      }
+    }
+  ]
+}
