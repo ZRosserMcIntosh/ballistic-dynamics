@@ -65,17 +65,21 @@ export default async function createBallisticModule(wasmBytes) {
     ex.bd_wind(azimuth, layers.length);
   };
   B.round = () => {
-    const a = new Float64Array(memory.buffer, ex.bd_round(), 8);
-    return { time: a[0], position: [a[1], a[2], a[3]], velocity: [a[4], a[5], a[6]], stopped: a[7] !== 0 };
+    const a = new Float64Array(memory.buffer, ex.bd_round(), 16);
+    return { time: a[0], position: [a[1], a[2], a[3]], velocity: [a[4], a[5], a[6]], stopped: a[7] !== 0,
+      spin: a[8], roll: a[9], stability: a[10], tumbling: a[11] !== 0, jump: a[12], minStability: a[13],
+      transonicStart: a[14], subsonicTime: a[15] };
   };
+  B.noseAt = (t) => Array.from(new Float64Array(memory.buffer, ex.bd_nose_at(t), 3));
   // Bullet time: the round at any engine time it has already flown, smooth between steps.
   B.stateAt = (t) => {
-    const a = new Float64Array(memory.buffer, ex.bd_state_at(t), 7);
-    return { time: a[0], position: [a[1], a[2], a[3]], velocity: [a[4], a[5], a[6]] };
+    const a = new Float64Array(memory.buffer, ex.bd_state_at(t), 9);
+    return { time: a[0], position: [a[1], a[2], a[3]], velocity: [a[4], a[5], a[6]], spin: a[7], roll: a[8] };
   };
-  // [{range, drop, windage, time, speed, energy, mach}] (SI)
-  B.table = (cartridge, zeroRange, sightHeight, maxRange, step) =>
-    JSON.parse(B.text(ex.bd_table(cartridge, zeroRange, sightHeight, maxRange, step)))
-      .map(([range, drop, windage, time, speed, energy, mach]) => ({ range, drop, windage, time, speed, energy, mach }));
+  // [{range, drop, windage, time, speed, energy, mach, stability}] (SI)
+  B.table = (cartridge, zeroRange, sightHeight, maxRange, step, azimuth = 0) =>
+    JSON.parse(B.text(ex.bd_table(cartridge, zeroRange, sightHeight, maxRange, step, azimuth)))
+      .map(([range, drop, windage, time, speed, energy, mach, stability]) =>
+        ({ range, drop, windage, time, speed, energy, mach, stability }));
   return B;
 }

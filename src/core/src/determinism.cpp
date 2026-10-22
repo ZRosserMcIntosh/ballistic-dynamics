@@ -4,6 +4,7 @@
 
 #include "bd/dmath.hpp"
 #include "bd/point_mass.hpp"
+#include "bd/spin.hpp"
 #include "bd/rng.hpp"
 
 namespace bd {
@@ -58,6 +59,50 @@ std::uint64_t trajectoryProbe() {
     const FlightSample mid = r.stateAt(1.23456);
     h.add(mid.position);
     h.add(mid.velocity);
+    return h.h;
+}
+
+std::uint64_t spinProbe() {
+    const DragTable table({0.0, 0.8, 0.9, 0.95, 1.0, 1.05, 1.2, 1.5, 2.0, 3.0},
+                          {0.120, 0.121, 0.130, 0.170, 0.380, 0.400, 0.385, 0.340, 0.290, 0.230});
+    BallisticCoefficient bc;
+    bc.family = "G7";
+    bc.values = {171.0};
+    bc.minSpeeds = {0};
+    const DragModel drag = DragModel::standard(table, bc);
+    AirSample a;
+    a.density = 1.1;
+    a.speedOfSound = 343.0;
+    a.temperature = 290.0;
+    a.pressure = 95000.0;
+    a.wind = {3.0, -1.5, 0.2};
+    const UniformAir air(a);
+    ProjectileDef p;
+    p.mass = 0.01134;
+    p.diameter = 0.0078232;
+    p.length = 0.0315;
+    PointMassOptions o;
+    o.keepTrace = true;
+    o.spin = spinParamsFor(p, 0.28575, 820.0, a);
+    o.spin.tipOffRate = 2.0;
+    o.earthRotation = true;
+    o.latitude = -0.411;
+    Launch l;
+    l.position = {12.5, -3.0, 1.6};
+    l.direction = {0.6, 0.8, 0.012};
+    l.muzzleSpeed = 820.0;
+    l.time = 0.3;
+    PointMassRound r(drag, air, l, o);
+    r.advance(2.8);
+    Hash64 h;
+    for (const FlightSample& s : r.trace()) {
+        h.add(s.position);
+        h.add(s.velocity);
+        h.add(s.spin);
+        h.add(s.roll);
+    }
+    h.add(r.noseAt(1.23456));
+    h.add(r.stability());
     return h.h;
 }
 

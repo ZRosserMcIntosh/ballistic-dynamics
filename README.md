@@ -12,11 +12,12 @@ It is the fourth engine of the project, next to **Glass Dynamics**
 (glazing fracture), **Aviation Dynamics** (flight, and the atmosphere this
 engine flies through) and **OpenRoad Dynamics** (vehicles).
 
-**Status: Milestone 2, the point mass.** The air, the clock, the
-deterministic maths, the data library, the browser build and the point-mass
-trajectory (G1/G7 drag, zeroing, range cards, bullet-time interpolation)
-are in. **Not yet:** spin drift, aerodynamic jump, Coriolis and the
-transonic wobble (Milestone 3), per-round variation (4) and materials (5).
+**Status: Milestone 3, spin and the Earth.** The air, the clock, the
+deterministic maths, the data library, the browser build, the point-mass
+trajectory (G1/G7 drag, zeroing, range cards, bullet-time interpolation),
+and spin (Miller stability, spin drift, aerodynamic jump, the wobble,
+tumbling) with Coriolis and Eötvös are in. **Not yet:** dynamic (transonic)
+stability, per-round variation (Milestone 4) and materials (5).
 The [roadmap](docs/roadmap.md) has the rest, and nothing beyond what is
 listed here is claimed.
 
@@ -25,6 +26,7 @@ listed here is claimed.
 | Area | What is implemented | Evidence |
 |---|---|---|
 | Point mass | The round in the world frame with drag from the BRL G1 or G7 table scaled by its (stepped) BC, or its own C_D(Mach); air and wind sampled along the path at every Runge-Kutta stage; zeroing and range cards (drop, drift, time, speed, energy, Mach) | `tests/test_point_mass.cpp`: six cartridges (.308 175 SMK, 6.5 CM 140 ELD-M, .338 LM 250 Scenar, .50 BMG 750 A-MAX, 5.56 M855, 9 mm 124 Gold Dot) agree with an independent solver to 0.06 % in drop, and with published figures to within 0.05 in to +4 % ([validation](docs/validation.md)) |
+| Spin and the Earth | Miller's stability with its velocity and air corrections, then Sg ∝ p²/(ρV²C_mα) downrange; the yaw of repose and its lift (spin drift); Litz's aerodynamic jump from a crosswind; the epicyclic wobble for drawing; tumbling below Sg 1; Coriolis and Eötvös at any latitude and direction of fire | `tests/test_spin.cpp`: spin drift 0.79–0.98 of Litz's measured-data formula for five rifle loads without tuning; Coriolis against closed forms and the integrated lateral equation to 0.3 % |
 | Bullet time | The state at any instant of the flight, smooth between the 1 ms steps (cubic Hermite, within 20 µm of a 20× finer run), so a camera can follow the round at 1/1000 speed with the same physics ([bullet-time.md](docs/bullet-time.md)) | `tests/test_point_mass.cpp`, `web/smoke_test.mjs` |
 | Air | Aviation Dynamics' U.S. Standard Atmosphere 1976 with temperature and pressure deviations and humidity (moist density from the virtual temperature, speed of sound, density altitude) and its wind and turbulence field, compiled unchanged from a pinned submodule behind a host-facing `AirSource` interface ([ADR 0003](docs/decisions/0003-atmosphere-source.md)). A shooter's station reading (pressure, temperature, humidity, elevation) becomes Aviation's conditions exactly | `tests/test_air.cpp` |
 | Wind on the range | Layers by distance along the line of fire with seeded gusts and blended joins, over any air; the shooter's call and the true wind as two sources | `tests/test_air.cpp` |
@@ -34,7 +36,7 @@ listed here is claimed.
 | Frames | SI inside; ENU world as Aviation's; line of fire x downrange, y left, z up (ISO 8855's order, as OpenRoad) ([ADR 0001](docs/decisions/0001-frames-and-units.md)) | `tests/test_foundations.cpp` |
 | Browser | WebAssembly build (wasi-sdk 25, no exceptions or RTTI, 230 KB) with a C ABI: the air, wind layers, zeroing, firing, bullet-time state, range cards; Node smoke test | `web/`, `web/smoke_test.mjs` |
 
-29 test cases, on Linux (gcc, clang, sanitizers), macOS, Windows and WASM in
+38 test cases, on Linux (gcc, clang, sanitizers), macOS, Windows and WASM in
 CI. What each scenario gives against its reference is in
 [docs/validation.md](docs/validation.md); how far each model goes, and its main
 gap, in [docs/physics.md](docs/physics.md) and the
@@ -49,12 +51,13 @@ git clone --recurse-submodules https://github.com/ZRosserMcIntosh/ballistic-dyna
 # or, in an existing clone: git submodule update --init
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build
-./build/tests/bd_tests                  # 29 test cases
+./build/tests/bd_tests                  # 38 test cases
 ./build/tests/bd_tests "point mass"     # a filter
 BD_VERBOSE=1 ./build/tests/bd_tests validation   # the comparison tables
 ./build/bdemo list                      # the data library, with provenance
 ./build/bdemo table fgmm_308_175        # a range card: drop, drift, speed, energy to 1,000 yd
 ./build/bdemo table hornady_65cm_140 G1 100 1.5 10 1000 50   # model, zero, sight, wind, range, step
+./build/bdemo table fgmm_308_175 - 100 1.5 0 1000 100 - rifle=m24_sws lat=-23.55 az=90   # spin, Coriolis, Eötvös
 ./build/bdemo air 83400 30 0.2 1609     # the air from a station reading, and up the path
 ./build/bdemo determinism               # this build's determinism hashes
 ```

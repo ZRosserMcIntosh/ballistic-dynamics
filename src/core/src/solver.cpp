@@ -16,7 +16,7 @@ std::vector<FlightSample> fly(const RangeSetup& s, const AirSource& air, Real el
     l.position = s.origin;
     l.direction = frames::directionFromAzEl(s.azimuth, elevation);
     l.muzzleSpeed = s.muzzleSpeed;
-    PointMassOptions o;
+    PointMassOptions o = s.physics;
     o.step = s.step;
     o.keepTrace = true;
     o.maxTime = 15.0;
@@ -102,6 +102,15 @@ std::vector<RangeRow> rangeTable(const RangeSetup& s, const AirSource& air, Real
             row.energy = 0.5 * s.mass * row.speed * row.speed;
             const AirSample a = air.sample(c.position, c.time);
             row.mach = length(c.velocity - a.wind) / a.speedOfSound;
+            row.spin = c.spin;
+            if (s.physics.spin.enabled) {
+                // Sg at the crossing, from a round with the same set-up.
+                Launch muzzle;
+                muzzle.muzzleSpeed = s.muzzleSpeed;
+                const PointMassRound probe(s.drag, air, muzzle, s.physics);
+                PointMassRound::State st{c.position, c.velocity, c.spin, c.roll};
+                row.stability = probe.stabilityAt(st, a);
+            }
         }
         rows.push_back(row);
     }

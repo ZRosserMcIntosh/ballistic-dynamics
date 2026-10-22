@@ -25,4 +25,10 @@ inline constexpr std::uint64_t kTrajectoryGolden = 0x2ca1ba49af3e55d1ull;
 
 std::uint64_t trajectoryProbe();
 
+// Milestone 3: the same kind of flight with spin (Miller's Sg, the yaw of
+// repose, roll damping, the jump in a crosswind) on a rotating Earth.
+inline constexpr std::uint64_t kSpinGolden = 0x86ee6c5cb23ef28eull;
+
+std::uint64_t spinProbe();
+
 }  // namespace bd

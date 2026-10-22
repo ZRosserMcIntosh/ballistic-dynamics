@@ -16,6 +16,7 @@
 #include "bd/determinism.hpp"
 #include "bd/library.hpp"
 #include "bd/solver.hpp"
+#include "bd/spin.hpp"
 #include "bd/units.hpp"
 
 #define BD_EXPORT extern "C" __attribute__((visibility("default")))
@@ -30,6 +31,10 @@ struct Sim {
     std::unique_ptr<StationAir> air;
     std::unique_ptr<RangeWind> wind;  // over `air`; the round flies through this
     std::unique_ptr<PointMassRound> round;
+    // The gun's physics for zero, fire and table (bd_setup).
+    Real twist = 0;          // m per turn, signed; 0: no spin
+    Real latitude = 0;       // rad
+    int flags = 0;           // 1 spin, 2 Earth rotation
     std::string text;
     std::vector<double> sample;
 };
@@ -46,6 +51,8 @@ const AirSource* flightAir() {
     if (S.wind) return S.wind.get();
     return S.air.get();
 }
+
+PointMassOptions physicsFor(const ProjectileDef& p, Real muzzleSpeed);
 
 // The drag model of cartridge i (its preferred model: own curve, G7, G1).
 bool cartridgeModel(int i, DragModel& drag, const CartridgeDef*& c, const ProjectileDef*& p) {
@@ -110,6 +117,18 @@ void provenance(std::string& o, const ProvenanceMap& m) {
         o += '}';
     }
     o += '}';
+}
+
+PointMassOptions physicsFor(const ProjectileDef& p, Real muzzleSpeed) {
+    Sim& S = sim();
+    PointMassOptions o;
+    if ((S.flags & 1) && S.twist != 0)
+        o.spin = spinParamsFor(p, S.twist, muzzleSpeed, S.air ? S.air->sample({}, 0) : AirSample{});
+    if (S.flags & 2) {
+        o.earthRotation = true;
+        o.latitude = S.latitude;
+    }
+    return o;
 }
 
 }  // namespace
@@ -232,6 +251,27 @@ BD_EXPORT void bd_wind(double azimuth, int n) {
     S.wind = std::make_unique<RangeWind>(*S.air, Vec3{}, azimuth, layers);
 }
 
+// The gun's physics for the calls below: twist (m per turn, + right-hand, 0
+// none), latitude (rad, + north), flags (1 spin: stability, spin drift and
+// jump; 2 Earth rotation: Coriolis and Eotvos).
+BD_EXPORT void bd_setup(double twist, double latitude, int flags) {
+    Sim& S = sim();
+    S.twist = twist;
+    S.latitude = latitude;
+    S.flags = flags;
+}
+
+// The Miller stability Sg of cartridge i from the set-up twist in the
+// station air (0 without a twist).
+BD_EXPORT double bd_stability(int cartridge) {
+    DragModel drag;
+    const CartridgeDef* c;
+    const ProjectileDef* p;
+    if (!cartridgeModel(cartridge, drag, c, p) || sim().twist == 0) return 0;
+    flightAir();
+    return spinParamsFor(*p, sim().twist, c->muzzleVelocity, sim().air->sample({}, 0)).sgMuzzle;
+}
+
 // The bore elevation (rad) that zeroes cartridge i at zeroRange (m) with the
 // optic sightHeight (m) above the bore, in the station's still air. NaN if not.
 BD_EXPORT double bd_zero(int cartridge, double zeroRange, double sightHeight) {
@@ -246,6 +286,7 @@ BD_EXPORT double bd_zero(int cartridge, double zeroRange, double sightHeight) {
     s.mass = p->mass;
     s.sightHeight = sightHeight;
     s.zeroRange = zeroRange;
+    s.physics = physicsFor(*p, c->muzzleVelocity);
     return zeroElevation(s, *sim().air);
 }
 
@@ -261,8 +302,10 @@ BD_EXPORT int bd_fire(int cartridge, double x, double y, double z, double azimut
     l.direction = frames::directionFromAzEl(azimuth, elevation);
     l.muzzleSpeed = c->muzzleVelocity;
     l.time = t0;
-    PointMassOptions o;
+    flightAir();
+    PointMassOptions o = physicsFor(*p, c->muzzleVelocity);
     o.keepTrace = true;
+    o.maxTime = 15.0;
     sim().round = std::make_unique<PointMassRound>(drag, *flightAir(), l, o);
     return 1;
 }
@@ -275,35 +318,53 @@ BD_EXPORT int bd_advance(double t, int maxSteps) {
     return S.round ? static_cast<int>(S.round->advance(t, maxSteps > 0 ? maxSteps : (1 << 20))) : 0;
 }
 
-// 8 doubles: engine time, position x y z, velocity x y z, stopped.
+// 16 doubles: engine time, position x y z, velocity x y z, stopped, spin
+// (rad/s), roll (rad), Sg now, tumbling, jump (rad), lowest Sg, time it went
+// below Mach 1.2 and below Mach 1 (s of flight, -1 not yet).
 BD_EXPORT const double* bd_round() {
     Sim& S = sim();
-    S.sample.assign(8, 0.0);
+    S.sample.assign(16, 0.0);
     if (S.round) {
         const auto& r = *S.round;
         S.sample = {r.time(), r.position().x, r.position().y, r.position().z,
-                    r.velocity().x, r.velocity().y, r.velocity().z, r.stopped() ? 1.0 : 0.0};
+                    r.velocity().x, r.velocity().y, r.velocity().z, r.stopped() ? 1.0 : 0.0,
+                    r.spinRate(), r.roll(), r.stability(), r.tumbling() ? 1.0 : 0.0, r.jumpAngle(),
+                    r.minStability(), r.transonicStart(), r.subsonicTime()};
     }
     return S.sample.data();
 }
 
-// Bullet time: 7 doubles, the round's state at any engine time already flown
-// (time, position, velocity), smooth between steps. Advance one step (1 ms)
-// ahead of the time drawn: bd_advance(t + 0.001), then bd_state_at(t).
+// The nose's direction (unit ENU) at a flown instant: the path turned by the
+// yaw of repose and the wobble (display).
+BD_EXPORT const double* bd_nose_at(double t) {
+    Sim& S = sim();
+    S.sample.assign(3, 0.0);
+    if (S.round) {
+        const Vec3 n = S.round->noseAt(t);
+        S.sample = {n.x, n.y, n.z};
+    }
+    return S.sample.data();
+}
+
+// Bullet time: 9 doubles, the round's state at any engine time already flown
+// (time, position, velocity, spin, roll), smooth between steps. Advance one
+// step (1 ms) ahead of the time drawn: bd_advance(t + 0.001), then bd_state_at(t).
 BD_EXPORT const double* bd_state_at(double t) {
     Sim& S = sim();
-    S.sample.assign(7, 0.0);
+    S.sample.assign(9, 0.0);
     if (S.round) {
         const FlightSample f = S.round->stateAt(t);
-        S.sample = {f.time, f.position.x, f.position.y, f.position.z, f.velocity.x, f.velocity.y, f.velocity.z};
+        S.sample = {f.time, f.position.x, f.position.y, f.position.z, f.velocity.x, f.velocity.y, f.velocity.z,
+                    f.spin, f.roll};
     }
     return S.sample.data();
 }
 
-// A range card for cartridge i (preferred drag model) in the station air and
-// wind, firing along azimuth 0 from the origin: JSON rows of range, drop,
-// windage (m), time (s), speed (m/s), energy (J), Mach.
-BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeight, double maxRange, double step) {
+// A range card for cartridge i (preferred drag model, the set-up physics) in
+// the station air and wind, firing along `azimuth` from the origin: JSON rows
+// of range, drop, windage (m), time (s), speed (m/s), energy (J), Mach, Sg.
+BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeight, double maxRange, double step,
+                               double azimuth) {
     std::string o = "[";
     DragModel drag;
     const CartridgeDef* c;
@@ -316,6 +377,8 @@ BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeig
         s.mass = p->mass;
         s.sightHeight = sightHeight;
         s.zeroRange = zeroRange;
+        s.azimuth = azimuth;
+        s.physics = physicsFor(*p, c->muzzleVelocity);
         const Real e = zeroElevation(s, *sim().air);
         std::vector<Real> ranges;
         for (Real r = 0; r <= maxRange + 1e-9; r += step) ranges.push_back(r);
@@ -325,7 +388,7 @@ BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeig
             if (!first) o += ',';
             first = false;
             o += '[';
-            for (double v : {r.range, r.drop, r.windage, r.time, r.speed, r.energy, r.mach}) {
+            for (double v : {r.range, r.drop, r.windage, r.time, r.speed, r.energy, r.mach, r.stability}) {
                 jsonNum(o, v);
                 o += ',';
             }
@@ -351,11 +414,13 @@ BD_EXPORT const double* bd_air(double x, double y, double z, double t) {
 }
 
 // The determinism hashes (same as `bdemo determinism` and the native tests):
-// the maths, then a whole trajectory, as 16 hex digits each.
+// the maths, a whole trajectory, and a spinning round on a rotating Earth, as
+// 16 hex digits each.
 BD_EXPORT const char* bd_determinism() {
-    const std::uint64_t h = determinismProbe(), t = trajectoryProbe();
-    char b[40];
-    std::snprintf(b, sizeof b, "%016llx %016llx", static_cast<unsigned long long>(h), static_cast<unsigned long long>(t));
+    const std::uint64_t h = determinismProbe(), t = trajectoryProbe(), s = spinProbe();
+    char b[64];
+    std::snprintf(b, sizeof b, "%016llx %016llx %016llx", static_cast<unsigned long long>(h),
+                  static_cast<unsigned long long>(t), static_cast<unsigned long long>(s));
     putText(b);
     return sim().text.c_str();
 }

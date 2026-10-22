@@ -75,6 +75,44 @@ bullets: that is the published-figures table below and Milestone 3.
 | Whole-trajectory golden hash | `0x2ca1ba49af3e55d1` on every platform | Linux gcc, clang, sanitizers, wasm32 equal; macOS and MSVC in CI |
 | A BC-scaled G7 and the same bullet's own curve (i × G7) | the same force | to 1e-12 |
 
+## Spin and the Earth (Milestone 3)
+
+Spin drift against Litz's published empirical formula, 1.25 (Sg + 1.2)
+TOF^1.83 in (fitted to measured rifle data). The engine's drift comes from
+the yaw of repose and estimated C_Lα and inertia, not from the formula.
+Standard day, 100 yd zero, no wind, firing north, no Earth rotation:
+
+| Load, twist | Sg (Miller) | Range | TOF | Engine | Litz | Ratio |
+|---|---|---|---|---|---|---|
+| .308 175 SMK, 1:11.25 | 1.90 | 1000 yd | 1.791 s | 9.4 in | 11.2 in | 0.83 |
+| 6.5 CM 140 ELD-M, 1:8 | 1.59 | 1000 yd | 1.496 s | 6.2 in | 7.3 in | 0.85 |
+| .338 LM 250 Scenar, 1:10 | 1.92 | 1500 yd | 2.500 s | 19.3 in | 20.9 in | 0.92 |
+| .50 BMG 750 A-MAX, 1:15 | 2.04 | 2000 yd | 3.095 s | 31.3 in | 32.0 in | 0.98 |
+| 5.56 M855, 1:7 | 2.48 | 600 yd | 0.871 s | 2.8 in | 3.6 in | 0.79 |
+| 9 mm 124 GDHP, 1:10 | 11.95 | 100 yd | 0.289 s | 0.7 in | 1.7 in | 0.39 |
+
+**Gap.** The engine is 2–21 % under Litz for the rifles (test band 0.7–1.15)
+and far under for the 9 mm, a short pistol bullet outside the formula's
+data. The likely cause is the estimated C_Lα, inertia ratio and roll
+damping; they are not tuned to close it. Measured aerodynamic coefficients
+per bullet (Doppler or spark-range data) would.
+
+| Check | Expected | Engine |
+|---|---|---|
+| Miller's rule at 2800 fps, 59 °F, 29.92 inHg | the bare rule | to 1e-12 |
+| Twice the twist rate | four times Sg | exact |
+| Spin at the muzzle, 2600 fps through 1:11.25 | 2,773 turns/s | exact |
+| A left-hand twist | the same drift, to the left | to 1 µm |
+| Spin decay over 1000 yd | slower than the speed | 2773 → 2112 turns/s (−24 %) while the speed falls 58 % |
+| Aerodynamic jump, .308, 10 mph crosswind | Litz: 0.01 Sg − 0.0024 l + 0.032 MOA/mph | the formula, up for a wind from the left, down from the right, opposite for a left-hand twist; ≈ 4 in at 1000 yd |
+| Coriolis, vacuum, flat fire north at 45° N | ω sin φ V T² to the right | to 0.1 % |
+| Eötvös, vacuum, firing east / west | ± ω cos φ V T² | to 0.1 % |
+| Coriolis with drag, .50 BMG at 2000 yd, 45° N | the lateral equation integrated along the plain flight | to 0.3 %: 10.2 in, less than the drag-free ω sin φ X T (11.5 in) |
+| São Paulo (23.55° S) | deflected left | left |
+| A 175 SMK from a 1:20 twist (Sg 0.6) | unstable | tumbles; much more drop, much slower |
+| The wobble | starts at the crosswind yaw, gone in under a second; nose within 1° of the path | yes |
+| Spin golden hash | `0x86ee6c5cb23ef28e` on every platform | gcc, clang, sanitizers, wasm32 equal; macOS and MSVC in CI |
+
 ## The air
 
 | Scenario | Reference | Engine | Check |
