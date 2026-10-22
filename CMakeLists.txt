@@ -37,6 +37,7 @@ add_library(bd_core
   src/core/src/drag.cpp
   src/core/src/point_mass.cpp
   src/core/src/solver.cpp
+  src/core/src/spin.cpp
 )
 add_library(bd::core ALIAS bd_core)
 target_include_directories(bd_core PUBLIC src/core/include)

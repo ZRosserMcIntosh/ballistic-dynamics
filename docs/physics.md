@@ -1,10 +1,10 @@
 # The physics
 
-How far each model goes, and its main gap. Milestones 1 and 2 are in: the
-air, the clock, the deterministic maths and the point-mass trajectory. The
-sections for spin, dispersion and materials are listed with what they will
-hold, and are marked as not started; nothing below claims more than the code
-does. Source: [`src/core`](../src/core), [`src/aviation`](../src/aviation).
+How far each model goes, and its main gap. Milestones 1 to 3 are in: the
+air, the clock, the deterministic maths, the point-mass trajectory, spin and
+the rotating Earth. The sections for dispersion and materials are listed
+with what they will hold, and are marked as not started; nothing below
+claims more than the code does. Source: [`src/core`](../src/core), [`src/aviation`](../src/aviation).
 
 ## 1. The air
 
@@ -102,9 +102,8 @@ A slow-motion camera advances the engine one step ahead of what it draws
 and samples in between; the physics is the same at any playback speed
 ([bullet-time.md](bullet-time.md)).
 
-**Main gap.** A point has no attitude: no spin drift, no aerodynamic jump,
-no yaw, no transonic instability (Milestone 3). No Coriolis or Eötvös
-(Milestone 3; the rotation vector is ready). Gravity is constant (no
+**Main gap.** The point mass alone has no attitude; section 4b adds what
+spin does. Gravity is constant (no
 latitude or height variation, 0.5 % at most). A BC-scaled standard table is
 only as good as the match between the bullet and the reference shape: a
 G1 BC drifts with velocity for boat-tail match bullets (which is why Sierra
@@ -112,11 +111,73 @@ steps it); a G7 BC or a bullet's own curve is closer. Stepped BCs jump at
 their band edges, as published. Linear C_D interpolation between table
 points.
 
-## 4b. Spin and the Earth — not started (Milestone 3)
+## 4b. Spin and the Earth (Milestone 3)
 
-McCoy's modified point mass: Miller stability with its velocity and density
-corrections, yaw of repose and spin drift, aerodynamic jump, the epicyclic
-swerve damping out, transonic instability, Coriolis and Eötvös.
+Off by default (`PointMassOptions::spin`, `earthRotation`), and then the
+round is the point mass above bit for bit. Source: `bd/spin.hpp`,
+`point_mass.cpp`.
+
+**Stability.** Miller's rule gives Sg at the muzzle from the bullet's mass,
+diameter and length, the twist, the muzzle velocity and the air:
+
+```
+Sg = 30 m / (t² d³ l (1 + l²)) · (V/2800)^(1/3) · (T_F + 460)/519 · 29.92/P
+```
+
+(m grains, t calibres per turn, d inches, l length in calibres; Miller 2005,
+with the corrections as in Courtney & Courtney, arXiv:1410.5340). Downrange
+Sg follows the physics, Sg ∝ p² / (ρ V² C_mα): it grows as the round slows
+(the spin decays more slowly than the speed), and the overturning moment's
+rise toward Mach 1 (an estimated trend, `overturningRatio`) takes some of it
+back through the transonic zone. Below Sg = 1 the round is gyroscopically
+unstable: it is marked tumbling, loses its spin terms and its drag rises
+fourfold (estimated).
+
+**Spin.** p₀ = 2π V₀ / twist, signed (+ right-hand); it decays by roll
+damping, I_x dp/dt = ½ ρ |u| S d² C_lp p, with I_x = 0.105 m d² and
+C_lp = −0.012 (both estimated, McCoy's small-arms range). The roll angle is
+integrated for drawing.
+
+**Spin drift: the yaw of repose.** A spinning round whose path curves
+(gravity, Coriolis) points its nose slightly to the side of the path (McCoy,
+*Modern Exterior Ballistics*, ch. 10): α_R = −(2 I_x p / (ρ S d V⁴ C_mα))
+(V × dV/dt). Taking C_mα from Sg itself (ρ S d C_mα = I_x² p² / (2 I_y Sg V²))
+leaves
+
+```
+α_R = −(4 (I_y/I_x) Sg / p) (u × a_curve) / |u|²,     a_lift = ½ ρ |u|² S C_Lα α_R / m
+```
+
+which needs only the inertia ratio (estimated from the length:
+0.7 × (⅔ l² + ½)) and the lift slope C_Lα = 2.5 per radian (estimated). For a
+right-hand twist the nose sits right of the path and the round drifts right.
+
+**Aerodynamic jump.** A crosswind at the muzzle yaws the round, and its first
+swerve turns into a vertical deflection; Litz's published regression gives
+it, Y = 0.01 Sg − 0.0024 l + 0.032 MOA per mph of crosswind, up for a wind
+from the left with a right-hand twist. It is applied as a turn of the
+launch direction.
+
+**The wobble.** After the muzzle the nose circles the path in the epicycle
+of a fast (nutation) and a slow (precession) arm,
+ω_f,s = (I_x p / 2 I_y)(1 ± √(1 − 1/Sg)), starting from the crosswind yaw
+and any tip-off rate, each arm damping out (estimated rates: a few
+hundredths and a few tenths of a second). It is computed in closed form for
+drawing (`noseAt`); its net effect on the path is the jump.
+
+**The rotating Earth.** a = −2 Ω × v with Ω = ω (0, cos φ, sin φ) in ENU at
+latitude φ: the horizontal part deflects right in the northern hemisphere
+and left in the southern; the vertical part (Eötvös) lifts a round fired
+east and drops one fired west. The centrifugal term is in g.
+
+**Main gap.** C_Lα, the inertia, the roll damping and the C_mα trend are
+estimated per bullet class, not measured per bullet; the spin drift lands
+within 0.79–0.98 of Litz's measured-data formula without tuning
+([validation.md](validation.md)). Dynamic stability (the damping of the
+wobble, S_d) is not modelled: a round that is gyroscopically stable but
+dynamically unstable through the transonic zone (the real cause of most
+transonic trouble) is not caught yet. Litz's jump regression is fitted near
+Sg ≈ 1.75. The bullet lengths are estimated.
 
 ## 5. Every round unique — not started (Milestone 4)
 

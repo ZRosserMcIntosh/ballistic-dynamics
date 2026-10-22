@@ -30,10 +30,15 @@ struct RangeSetup {
     Vec3 origin;            // ENU
     Real azimuth = 0;       // rad, true
     Real step = kDefaultStep;
+    // Milestone 3: spin (spinParamsFor) and the rotating Earth, applied to the
+    // zero and to the table alike (step, trace and time limits are set here).
+    PointMassOptions physics;
 };
 
 struct RangeRow {
     Real range = 0;     // m
+    Real spin = 0;      // rad/s
+    Real stability = 0; // Sg (0 without spin)
     Real drop = 0;      // m, relative to the line of sight (negative below)
     Real windage = 0;   // m, positive right
     Real time = 0;      // s
