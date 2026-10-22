@@ -56,6 +56,26 @@ export default async function createBallisticModule(wasmBytes) {
     return { pressure: a[0], temperature: a[1], density: a[2], speedOfSound: a[3], relativeHumidity: a[4],
       densityAltitude: a[5], wind: [a[6], a[7], a[8]] };
   };
-  B.determinism = () => B.text(ex.bd_determinism());
+  // [maths hash, trajectory hash]
+  B.determinism = () => B.text(ex.bd_determinism()).split(' ');
+  // Wind layers along the line of fire: [{fromRange, speed, fromBearing, gust}], rad and m/s.
+  B.wind = (azimuth, layers) => {
+    const v = new Float64Array(memory.buffer, ex.bd_text(layers.length * 32 + 1), layers.length * 4);
+    layers.forEach((l, i) => v.set([l.fromRange ?? 0, l.speed ?? 0, l.fromBearing ?? 0, l.gust ?? 0], 4 * i));
+    ex.bd_wind(azimuth, layers.length);
+  };
+  B.round = () => {
+    const a = new Float64Array(memory.buffer, ex.bd_round(), 8);
+    return { time: a[0], position: [a[1], a[2], a[3]], velocity: [a[4], a[5], a[6]], stopped: a[7] !== 0 };
+  };
+  // Bullet time: the round at any engine time it has already flown, smooth between steps.
+  B.stateAt = (t) => {
+    const a = new Float64Array(memory.buffer, ex.bd_state_at(t), 7);
+    return { time: a[0], position: [a[1], a[2], a[3]], velocity: [a[4], a[5], a[6]] };
+  };
+  // [{range, drop, windage, time, speed, energy, mach}] (SI)
+  B.table = (cartridge, zeroRange, sightHeight, maxRange, step) =>
+    JSON.parse(B.text(ex.bd_table(cartridge, zeroRange, sightHeight, maxRange, step)))
+      .map(([range, drop, windage, time, speed, energy, mach]) => ({ range, drop, windage, time, speed, energy, mach }));
   return B;
 }

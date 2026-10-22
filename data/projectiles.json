@@ -8,14 +8,119 @@
       "diameter_in": 0.308,
       "mass_gr": 175,
       "length_in": 1.24,
-      "bc_g1": [0.505, 0.496, 0.485],
-      "bc_g1_min_fps": [2800, 1800, 0],
+      "bc_g1": [
+        0.505,
+        0.496,
+        0.485
+      ],
+      "bc_g1_min_fps": [
+        2800,
+        1800,
+        0
+      ],
       "provenance": {
         "diameter_in": "published: Sierra Bullets catalogue, #2275 .30 cal 175 gr HPBT MatchKing",
         "mass_gr": "published: Sierra Bullets catalogue, #2275",
         "length_in": "estimated: about 1.24 in as handloaders measure it; Sierra's catalogue page does not list it. To be replaced by a measurement before Milestone 3 uses it for stability",
         "bc_g1": "published: Sierra Bullets catalogue, #2275: .505 at 2800 fps and above, .496 from 1800 to 2800 fps, .485 below 1800 fps",
-        "bc_g1_min_fps": "published: Sierra Bullets catalogue, #2275 velocity bands"
+        "bc_g1_min_fps": "published: Sierra Bullets catalogue, #2275 velocity bands",
+        "bc_g7": "published: B. Litz, Applied Ballistics for Long Range Shooting, measured G7 BC of the 175 gr SMK, 0.243 (Federal's GM308M2 page lists 0.25)"
+      },
+      "bc_g7": [
+        0.243
+      ]
+    },
+    {
+      "id": "eldm_264_140",
+      "name": "6.5 mm 140 gr Hornady ELD Match",
+      "construction": "polymer tip, boat tail, copper jacket over a lead core",
+      "diameter_in": 0.264,
+      "mass_gr": 140,
+      "length_in": 1.4,
+      "bc_g1": [
+        0.646
+      ],
+      "bc_g7": [
+        0.326
+      ],
+      "provenance": {
+        "diameter_in": "published: Hornady catalogue, 6.5 mm (.264) 140 gr ELD Match",
+        "mass_gr": "published: Hornady catalogue",
+        "length_in": "estimated: about 1.40 in, typical of 140 gr 6.5 mm VLD-class bullets; not used before Milestone 3",
+        "bc_g1": "published: Hornady, 81500 load data as listed by retailers, G1 0.646 (Hornady's current page lists 0.610 from its Doppler re-measurement; see docs/validation.md)",
+        "bc_g7": "published: Hornady, 81500 load data as listed by retailers, G7 0.326"
+      }
+    },
+    {
+      "id": "scenar_338_250",
+      "name": ".338 250 gr Lapua Scenar",
+      "construction": "hollow point boat tail, copper jacket over a lead core",
+      "diameter_in": 0.338,
+      "mass_gr": 250,
+      "length_in": 1.63,
+      "bc_g1": [
+        0.648
+      ],
+      "bc_g7": [
+        0.32
+      ],
+      "provenance": {
+        "diameter_in": "published: Lapua catalogue, .338 16.2 g Scenar",
+        "mass_gr": "published: Lapua catalogue, 16.2 g (250 gr)",
+        "length_in": "estimated: about 1.63 in for a 250 gr .338 match hollow point; not used before Milestone 3",
+        "bc_g1": "published: Lapua product page 4318017, G1 0.648",
+        "bc_g7": "published: Applied Ballistics (Litz), Lapua 250 Scenar G7 0.320"
+      }
+    },
+    {
+      "id": "amax_510_750",
+      "name": ".50 750 gr Hornady A-MAX",
+      "construction": "polymer tip, boat tail, copper jacket over a lead core",
+      "diameter_in": 0.51,
+      "mass_gr": 750,
+      "length_in": 2.3,
+      "bc_g1": [
+        1.05
+      ],
+      "provenance": {
+        "diameter_in": "published: Hornady catalogue, .50 (.510) 750 gr A-MAX",
+        "mass_gr": "published: Hornady catalogue",
+        "length_in": "estimated: about 2.3 in for a 750 gr .50 match bullet; not used before Milestone 3",
+        "bc_g1": "published: Hornady catalogue, G1 1.050 (Graf & Sons listing)"
+      }
+    },
+    {
+      "id": "m855_224_62",
+      "name": "5.56 mm 62 gr M855 / SS109 (steel penetrator)",
+      "construction": "full metal jacket boat tail, steel tip penetrator over a lead core",
+      "diameter_in": 0.224,
+      "mass_gr": 62,
+      "length_in": 0.906,
+      "bc_g1": [
+        0.304
+      ],
+      "provenance": {
+        "diameter_in": "published: 5.56x45 mm NATO bullet diameter, 0.224 in",
+        "mass_gr": "published: M855 ball, 62 gr (4.0 g)",
+        "length_in": "estimated: about 0.91 in as commonly measured for M855; not used before Milestone 3",
+        "bc_g1": "published: Federal XM855 load data, G1 0.304"
+      }
+    },
+    {
+      "id": "gdhp_355_124",
+      "name": "9 mm 124 gr Speer Gold Dot hollow point",
+      "construction": "bonded jacketed hollow point",
+      "diameter_in": 0.355,
+      "mass_gr": 124,
+      "length_in": 0.6,
+      "bc_g1": [
+        0.134
+      ],
+      "provenance": {
+        "diameter_in": "published: Speer reloading data, 9 mm Luger .355 in",
+        "mass_gr": "published: Speer reloading data, 124 gr GDHP",
+        "length_in": "estimated: about 0.6 in for a 124 gr 9 mm hollow point; not used before Milestone 3",
+        "bc_g1": "published: Speer reloading data, 9 mm Luger 124 gr GDHP, G1 0.134"
       }
     }
   ]

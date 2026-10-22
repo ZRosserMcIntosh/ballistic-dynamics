@@ -3,7 +3,8 @@
 //
 //   bdemo list                         the data library, with provenance kinds
 //   bdemo air P_Pa T_C RH alt_m        the air a station reading gives, and up the path
-//   bdemo determinism                  the determinism hash of this build
+//   bdemo table cartridge [model ...]  a range card (drop, drift, speed, energy, time)
+//   bdemo determinism                  the determinism hashes of this build
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -14,6 +15,7 @@
 #include "bd/aviation_air.hpp"
 #include "bd/determinism.hpp"
 #include "bd/library.hpp"
+#include "bd/solver.hpp"
 #include "bd/units.hpp"
 
 using namespace bd;
@@ -42,7 +44,7 @@ void printProvenance(const ProvenanceMap& m) {
 int list() {
     Library lib;
     int bad = 0;
-    for (const char* f : {"/projectiles.json", "/cartridges.json", "/rifles.json"})
+    for (const char* f : {"/drag_standard.json", "/projectiles.json", "/cartridges.json", "/rifles.json"})
         for (const auto& e : lib.load(readFile(std::string(BD_DATA_DIR) + f))) {
             std::fprintf(stderr, "%s\n", e.c_str());
             ++bad;
@@ -90,9 +92,73 @@ int air(int argc, char** argv) {
 }
 
 int determinism() {
-    const std::uint64_t h = determinismProbe();
-    std::printf("0x%016llx %s\n", static_cast<unsigned long long>(h), h == kDeterminismGolden ? "(golden)" : "(DIFFERS from the golden value)");
-    return h == kDeterminismGolden ? 0 : 1;
+    const std::uint64_t h = determinismProbe(), t = trajectoryProbe();
+    std::printf("maths      0x%016llx %s\n", static_cast<unsigned long long>(h),
+                h == kDeterminismGolden ? "(golden)" : "(DIFFERS from the golden value)");
+    std::printf("trajectory 0x%016llx %s\n", static_cast<unsigned long long>(t),
+                t == kTrajectoryGolden ? "(golden)" : "(DIFFERS from the golden value)");
+    return h == kDeterminismGolden && t == kTrajectoryGolden ? 0 : 1;
+}
+
+// A range card for a cartridge in the ICAO standard atmosphere (sea level,
+// 15 C, dry), flat range, line of sight horizontal, wind from 3 o'clock.
+int table(int argc, char** argv) {
+    if (argc < 3) {
+        std::fprintf(stderr, "usage: bdemo table cartridge [G1|G7|bullet|-] [zero_yd 100] [sight_in 1.5] [wind_mph 10] "
+                             "[max_yd 1000] [step_yd 100] [bc override]\n");
+        return 2;
+    }
+    Library lib;
+    for (const char* f : {"/drag_standard.json", "/projectiles.json", "/cartridges.json", "/rifles.json"})
+        for (const auto& e : lib.load(readFile(std::string(BD_DATA_DIR) + f))) std::fprintf(stderr, "%s\n", e.c_str());
+    const CartridgeDef* c = lib.cartridge(argv[2]);
+    if (!c) {
+        std::fprintf(stderr, "unknown cartridge %s\n", argv[2]);
+        return 2;
+    }
+    const ProjectileDef* p = lib.projectile(c->projectile);
+    ProjectileDef pd = *p;
+    std::string prefer = argc > 3 && std::strcmp(argv[3], "-") ? argv[3] : "";
+    if (argc > 9) {  // a BC override for the chosen family
+        BallisticCoefficient b;
+        b.family = prefer.empty() ? "G1" : prefer;
+        b.values = {units::bcToSi(std::atof(argv[9]))};
+        b.minSpeeds = {0};
+        (b.family == "G7" ? pd.bcG7 : pd.bcG1) = b;
+    }
+    std::string err;
+    RangeSetup s;
+    s.drag = dragModelFor(pd, lib, prefer, err);
+    if (!err.empty()) {
+        std::fprintf(stderr, "%s\n", err.c_str());
+        return 2;
+    }
+    s.muzzleSpeed = c->muzzleVelocity;
+    s.mass = p->mass;
+    s.zeroRange = units::yards(argc > 4 ? std::atof(argv[4]) : 100);
+    s.sightHeight = units::inches(argc > 5 ? std::atof(argv[5]) : 1.5);
+    const Real mph = argc > 6 ? std::atof(argv[6]) : 10;
+    const Real maxYd = argc > 7 ? std::atof(argv[7]) : 1000, stepYd = argc > 8 ? std::atof(argv[8]) : 100;
+    const StationAir air(StationReading{101325.0, 288.15, 0.0, 0.0});
+    const RangeWind wind(air, {}, 0.0, {{0, mph * 0.44704, 0.5 * kPi}});
+    const Real e = zeroElevation(s, air);
+    std::vector<Real> ranges;
+    for (Real y = 0; y <= maxYd + 1e-9; y += stepYd) ranges.push_back(units::yards(y));
+    const auto rows = rangeTable(s, wind, e, ranges);
+    std::printf("%s, %s; zero %.0f yd, sight %.2f in, %.0f mph from 3 o'clock; ICAO sea level, dry\n", c->name.c_str(),
+                prefer.empty() ? "preferred model" : prefer.c_str(), units::toYards(s.zeroRange),
+                units::toInches(s.sightHeight), mph);
+    std::printf("%6s %9s %7s %7s %9s %7s %7s %7s %8s %6s\n", "yd", "drop_in", "MOA", "mil", "wind_in", "MOA", "fps",
+                "ft_lbf", "time_s", "mach");
+    for (const auto& r : rows) {
+        if (!r.reached) continue;
+        const Real ang = r.range > 0 ? 1.0 / r.range : 0;
+        std::printf("%6.0f %9.2f %7.2f %7.2f %9.2f %7.2f %7.0f %7.0f %8.4f %6.3f\n", units::toYards(r.range),
+                    units::toInches(r.drop), r.drop * ang / units::kMoa, r.drop * ang / units::kMrad,
+                    units::toInches(r.windage), r.windage * ang / units::kMoa, units::toFps(r.speed),
+                    r.energy / 1.3558179483314004, r.time, r.mach);
+    }
+    return 0;
 }
 
 }  // namespace
@@ -102,6 +168,7 @@ int main(int argc, char** argv) {
     if (!std::strcmp(cmd, "list")) return list();
     if (!std::strcmp(cmd, "air")) return air(argc, argv);
     if (!std::strcmp(cmd, "determinism")) return determinism();
-    std::fprintf(stderr, "usage: bdemo list | air P T RH alt | determinism\n");
+    if (!std::strcmp(cmd, "table")) return table(argc, argv);
+    std::fprintf(stderr, "usage: bdemo list | air P T RH alt | table cartridge ... | determinism\n");
     return 2;
 }

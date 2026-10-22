@@ -1,0 +1,1010 @@
+{
+ "comment": "Reference point-mass trajectories from py-ballisticcalc 3.1.1 (tools/reference/make_reference.py). ICAO sea level, dry; line of sight horizontal; no spin drift or Coriolis; 10 mph crosswind from 3 o'clock. Drop is relative to the line of sight; windage is positive right.",
+ "cases": [
+  {
+   "id": "308_175_g1",
+   "model": "G1",
+   "bc": 0.505,
+   "mass_gr": 175,
+   "diameter_in": 0.308,
+   "muzzle_velocity_fps": 2600,
+   "zero_yd": 100,
+   "sight_height_in": 1.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -1.5,
+     "windage_in": -0.0,
+     "velocity_fps": 2600.0,
+     "time_s": 0.0,
+     "mach": 2.32881
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -0.0,
+     "windage_in": -0.7215,
+     "velocity_fps": 2424.774,
+     "time_s": 0.119484,
+     "mach": 2.171861
+    },
+    {
+     "range_yd": 200.0,
+     "drop_in": -4.4221,
+     "windage_in": -2.9876,
+     "velocity_fps": 2256.36,
+     "time_s": 0.247744,
+     "mach": 2.021013
+    },
+    {
+     "range_yd": 300.0,
+     "drop_in": -15.6844,
+     "windage_in": -6.9682,
+     "velocity_fps": 2094.561,
+     "time_s": 0.385746,
+     "mach": 1.87609
+    },
+    {
+     "range_yd": 400.0,
+     "drop_in": -34.8855,
+     "windage_in": -12.8576,
+     "velocity_fps": 1939.652,
+     "time_s": 0.534593,
+     "mach": 1.737339
+    },
+    {
+     "range_yd": 500.0,
+     "drop_in": -63.3453,
+     "windage_in": -20.8728,
+     "velocity_fps": 1792.13,
+     "time_s": 0.695519,
+     "mach": 1.605204
+    },
+    {
+     "range_yd": 600.0,
+     "drop_in": -102.6517,
+     "windage_in": -31.2505,
+     "velocity_fps": 1652.8,
+     "time_s": 0.869868,
+     "mach": 1.480407
+    },
+    {
+     "range_yd": 700.0,
+     "drop_in": -154.7108,
+     "windage_in": -44.2364,
+     "velocity_fps": 1522.774,
+     "time_s": 1.059036,
+     "mach": 1.363943
+    },
+    {
+     "range_yd": 800.0,
+     "drop_in": -221.7924,
+     "windage_in": -60.0669,
+     "velocity_fps": 1403.415,
+     "time_s": 1.264367,
+     "mach": 1.257033
+    },
+    {
+     "range_yd": 900.0,
+     "drop_in": -306.5564,
+     "windage_in": -78.9372,
+     "velocity_fps": 1296.399,
+     "time_s": 1.486969,
+     "mach": 1.16118
+    },
+    {
+     "range_yd": 1000.0,
+     "drop_in": -412.0345,
+     "windage_in": -100.95,
+     "velocity_fps": 1203.646,
+     "time_s": 1.727426,
+     "mach": 1.077979
+    }
+   ]
+  },
+  {
+   "id": "308_175_g7",
+   "model": "G7",
+   "bc": 0.243,
+   "mass_gr": 175,
+   "diameter_in": 0.308,
+   "muzzle_velocity_fps": 2600,
+   "zero_yd": 100,
+   "sight_height_in": 1.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -1.5,
+     "windage_in": -0.0,
+     "velocity_fps": 2600.0,
+     "time_s": 0.0,
+     "mach": 2.32881
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -0.0,
+     "windage_in": -0.7561,
+     "velocity_fps": 2416.808,
+     "time_s": 0.11968,
+     "mach": 2.164726
+    },
+    {
+     "range_yd": 200.0,
+     "drop_in": -4.4623,
+     "windage_in": -3.1362,
+     "velocity_fps": 2241.169,
+     "time_s": 0.248589,
+     "mach": 2.007406
+    },
+    {
+     "range_yd": 300.0,
+     "drop_in": -15.859,
+     "windage_in": -7.3237,
+     "velocity_fps": 2073.367,
+     "time_s": 0.387766,
+     "mach": 1.857107
+    },
+    {
+     "range_yd": 400.0,
+     "drop_in": -35.3595,
+     "windage_in": -13.5299,
+     "velocity_fps": 1912.778,
+     "time_s": 0.538413,
+     "mach": 1.713268
+    },
+    {
+     "range_yd": 500.0,
+     "drop_in": -64.385,
+     "windage_in": -22.0123,
+     "velocity_fps": 1758.444,
+     "time_s": 0.701994,
+     "mach": 1.575032
+    },
+    {
+     "range_yd": 600.0,
+     "drop_in": -104.685,
+     "windage_in": -33.0872,
+     "velocity_fps": 1609.831,
+     "time_s": 0.880303,
+     "mach": 1.44192
+    },
+    {
+     "range_yd": 700.0,
+     "drop_in": -158.443,
+     "windage_in": -47.1419,
+     "velocity_fps": 1466.822,
+     "time_s": 1.075545,
+     "mach": 1.313827
+    },
+    {
+     "range_yd": 800.0,
+     "drop_in": -228.4187,
+     "windage_in": -64.6444,
+     "velocity_fps": 1329.998,
+     "time_s": 1.290375,
+     "mach": 1.191275
+    },
+    {
+     "range_yd": 900.0,
+     "drop_in": -318.129,
+     "windage_in": -86.1371,
+     "velocity_fps": 1200.774,
+     "time_s": 1.527878,
+     "mach": 1.075529
+    },
+    {
+     "range_yd": 1000.0,
+     "drop_in": -432.0466,
+     "windage_in": -112.1534,
+     "velocity_fps": 1088.064,
+     "time_s": 1.791082,
+     "mach": 0.974459
+    }
+   ]
+  },
+  {
+   "id": "65cm_140_g1",
+   "model": "G1",
+   "bc": 0.646,
+   "mass_gr": 140,
+   "diameter_in": 0.264,
+   "muzzle_velocity_fps": 2710,
+   "zero_yd": 100,
+   "sight_height_in": 1.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -1.5,
+     "windage_in": -0.0,
+     "velocity_fps": 2710.0,
+     "time_s": 0.0,
+     "mach": 2.427337
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -0.0,
+     "windage_in": -0.5279,
+     "velocity_fps": 2569.022,
+     "time_s": 0.113701,
+     "mach": 2.301064
+    },
+    {
+     "range_yd": 200.0,
+     "drop_in": -3.7712,
+     "windage_in": -2.1668,
+     "velocity_fps": 2432.394,
+     "time_s": 0.233714,
+     "mach": 2.178686
+    },
+    {
+     "range_yd": 300.0,
+     "drop_in": -13.4227,
+     "windage_in": -5.0071,
+     "velocity_fps": 2299.936,
+     "time_s": 0.360553,
+     "mach": 2.060044
+    },
+    {
+     "range_yd": 400.0,
+     "drop_in": -29.6519,
+     "windage_in": -9.1504,
+     "velocity_fps": 2171.532,
+     "time_s": 0.494796,
+     "mach": 1.945033
+    },
+    {
+     "range_yd": 500.0,
+     "drop_in": -53.2604,
+     "windage_in": -14.7101,
+     "velocity_fps": 2047.215,
+     "time_s": 0.637086,
+     "mach": 1.833683
+    },
+    {
+     "range_yd": 600.0,
+     "drop_in": -85.1722,
+     "windage_in": -21.8107,
+     "velocity_fps": 1927.195,
+     "time_s": 0.788132,
+     "mach": 1.726181
+    },
+    {
+     "range_yd": 700.0,
+     "drop_in": -126.4545,
+     "windage_in": -30.5877,
+     "velocity_fps": 1811.721,
+     "time_s": 0.948702,
+     "mach": 1.622751
+    },
+    {
+     "range_yd": 800.0,
+     "drop_in": -178.341,
+     "windage_in": -41.1856,
+     "velocity_fps": 1701.169,
+     "time_s": 1.119618,
+     "mach": 1.52373
+    },
+    {
+     "range_yd": 900.0,
+     "drop_in": -242.2555,
+     "windage_in": -53.7545,
+     "velocity_fps": 1596.051,
+     "time_s": 1.301734,
+     "mach": 1.429577
+    },
+    {
+     "range_yd": 1000.0,
+     "drop_in": -319.8356,
+     "windage_in": -68.4443,
+     "velocity_fps": 1496.962,
+     "time_s": 1.4959,
+     "mach": 1.340824
+    }
+   ]
+  },
+  {
+   "id": "65cm_140_g7",
+   "model": "G7",
+   "bc": 0.326,
+   "mass_gr": 140,
+   "diameter_in": 0.264,
+   "muzzle_velocity_fps": 2710,
+   "zero_yd": 100,
+   "sight_height_in": 1.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -1.5,
+     "windage_in": -0.0,
+     "velocity_fps": 2710.0,
+     "time_s": 0.0,
+     "mach": 2.427337
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -0.0,
+     "windage_in": -0.5254,
+     "velocity_fps": 2569.597,
+     "time_s": 0.113686,
+     "mach": 2.301578
+    },
+    {
+     "range_yd": 200.0,
+     "drop_in": -3.7689,
+     "windage_in": -2.1581,
+     "velocity_fps": 2433.231,
+     "time_s": 0.233665,
+     "mach": 2.179436
+    },
+    {
+     "range_yd": 300.0,
+     "drop_in": -13.414,
+     "windage_in": -4.9893,
+     "velocity_fps": 2301.048,
+     "time_s": 0.360452,
+     "mach": 2.06104
+    },
+    {
+     "range_yd": 400.0,
+     "drop_in": -29.6302,
+     "windage_in": -9.1182,
+     "velocity_fps": 2173.207,
+     "time_s": 0.494613,
+     "mach": 1.946533
+    },
+    {
+     "range_yd": 500.0,
+     "drop_in": -53.214,
+     "windage_in": -14.6531,
+     "velocity_fps": 2049.687,
+     "time_s": 0.636762,
+     "mach": 1.835897
+    },
+    {
+     "range_yd": 600.0,
+     "drop_in": -85.0812,
+     "windage_in": -21.717,
+     "velocity_fps": 1930.1,
+     "time_s": 0.787599,
+     "mach": 1.728784
+    },
+    {
+     "range_yd": 700.0,
+     "drop_in": -126.2916,
+     "windage_in": -30.4532,
+     "velocity_fps": 1814.014,
+     "time_s": 0.947938,
+     "mach": 1.624805
+    },
+    {
+     "range_yd": 800.0,
+     "drop_in": -178.0813,
+     "windage_in": -41.0286,
+     "velocity_fps": 1701.209,
+     "time_s": 1.118726,
+     "mach": 1.523767
+    },
+    {
+     "range_yd": 900.0,
+     "drop_in": -241.9027,
+     "windage_in": -53.638,
+     "velocity_fps": 1591.521,
+     "time_s": 1.301072,
+     "mach": 1.425519
+    },
+    {
+     "range_yd": 1000.0,
+     "drop_in": -319.4754,
+     "windage_in": -68.5075,
+     "velocity_fps": 1484.949,
+     "time_s": 1.496259,
+     "mach": 1.330063
+    }
+   ]
+  },
+  {
+   "id": "338lm_250_g1",
+   "model": "G1",
+   "bc": 0.648,
+   "mass_gr": 250,
+   "diameter_in": 0.338,
+   "muzzle_velocity_fps": 2920,
+   "zero_yd": 100,
+   "sight_height_in": 1.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -1.5,
+     "windage_in": -0.0,
+     "velocity_fps": 2920.0,
+     "time_s": 0.0,
+     "mach": 2.615433
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -0.0,
+     "windage_in": -0.4749,
+     "velocity_fps": 2772.666,
+     "time_s": 0.105438,
+     "mach": 2.483467
+    },
+    {
+     "range_yd": 200.0,
+     "drop_in": -3.0248,
+     "windage_in": -1.9454,
+     "velocity_fps": 2630.139,
+     "time_s": 0.216533,
+     "mach": 2.355806
+    },
+    {
+     "range_yd": 300.0,
+     "drop_in": -11.0785,
+     "windage_in": -4.4872,
+     "velocity_fps": 2492.067,
+     "time_s": 0.333715,
+     "mach": 2.232135
+    },
+    {
+     "range_yd": 400.0,
+     "drop_in": -24.7341,
+     "windage_in": -8.1858,
+     "velocity_fps": 2358.205,
+     "time_s": 0.457469,
+     "mach": 2.112235
+    },
+    {
+     "range_yd": 500.0,
+     "drop_in": -44.6462,
+     "windage_in": -13.137,
+     "velocity_fps": 2228.417,
+     "time_s": 0.588341,
+     "mach": 1.995985
+    },
+    {
+     "range_yd": 600.0,
+     "drop_in": -71.5655,
+     "windage_in": -19.4482,
+     "velocity_fps": 2102.639,
+     "time_s": 0.72694,
+     "mach": 1.883325
+    },
+    {
+     "range_yd": 700.0,
+     "drop_in": -106.356,
+     "windage_in": -27.2385,
+     "velocity_fps": 1981.039,
+     "time_s": 0.873943,
+     "mach": 1.77441
+    },
+    {
+     "range_yd": 800.0,
+     "drop_in": -150.0145,
+     "windage_in": -36.6375,
+     "velocity_fps": 1863.83,
+     "time_s": 1.030086,
+     "mach": 1.669425
+    },
+    {
+     "range_yd": 900.0,
+     "drop_in": -203.6925,
+     "windage_in": -47.7852,
+     "velocity_fps": 1751.32,
+     "time_s": 1.196165,
+     "mach": 1.568651
+    },
+    {
+     "range_yd": 1000.0,
+     "drop_in": -268.7197,
+     "windage_in": -60.8289,
+     "velocity_fps": 1643.972,
+     "time_s": 1.373016,
+     "mach": 1.472499
+    },
+    {
+     "range_yd": 1100.0,
+     "drop_in": -346.6278,
+     "windage_in": -75.9184,
+     "velocity_fps": 1542.32,
+     "time_s": 1.561492,
+     "mach": 1.381451
+    },
+    {
+     "range_yd": 1200.0,
+     "drop_in": -439.1721,
+     "windage_in": -93.1997,
+     "velocity_fps": 1446.948,
+     "time_s": 1.762421,
+     "mach": 1.295869
+    },
+    {
+     "range_yd": 1300.0,
+     "drop_in": -548.3467,
+     "windage_in": -112.8038,
+     "velocity_fps": 1358.642,
+     "time_s": 1.976548,
+     "mach": 1.216745
+    },
+    {
+     "range_yd": 1400.0,
+     "drop_in": -676.3848,
+     "windage_in": -134.8278,
+     "velocity_fps": 1278.314,
+     "time_s": 2.204424,
+     "mach": 1.144764
+    },
+    {
+     "range_yd": 1500.0,
+     "drop_in": -825.7328,
+     "windage_in": -159.3131,
+     "velocity_fps": 1206.906,
+     "time_s": 2.446285,
+     "mach": 1.08077
+    }
+   ]
+  },
+  {
+   "id": "338lm_250_g7",
+   "model": "G7",
+   "bc": 0.32,
+   "mass_gr": 250,
+   "diameter_in": 0.338,
+   "muzzle_velocity_fps": 2920,
+   "zero_yd": 100,
+   "sight_height_in": 1.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -1.5,
+     "windage_in": -0.0,
+     "velocity_fps": 2920.0,
+     "time_s": 0.0,
+     "mach": 2.615433
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -0.0,
+     "windage_in": -0.4783,
+     "velocity_fps": 2771.42,
+     "time_s": 0.105457,
+     "mach": 2.48235
+    },
+    {
+     "range_yd": 200.0,
+     "drop_in": -3.0293,
+     "windage_in": -1.9656,
+     "velocity_fps": 2626.706,
+     "time_s": 0.216648,
+     "mach": 2.352731
+    },
+    {
+     "range_yd": 300.0,
+     "drop_in": -11.101,
+     "windage_in": -4.5454,
+     "velocity_fps": 2486.132,
+     "time_s": 0.334045,
+     "mach": 2.226819
+    },
+    {
+     "range_yd": 400.0,
+     "drop_in": -24.8018,
+     "windage_in": -8.3088,
+     "velocity_fps": 2349.834,
+     "time_s": 0.458168,
+     "mach": 2.104737
+    },
+    {
+     "range_yd": 500.0,
+     "drop_in": -44.8039,
+     "windage_in": -13.3556,
+     "velocity_fps": 2217.97,
+     "time_s": 0.589583,
+     "mach": 1.986628
+    },
+    {
+     "range_yd": 600.0,
+     "drop_in": -71.8795,
+     "windage_in": -19.7945,
+     "velocity_fps": 2090.659,
+     "time_s": 0.728907,
+     "mach": 1.872596
+    },
+    {
+     "range_yd": 700.0,
+     "drop_in": -106.9172,
+     "windage_in": -27.747,
+     "velocity_fps": 1967.575,
+     "time_s": 0.876832,
+     "mach": 1.762349
+    },
+    {
+     "range_yd": 800.0,
+     "drop_in": -150.9459,
+     "windage_in": -37.3545,
+     "velocity_fps": 1848.254,
+     "time_s": 1.03416,
+     "mach": 1.655474
+    },
+    {
+     "range_yd": 900.0,
+     "drop_in": -205.1661,
+     "windage_in": -48.7825,
+     "velocity_fps": 1732.403,
+     "time_s": 1.201831,
+     "mach": 1.551707
+    },
+    {
+     "range_yd": 1000.0,
+     "drop_in": -270.9891,
+     "windage_in": -62.2243,
+     "velocity_fps": 1619.807,
+     "time_s": 1.380945,
+     "mach": 1.450855
+    },
+    {
+     "range_yd": 1100.0,
+     "drop_in": -350.0881,
+     "windage_in": -77.9055,
+     "velocity_fps": 1510.439,
+     "time_s": 1.572783,
+     "mach": 1.352895
+    },
+    {
+     "range_yd": 1200.0,
+     "drop_in": -444.4605,
+     "windage_in": -96.0884,
+     "velocity_fps": 1404.372,
+     "time_s": 1.778834,
+     "mach": 1.257736
+    },
+    {
+     "range_yd": 1300.0,
+     "drop_in": -556.5071,
+     "windage_in": -117.0715,
+     "velocity_fps": 1302.143,
+     "time_s": 2.000796,
+     "mach": 1.166144
+    },
+    {
+     "range_yd": 1400.0,
+     "drop_in": -689.1203,
+     "windage_in": -141.1825,
+     "velocity_fps": 1204.517,
+     "time_s": 2.24053,
+     "mach": 1.078674
+    },
+    {
+     "range_yd": 1500.0,
+     "drop_in": -845.7765,
+     "windage_in": -168.7508,
+     "velocity_fps": 1114.077,
+     "time_s": 2.499908,
+     "mach": 0.997638
+    }
+   ]
+  },
+  {
+   "id": "50bmg_750_g1",
+   "model": "G1",
+   "bc": 1.05,
+   "mass_gr": 750,
+   "diameter_in": 0.51,
+   "muzzle_velocity_fps": 2820,
+   "zero_yd": 100,
+   "sight_height_in": 1.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -1.5,
+     "windage_in": -0.0,
+     "velocity_fps": 2820.0,
+     "time_s": 0.0,
+     "mach": 2.525863
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -0.0,
+     "windage_in": -0.3045,
+     "velocity_fps": 2730.536,
+     "time_s": 0.108113,
+     "mach": 2.445731
+    },
+    {
+     "range_yd": 200.0,
+     "drop_in": -3.1625,
+     "windage_in": -1.2363,
+     "velocity_fps": 2642.861,
+     "time_s": 0.21979,
+     "mach": 2.3672
+    },
+    {
+     "range_yd": 300.0,
+     "drop_in": -11.3019,
+     "windage_in": -2.8245,
+     "velocity_fps": 2556.9,
+     "time_s": 0.335197,
+     "mach": 2.290205
+    },
+    {
+     "range_yd": 400.0,
+     "drop_in": -24.7588,
+     "windage_in": -5.1005,
+     "velocity_fps": 2472.571,
+     "time_s": 0.454512,
+     "mach": 2.214673
+    },
+    {
+     "range_yd": 500.0,
+     "drop_in": -43.9022,
+     "windage_in": -8.0983,
+     "velocity_fps": 2389.844,
+     "time_s": 0.577928,
+     "mach": 2.140574
+    },
+    {
+     "range_yd": 600.0,
+     "drop_in": -69.1327,
+     "windage_in": -11.8541,
+     "velocity_fps": 2308.679,
+     "time_s": 0.705651,
+     "mach": 2.067876
+    },
+    {
+     "range_yd": 700.0,
+     "drop_in": -100.8862,
+     "windage_in": -16.4068,
+     "velocity_fps": 2229.059,
+     "time_s": 0.837902,
+     "mach": 1.99656
+    },
+    {
+     "range_yd": 800.0,
+     "drop_in": -139.6374,
+     "windage_in": -21.7983,
+     "velocity_fps": 2150.961,
+     "time_s": 0.974918,
+     "mach": 1.926607
+    },
+    {
+     "range_yd": 900.0,
+     "drop_in": -185.904,
+     "windage_in": -28.073,
+     "velocity_fps": 2074.426,
+     "time_s": 1.116953,
+     "mach": 1.858056
+    },
+    {
+     "range_yd": 1000.0,
+     "drop_in": -240.2513,
+     "windage_in": -35.2782,
+     "velocity_fps": 1999.51,
+     "time_s": 1.264275,
+     "mach": 1.790954
+    },
+    {
+     "range_yd": 1100.0,
+     "drop_in": -303.2971,
+     "windage_in": -43.4633,
+     "velocity_fps": 1926.254,
+     "time_s": 1.417164,
+     "mach": 1.725338
+    },
+    {
+     "range_yd": 1200.0,
+     "drop_in": -375.7163,
+     "windage_in": -52.6804,
+     "velocity_fps": 1854.716,
+     "time_s": 1.575917,
+     "mach": 1.661091
+    },
+    {
+     "range_yd": 1300.0,
+     "drop_in": -458.2474,
+     "windage_in": -62.9846,
+     "velocity_fps": 1784.922,
+     "time_s": 1.740846,
+     "mach": 1.598546
+    },
+    {
+     "range_yd": 1400.0,
+     "drop_in": -551.6978,
+     "windage_in": -74.4327,
+     "velocity_fps": 1717.034,
+     "time_s": 1.912275,
+     "mach": 1.537705
+    },
+    {
+     "range_yd": 1500.0,
+     "drop_in": -656.9502,
+     "windage_in": -87.0821,
+     "velocity_fps": 1651.173,
+     "time_s": 2.09053,
+     "mach": 1.478678
+    },
+    {
+     "range_yd": 1600.0,
+     "drop_in": -774.9673,
+     "windage_in": -100.9907,
+     "velocity_fps": 1587.464,
+     "time_s": 2.27594,
+     "mach": 1.421577
+    },
+    {
+     "range_yd": 1700.0,
+     "drop_in": -906.7973,
+     "windage_in": -116.2157,
+     "velocity_fps": 1526.063,
+     "time_s": 2.468828,
+     "mach": 1.366541
+    },
+    {
+     "range_yd": 1800.0,
+     "drop_in": -1053.5781,
+     "windage_in": -132.8117,
+     "velocity_fps": 1467.123,
+     "time_s": 2.669507,
+     "mach": 1.313706
+    },
+    {
+     "range_yd": 1900.0,
+     "drop_in": -1216.5404,
+     "windage_in": -150.8297,
+     "velocity_fps": 1410.823,
+     "time_s": 2.878265,
+     "mach": 1.263234
+    },
+    {
+     "range_yd": 2000.0,
+     "drop_in": -1397.008,
+     "windage_in": -170.3141,
+     "velocity_fps": 1357.361,
+     "time_s": 3.095355,
+     "mach": 1.215302
+    }
+   ]
+  },
+  {
+   "id": "m855_62_g1",
+   "model": "G1",
+   "bc": 0.304,
+   "mass_gr": 62,
+   "diameter_in": 0.224,
+   "muzzle_velocity_fps": 3020,
+   "zero_yd": 100,
+   "sight_height_in": 1.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -1.5,
+     "windage_in": -0.0,
+     "velocity_fps": 3020.0,
+     "time_s": 0.0,
+     "mach": 2.705003
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -0.0,
+     "windage_in": -0.9935,
+     "velocity_fps": 2704.864,
+     "time_s": 0.104982,
+     "mach": 2.422737
+    },
+    {
+     "range_yd": 200.0,
+     "drop_in": -3.2734,
+     "windage_in": -4.1881,
+     "velocity_fps": 2410.886,
+     "time_s": 0.222472,
+     "mach": 2.159422
+    },
+    {
+     "range_yd": 300.0,
+     "drop_in": -12.559,
+     "windage_in": -9.975,
+     "velocity_fps": 2135.691,
+     "time_s": 0.35469,
+     "mach": 1.91293
+    },
+    {
+     "range_yd": 400.0,
+     "drop_in": -29.5113,
+     "windage_in": -18.8508,
+     "velocity_fps": 1879.298,
+     "time_s": 0.504458,
+     "mach": 1.683281
+    },
+    {
+     "range_yd": 500.0,
+     "drop_in": -56.3689,
+     "windage_in": -31.4166,
+     "velocity_fps": 1644.161,
+     "time_s": 0.675193,
+     "mach": 1.472669
+    },
+    {
+     "range_yd": 600.0,
+     "drop_in": -96.1664,
+     "windage_in": -48.3381,
+     "velocity_fps": 1434.964,
+     "time_s": 0.870675,
+     "mach": 1.285292
+    },
+    {
+     "range_yd": 700.0,
+     "drop_in": -152.9319,
+     "windage_in": -70.2123,
+     "velocity_fps": 1258.536,
+     "time_s": 1.094298,
+     "mach": 1.127266
+    },
+    {
+     "range_yd": 800.0,
+     "drop_in": -231.6925,
+     "windage_in": -97.2644,
+     "velocity_fps": 1123.242,
+     "time_s": 1.347341,
+     "mach": 1.006083
+    }
+   ]
+  },
+  {
+   "id": "9mm_124_g1",
+   "model": "G1",
+   "bc": 0.134,
+   "mass_gr": 124,
+   "diameter_in": 0.355,
+   "muzzle_velocity_fps": 1150,
+   "zero_yd": 25,
+   "sight_height_in": 0.5,
+   "crosswind_mph": 10,
+   "rows": [
+    {
+     "range_yd": 0.0,
+     "drop_in": -0.5,
+     "windage_in": -0.0,
+     "velocity_fps": 1150.0,
+     "time_s": 0.0,
+     "mach": 1.030051
+    },
+    {
+     "range_yd": 25.0,
+     "drop_in": -0.0,
+     "windage_in": -0.3385,
+     "velocity_fps": 1086.98,
+     "time_s": 0.067141,
+     "mach": 0.973604
+    },
+    {
+     "range_yd": 50.0,
+     "drop_in": -1.3371,
+     "windage_in": -1.3073,
+     "velocity_fps": 1036.17,
+     "time_s": 0.137863,
+     "mach": 0.928093
+    },
+    {
+     "range_yd": 75.0,
+     "drop_in": -4.6962,
+     "windage_in": -2.841,
+     "velocity_fps": 994.27,
+     "time_s": 0.211794,
+     "mach": 0.890564
+    },
+    {
+     "range_yd": 100.0,
+     "drop_in": -10.2515,
+     "windage_in": -4.8895,
+     "velocity_fps": 958.522,
+     "time_s": 0.288651,
+     "mach": 0.858544
+    }
+   ]
+  }
+ ]
+}
