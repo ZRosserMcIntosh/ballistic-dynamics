@@ -1,7 +1,7 @@
 # Data format
 
-The library is JSON: `data/projectiles.json`, `data/cartridges.json`,
-`data/rifles.json` (and, from Milestone 2, drag curves). A document holds any
+The library is JSON: `data/drag_standard.json` (the G1 and G7 tables),
+`data/projectiles.json`, `data/cartridges.json`, `data/rifles.json`. A document holds any
 of the sections `drag_curves`, `projectiles`, `cartridges`, `rifles`, plus an
 optional `comment`.
 
@@ -64,3 +64,6 @@ and the `test_barrel_in` it was measured from.
 **rifles**: `id`, `name`, `twist_in` (inches per turn), `twist_direction`
 (`right` or `left`, default right), `barrel_in`, `sight_height_in`
 (optional).
+
+The standard tables must have the ids `g1` and `g7`; a projectile with a
+`bc_g7` or `bc_g1` is flown on them.

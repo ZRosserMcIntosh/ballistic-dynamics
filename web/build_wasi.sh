@@ -13,7 +13,7 @@ AVD="$REPO/extern/aviation-dynamics/src/core"
 [ -f "$AVD/src/atmosphere.cpp" ] || { echo "extern/aviation-dynamics is missing: git submodule update --init" >&2; exit 1; }
 mkdir -p "$OUT"
 EXPORTS=""
-for f in bd_text bd_text_length bd_load bd_resolve bd_error_text bd_catalog bd_station bd_air bd_determinism; do
+for f in bd_text bd_text_length bd_load bd_resolve bd_error_text bd_catalog bd_station bd_wind bd_air bd_zero bd_fire bd_advance bd_round bd_state_at bd_table bd_determinism; do
   EXPORTS="$EXPORTS -Wl,--export=$f"
 done
 "$WASI_SDK/bin/clang++" --target=wasm32-wasip1 --sysroot="$WASI_SDK/share/wasi-sysroot" \
@@ -27,8 +27,8 @@ cp "$HERE/ballistic_loader.mjs" "$OUT/ballistic.mjs"
 # One library file for the page.
 node -e '
 const fs = require("fs"), d = process.argv[1];
-const out = { projectiles: [], cartridges: [], rifles: [] };
-for (const f of ["projectiles", "cartridges", "rifles"]) {
+const out = { drag_curves: [], projectiles: [], cartridges: [], rifles: [] };
+for (const f of ["drag_standard", "projectiles", "cartridges", "rifles"]) {
   const j = JSON.parse(fs.readFileSync(`${d}/${f}.json`, "utf8"));
   for (const k of Object.keys(out)) if (j[k]) out[k].push(...j[k]);
 }
