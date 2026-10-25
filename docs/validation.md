@@ -19,7 +19,7 @@ zero rows, where both are ~0, are left out of the relative figures):
 
 | Case | Model, BC | MV fps | Out to | Drop | Wind | Speed | Time |
 |---|---|---|---|---|---|---|---|
-| .308 Win 175 SMK | G1 0.505 | 2600 | 1000 yd | 0.010 % (0.04 in) | 0.025 % | 0.026 % | 0.008 % |
+| .308 Win 175 SMK | G1 0.505 (single-BC override; the library flies Sierra's bands) | 2600 | 1000 yd | 0.010 % (0.04 in) | 0.025 % | 0.026 % | 0.008 % |
 | .308 Win 175 SMK | G7 0.243 | 2600 | 1000 yd | 0.004 % (0.02 in) | 0.011 % | 0.043 % | 0.003 % |
 | 6.5 Creedmoor 140 ELD-M | G1 0.646 | 2710 | 1000 yd | 0.006 % (0.02 in) | 0.016 % | 0.005 % | 0.003 % |
 | 6.5 Creedmoor 140 ELD-M | G7 0.326 | 2710 | 1000 yd | 0.005 % (0.01 in) | 0.017 % | 0.010 % | 0.003 % |
@@ -78,6 +78,16 @@ was not checked against a Soviet manual. The 830 m/s figure may belong to the
 later 7N14. Checking both against the Soviet firing tables (for example, the
 SVD manual's table for the PSO-1 drum) is an open item.
 
+## Independent audit (October 2026)
+
+Three read-only reviews checked the engine and the range page from scratch.
+- **Point mass.** A Python RK4 written from the standard tables, and py-ballisticcalc 3.1.1, reproduce the engine to 0.002–0.03 % in drop and under 0.1 % in speed. The cases were the .308 (G7 and Sierra's G1 bands) to 1,000 yd, the 6.5 CM 140 to 1,000 yd and the .50 to 2,000 m. The largest gap is the .50 at 2,000 m, and the engine's height-varying air explains it.
+- **Data and units.** Every unit conversion was confirmed. The G1 and G7 tables match py-ballisticcalc's point for point. Muzzle energies from the library match the makers' published figures to 0.04 %.
+- **Spin and Earth.** Miller Sg (all ten pairs), the spin decay, the spin drift and Coriolis/Eötvös all reproduce independently.
+- **Corrected.** The aerodynamic jump and the display wobble turned the wrong way. Both now follow the right-hand-spin precession, and the spin golden hash changed with them.
+- **Corrected.** The wake's deficit coefficient now conserves the drag's momentum, so b = ln 2 / a².
+- **Smaller fixes.** These were a few robustness items (an unreachable zero, unmatched BC bands, case in the model name) and the web interface's `bd_air`, which now reports the wind.
+
 ## Point mass: numerics
 
 | Check | Expected | Engine |
@@ -119,14 +129,14 @@ per bullet (Doppler or spark-range data) would.
 | Spin at the muzzle, 2600 fps through 1:11.25 | 2,773 turns/s | exact |
 | A left-hand twist | the same drift, to the left | to 1 µm |
 | Spin decay over 1000 yd | slower than the speed | 2773 → 2112 turns/s (−24 %) while the speed falls 58 % |
-| Aerodynamic jump, .308, 10 mph crosswind | Litz: 0.01 Sg − 0.0024 l + 0.032 MOA/mph | the formula, up for a wind from the left, down from the right, opposite for a left-hand twist; ≈ 4 in at 1000 yd |
+| Aerodynamic jump, .308, 10 mph crosswind | Litz: 0.01 Sg − 0.0024 l + 0.032 MOA/mph; right-hand twist down for a wind from the left (McCoy's precession, the benchrest 10-to-4 stringing) | the formula, down for a wind from the left, up from the right, opposite for a left-hand twist; ≈ 4 in at 1000 yd. Corrected in October 2026: the sign had been reversed |
 | Coriolis, vacuum, flat fire north at 45° N | ω sin φ V T² to the right | to 0.1 % |
 | Eötvös, vacuum, firing east / west | ± ω cos φ V T² | to 0.1 % |
 | Coriolis with drag, .50 BMG at 2000 yd, 45° N | the lateral equation integrated along the plain flight | to 0.3 %: 10.2 in, less than the drag-free ω sin φ X T (11.5 in) |
 | São Paulo (23.55° S) | deflected left | left |
 | A 175 SMK from a 1:20 twist (Sg 0.6) | unstable | tumbles; much more drop, much slower |
 | The wobble | starts at the crosswind yaw, gone in under a second; nose within 1° of the path | yes |
-| Spin golden hash | `0x86ee6c5cb23ef28e` on every platform | gcc, clang, sanitizers, wasm32 equal; macOS and MSVC in CI |
+| Spin golden hash | `0xf3b557df819cffed` on every platform | gcc, clang, sanitizers, wasm32 equal; macOS and MSVC in CI |
 
 ## The air
 

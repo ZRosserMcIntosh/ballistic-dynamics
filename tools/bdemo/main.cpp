@@ -5,6 +5,7 @@
 //   bdemo air P_Pa T_C RH alt_m        the air a station reading gives, and up the path
 //   bdemo table cartridge [model ...]  a range card (drop, drift, speed, energy, time)
 //   bdemo determinism                  the determinism hashes of this build
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -107,7 +108,7 @@ int determinism() {
 // 15 C, dry), flat range, line of sight horizontal, wind from 3 o'clock.
 int table(int argc, char** argv) {
     if (argc < 3) {
-        std::fprintf(stderr, "usage: bdemo table cartridge [G1|G7|bullet|-] [zero_yd 100] [sight_in 1.5] [wind_mph 10] "
+        std::fprintf(stderr, "usage: bdemo table cartridge [G1|G7|bullet|-] [zero_yd 100] [sight_in 1.5|- the rifle's] [wind_mph 10] "
                              "[max_yd 1000] [step_yd 100] [bc override|-] [rifle=ID] [lat=DEG] [az=DEG]\n");
         return 2;
     }
@@ -159,7 +160,9 @@ int table(int argc, char** argv) {
     s.muzzleSpeed = c->muzzleVelocity;
     s.mass = p->mass;
     s.zeroRange = units::yards(argc > 4 ? std::atof(argv[4]) : 100);
-    s.sightHeight = units::inches(argc > 5 ? std::atof(argv[5]) : 1.5);
+    // The sight height: given, or the rifle's ("-"), or 1.5 in.
+    const bool sightGiven = argc > 5 && std::strcmp(argv[5], "-");
+    s.sightHeight = sightGiven ? units::inches(std::atof(argv[5])) : rifle && rifle->sightHeight > 0 ? rifle->sightHeight : units::inches(1.5);
     const Real mph = argc > 6 ? std::atof(argv[6]) : 10;
     const Real maxYd = argc > 7 ? std::atof(argv[7]) : 1000, stepYd = argc > 8 ? std::atof(argv[8]) : 100;
     const StationAir air(StationReading{101325.0, 288.15, 0.0, 0.0});
@@ -172,6 +175,10 @@ int table(int argc, char** argv) {
         s.physics.latitude = latDeg * kPi / 180.0;
     }
     const Real e = zeroElevation(s, air);
+    if (!std::isfinite(e)) {
+        std::fprintf(stderr, "%s cannot reach a zero at %.0f yd\n", c->name.c_str(), units::toYards(s.zeroRange));
+        return 1;
+    }
     std::vector<Real> ranges;
     for (Real y = 0; y <= maxYd + 1e-9; y += stepYd) ranges.push_back(units::yards(y));
     const auto rows = rangeTable(s, wind, e, ranges);

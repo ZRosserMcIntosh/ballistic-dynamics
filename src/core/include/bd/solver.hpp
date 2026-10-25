@@ -30,6 +30,7 @@ struct RangeSetup {
     Vec3 origin;            // ENU
     Real azimuth = 0;       // rad, true
     Real step = kDefaultStep;
+    Real time = 0;          // s, engine time the table's round is fired at (gusts are seeded by time)
     // Milestone 3: spin (spinParamsFor) and the rotating Earth, applied to the
     // zero and to the table alike (step, trace and time limits are set here).
     PointMassOptions physics;
