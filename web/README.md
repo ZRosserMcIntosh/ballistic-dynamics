@@ -34,7 +34,7 @@ const card = B.table(cartridgeIndex, 91.44, 0.0381, 914.4, 91.44);  // range car
 | `bd_error_text(i)` | error i |
 | `bd_catalog()` | the library as JSON, SI values, provenance per field |
 | `bd_station(p, T, RH, alt)` | sets the air from a station reading (clears the wind); rounds already fired keep the air they were fired into |
-| `bd_air(x, y, z, t)` | 9 doubles: pressure, temperature, density, speed of sound, relative humidity, density altitude, wind east, north, up |
+| `bd_air(x, y, z, t)` | 9 doubles: pressure, temperature, density, speed of sound, relative humidity, density altitude, wind east, north, up (the layers and gusts set by `bd_wind`) |
 | `bd_wind(azimuth, n)` (`B.wind`) | wind layers along the line of fire: n quadruples (from range m, speed m/s, from bearing rad, gust RMS m/s) in the text buffer; for rounds fired after it |
 | `bd_zero(i, zeroRange, sightHeight)` | the bore elevation (rad) that zeroes cartridge i, in the station's still air |
 | `bd_fire(i, x, y, z, azimuth, elevation, t0)` | fires cartridge i (its preferred drag model) at engine time t0, keeping the trace; returns the round's id (from 1; 0 if it cannot fire) and selects it |
@@ -43,5 +43,5 @@ const card = B.table(cartridgeIndex, 91.44, 0.0381, 914.4, 91.44);  // range car
 | `bd_advance(t, maxSteps)` | whole 1 ms steps up to engine time t |
 | `bd_round()` (`B.round`) | 8 doubles: time, position, velocity, stopped |
 | `bd_state_at(t)` (`B.stateAt`) | bullet time: 7 doubles, the state at any flown instant, smooth between steps (advance one step ahead first) |
-| `bd_table(i, zeroRange, sightHeight, maxRange, step)` (`B.table`) | a range card: range, drop, windage, time, speed, energy, Mach (SI) |
+| `bd_table(i, zeroRange, sightHeight, maxRange, step, azimuth, t0)` (`B.table`, azimuth and t0 default 0) | a range card fired at engine time t0 (so it meets the same gusts as a round fired then): range, drop, windage, time, speed, energy, Mach, Sg (SI) |
 | `bd_determinism()` | the determinism hashes (maths, trajectory), 16 hex digits each |

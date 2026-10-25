@@ -43,8 +43,11 @@ struct WakeParams {
     Real spacing = 0.5;       // m between stretches along the path
     Real maxAge = 0.6;        // s: older stretches are left out
     Real minDeficit = 2e-5;   // weaker stretches are left out
-    Real widthCoefficient = 0.6;    // a (estimated)
-    Real deficitCoefficient = 1.2;  // b (estimated)
+    // a is estimated; b then follows from momentum: for a Gaussian deficit
+    // profile with half-deficit radius r, the wake's momentum deficit
+    // U u0 pi r^2 / ln 2 must carry the drag, U^2 pi theta^2, so a^2 b = ln 2.
+    Real widthCoefficient = 0.6;          // a (estimated)
+    Real deficitCoefficient = 1.925409;   // b = ln 2 / a^2
 };
 
 // The momentum thickness of a body with drag area Cd A (m^2): sqrt(Cd A / 2 pi).

@@ -89,6 +89,15 @@ TEST_CASE("drag: a BC-scaled standard and a bullet curve give the same force for
     CHECK(dragModelFor(*smk, bdtest::library(), "", err).kind() == DragModel::Kind::StandardBc);
     CHECK(dragModelFor(*smk, bdtest::library(), "bullet", err).kind() == DragModel::Kind::None);
     CHECK(!err.empty());
+    // The family name in any case.
+    CHECK(dragModelFor(*smk, bdtest::library(), "g7", err).kind() == DragModel::Kind::StandardBc);
+    CHECK(err.empty());
+    // A single BC built in code without speed bands applies at any speed.
+    BallisticCoefficient one;
+    one.family = "G7";
+    one.values = {units::bcToSi(0.243)};
+    const DragModel bare = DragModel::standard(standardTable("g7"), one);
+    CHECK_NEAR(units::bcFromSi(bare.bcAt(units::fps(100))), 0.243, 1e-12);
 }
 
 TEST_CASE("point mass: in a vacuum the flight is the exact parabola") {

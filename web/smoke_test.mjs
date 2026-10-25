@@ -6,7 +6,7 @@ import createBallisticModule from './dist/ballistic.mjs';
 // The same values as kDeterminismGolden and kTrajectoryGolden in
 // src/core/include/bd/determinism.hpp: the browser must compute the same bits
 // as every native build.
-const GOLDEN = ['7302405ad0a26843', '2ca1ba49af3e55d1', '86ee6c5cb23ef28e'];
+const GOLDEN = ['7302405ad0a26843', '2ca1ba49af3e55d1', 'f3b557df819cffed'];
 
 const fail = (m) => { console.error('FAIL', m); process.exit(1); };
 const B = await createBallisticModule();
@@ -105,5 +105,16 @@ B.bd_release(ra);
 if (B.bd_select(ra) || !B.bd_select(rb)) fail('release');
 B.bd_release(0);
 if (B.bd_select(rb)) fail('release all');
+
+// bd_air reports the wind rounds fly through (the page's flags read it).
+B.bd_station(101325, 288.15, 0, 0);
+B.wind(0, [{ fromRange: 0, speed: 10, fromBearing: Math.PI / 2, gust: 0 }]);  // from the east
+const w = B.air(0, 500, 0, 3).wind;
+if (!(Math.abs(w[0] + 10) < 1e-9 && Math.abs(w[1]) < 1e-9)) fail('bd_air wind ' + w);
+// A table fired later meets the gusts of that moment.
+B.wind(0, [{ fromRange: 0, speed: 5, fromBearing: Math.PI / 2, gust: 2 }]);
+const at0 = B.table(i308, 100 * yd, 1.5 * inch, 1000, 1000, 0, 0).at(-1).windage;
+const at9 = B.table(i308, 100 * yd, 1.5 * inch, 1000, 1000, 0, 9).at(-1).windage;
+if (at0 === at9) fail('table start time');
 
 console.log(`ok: hashes ${h.join(' ')}; bullet time ${frames} frames, at most ${(maxJump * 1000).toFixed(1)} mm per frame`);

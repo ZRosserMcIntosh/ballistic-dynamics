@@ -91,7 +91,7 @@ interpolated linearly:
 
 **Zeroing and range tables.** `zeroElevation` finds the bore angle that
 puts the round on the line of sight at the zero range (secant method on real
-flights, to 0.1 µm); `rangeTable` flies one round and reports drop below the
+flights, to within 10 µm); `rangeTable` flies one round and reports drop below the
 line of sight, windage, time, speed, energy and Mach where it crosses each
 range (bisection on the Hermite interpolant inside the step).
 
@@ -154,13 +154,18 @@ right-hand twist the nose sits right of the path and the round drifts right.
 
 **Aerodynamic jump.** A crosswind at the muzzle yaws the round, and its first
 swerve turns into a vertical deflection; Litz's published regression gives
-it, Y = 0.01 Sg − 0.0024 l + 0.032 MOA per mph of crosswind, up for a wind
-from the left with a right-hand twist. It is applied as a turn of the
-launch direction.
+it, Y = 0.01 Sg − 0.0024 l + 0.032 MOA per mph of crosswind. With a
+right-hand twist it is down for a wind from the left and up for one from the
+right: the nose yawed right of the airflow by a wind from the left is turned
+by the overturning moment, and the spin precesses it clockwise as seen from
+behind, to down; the lift on that yaw is the jump (the benchrest "10 o'clock
+to 4" stringing). It is applied as a turn of the launch direction. (Before
+the audit of October 2026 the sign was the wrong way round.)
 
 **The wobble.** After the muzzle the nose circles the path in the epicycle
 of a fast (nutation) and a slow (precession) arm,
-ω_f,s = (I_x p / 2 I_y)(1 ± √(1 − 1/Sg)), starting from the crosswind yaw
+ω_f,s = (I_x p / 2 I_y)(1 ± √(1 − 1/Sg)), both arms turning the way the
+round spins (clockwise from behind for a right-hand twist), starting from the crosswind yaw
 and any tip-off rate, each arm damping out (estimated rates: a few
 hundredths and a few tenths of a second). It is computed in closed form for
 drawing (`noseAt`); its net effect on the path is the jump.
@@ -195,9 +200,11 @@ r½(x) = a θ (x/θ)^(1/3)        u₀/U = b (x/θ)^(−2/3)
 ```
 
 so a trace widens as the cube root of its age and fades as its two-thirds
-power. **Main gap:** the coefficients a = 0.6 and b = 1.2 are estimated at
-the order of the measured values; the near wake (the first few hundred
-diameters) is held at the bullet's radius; the trace's optical strength is
+power. The width coefficient a = 0.6 is estimated at the order of measured
+values; b follows from momentum (a Gaussian deficit profile carrying the
+drag needs a²b = ln 2, so b = 1.93). **Main gap:** a itself is estimated; the
+near wake (the first ~15–20 diameters, until the far-wake width passes the
+bullet's) is held at the bullet's radius; the trace's optical strength is
 taken as proportional to the velocity deficit, not computed from the
 temperature and density in the wake; no wake vortex shedding or spin swirl;
 the wind carrying it is sampled now at where it was shed.

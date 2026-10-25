@@ -16,6 +16,7 @@ std::vector<FlightSample> fly(const RangeSetup& s, const AirSource& air, Real el
     l.position = s.origin;
     l.direction = frames::directionFromAzEl(s.azimuth, elevation);
     l.muzzleSpeed = s.muzzleSpeed;
+    l.time = s.time;
     PointMassOptions o = s.physics;
     o.step = s.step;
     o.keepTrace = true;

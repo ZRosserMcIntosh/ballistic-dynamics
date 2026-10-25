@@ -158,13 +158,15 @@ TEST_CASE("spin: aerodynamic jump from a crosswind (Litz)") {
     l.muzzleSpeed = s.cartridge->muzzleVelocity;
     const PointMassRound a(s.drag, fromLeft, l, o), b(s.drag, fromRight, l, o);
     const Real expected = (0.01 * o.spin.sgMuzzle - 0.0024 * o.spin.calibres() + 0.032) * 10 * units::kMoa;
-    CHECK_NEAR(a.jumpAngle(), expected, 1e-12);
-    CHECK_NEAR(b.jumpAngle(), -expected, 1e-12);
+    // Right-hand twist: down in a wind from the left, up in one from the right
+    // (the nose yawed right precesses clockwise, seen from behind, to down).
+    CHECK_NEAR(a.jumpAngle(), -expected, 1e-12);
+    CHECK_NEAR(b.jumpAngle(), expected, 1e-12);
     // About 0.4 MOA for the .308 in 10 mph: 4 in at 1,000 yd.
-    CHECK_RANGE(units::toInches(a.jumpAngle() * units::yards(1000)), 3.0, 5.5);
+    CHECK_RANGE(units::toInches(b.jumpAngle() * units::yards(1000)), 3.0, 5.5);
     // A left-hand twist turns it the other way; no spin, no jump.
     PointMassOptions lh = withSpin(s, -units::inches(11.25));
-    CHECK_NEAR(PointMassRound(s.drag, fromLeft, l, lh).jumpAngle(), -expected, 1e-12);
+    CHECK_NEAR(PointMassRound(s.drag, fromLeft, l, lh).jumpAngle(), expected, 1e-12);
     CHECK(PointMassRound(s.drag, fromLeft, l, PointMassOptions{}).jumpAngle() == 0);
 }
 
@@ -257,6 +259,14 @@ TEST_CASE("spin: the wobble starts from the crosswind yaw and dies out; the nose
         late = std::max(late, std::hypot(b.right, b.up));
     }
     CHECK(early > 0.005);         // a few mrad near the muzzle
+    // A right-hand spin turns the nose clockwise seen from behind: from right
+    // to down first; a left-hand spin from right to up.
+    PointMassOptions still = o;
+    still.spin.tipOffRate = 0;
+    const Yaw2 q = epicyclicYaw(still.spin, {0.006, 0}, 0.0002);
+    CHECK(q.up < 0);
+    PointMassOptions lhw = withSpin(s, -units::inches(11.25));
+    CHECK(epicyclicYaw(lhw.spin, {0.006, 0}, 0.0002).up > 0);
     CHECK(late < 0.02 * early);   // gone by 0.8 s
     // The nose stays within a degree of the air-relative path.
     for (Real t : {0.0005, 0.01, 0.3, 0.9}) {
