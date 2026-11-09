@@ -202,6 +202,91 @@
         "bc_g1": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), 7N1 G1 about 0.411",
         "bc_g7": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), 7N1 G7 about 0.206"
       }
+    },
+    {
+      "id": "fmj_355_115",
+      "name": "9 mm 115 gr full metal jacket (Federal American Eagle)",
+      "construction": "round-nose full metal jacket over a lead core",
+      "diameter_in": 0.355,
+      "mass_gr": 115,
+      "length_in": 0.57,
+      "bc_g1": [
+        0.12
+      ],
+      "provenance": {
+        "diameter_in": "published: SAAMI 9 mm Luger bullet diameter 0.355 in",
+        "mass_gr": "published: Federal AE9DP, 115 gr (7.45 g)",
+        "length_in": "estimated: about 0.57 in, typical of 115 gr 9 mm round-nose FMJ",
+        "bc_g1": "published: Federal AE9DP ballistic chart, BC 0.12"
+      }
+    },
+    {
+      "id": "fmj_355_124",
+      "name": "9 mm 124 gr full metal jacket (NATO-weight ball)",
+      "construction": "round-nose full metal jacket over a lead core",
+      "diameter_in": 0.355,
+      "mass_gr": 124,
+      "length_in": 0.61,
+      "bc_g1": [
+        0.15
+      ],
+      "provenance": {
+        "diameter_in": "published: SAAMI 9 mm Luger bullet diameter 0.355 in",
+        "mass_gr": "published: Federal AE9AP, 124 gr",
+        "length_in": "estimated: about 0.61 in, typical of 124 gr 9 mm round-nose FMJ (the NATO ball weight)",
+        "bc_g1": "published: Federal AE9AP ballistic chart, BC 0.15"
+      }
+    },
+    {
+      "id": "fmj_452_230",
+      "name": ".45 ACP 230 gr full metal jacket round nose",
+      "construction": "round-nose full metal jacket over a lead core",
+      "diameter_in": 0.452,
+      "mass_gr": 230,
+      "length_in": 0.68,
+      "bc_g1": [
+        0.19
+      ],
+      "provenance": {
+        "diameter_in": "published: SAAMI .45 Auto bullet diameter 0.452 in",
+        "mass_gr": "published: Federal AE45A, 230 gr (14.9 g)",
+        "length_in": "estimated: about 0.68 in, typical of the 230 gr .45 ball round nose",
+        "bc_g1": "published: Federal AE45A ballistic chart, BC 0.19 (a retailer's table gives G1 0.193)"
+      }
+    },
+    {
+      "id": "jsp_357_158",
+      "name": ".357 158 gr jacketed soft point",
+      "construction": "flat-nose jacketed soft point, lead core",
+      "diameter_in": 0.357,
+      "mass_gr": 158,
+      "length_in": 0.69,
+      "bc_g1": [
+        0.2
+      ],
+      "provenance": {
+        "diameter_in": "published: SAAMI .357 Magnum bullet diameter 0.357 in",
+        "mass_gr": "published: Federal AE357A, 158 gr",
+        "length_in": "estimated: about 0.69 in for a 158 gr .357 flat-nose JSP",
+        "bc_g1": "published: Federal AE357A ballistic chart, BC 0.2 (Magtech's 158 gr SJSP lists 0.172)"
+      }
+    },
+    {
+      "id": "vmax_224_40_57",
+      "name": "5.7 mm 40 gr V-MAX (FN SS197SR)",
+      "construction": "polymer tip, boat tail, copper jacket over a lead core",
+      "diameter_in": 0.224,
+      "mass_gr": 40,
+      "length_in": 0.68,
+      "bc_g1": [
+        0.2
+      ],
+      "provenance": {
+        "diameter_in": "published: 5.7x28 mm bullet diameter 5.70 mm (0.224 in)",
+        "mass_gr": "published: FN SS197SR, 40 gr Hornady V-MAX",
+        "length_in": "estimated: about 0.68 in, as Hornady's 40 gr .224 V-MAX",
+        "bc_g1": "estimated: Hornady's published G1 0.200 for its 40 gr .224 V-MAX (#22241); FN does not publish a BC for SS197SR, whose bullet may differ in shape"
+      }
     }
   ]
 }

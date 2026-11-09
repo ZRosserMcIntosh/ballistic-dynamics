@@ -45,9 +45,24 @@ bullets: that is the published-figures table below and Milestone 3.
 | .308 175 SMK, G7 0.243, 2600 fps, 10 mph | 11.67 mil drop, 2.99 mil drift at 1000 yd | Long Range Science, .308 Winchester chart | 12.00 mil, 3.12 mil | **+2.8 %, +4 %** |
 | .50 BMG 750 A-MAX, 2815 fps, 10 mph | 34 in drift at 1000 yd | Field Ethos, Hornady .50 BMG 750 A-MAX | 35.3 in (at 2820 fps) | +3.7 % |
 | 9 mm 124 Gold Dot, 1150 fps | 969 fps at 100 yd | Speer 23618GD | 959 fps with Speer's reloading-data BC 0.134; 974 with the 0.151 Speer also lists | −1.0 % / +0.5 % |
+| 9 mm 124 FMJ (AE9AP), G1 0.15, 1150 fps | 1095 / 1049 / 1010 / 977 fps at 25 / 50 / 75 / 100 yd | Federal American Eagle chart | 1093 / 1046 / 1007 / 974 | −0.2 to −0.3 % |
+| .45 Auto 230 FMJ (AE45A), G1 0.19, 890 fps | 824 fps at 100 yd | Federal American Eagle chart | 823 | −0.1 % |
+| .357 Magnum 158 JSP (AE357A), G1 0.2, 1240 fps | 1063 fps at 100 yd | Federal American Eagle chart | 1059 | −0.4 % |
 
 **Open gaps.**
 
+- The handgun rows check the engine against each maker's own G1 model,
+  so they confirm the arithmetic and the air, not that a G1 constant is
+  right for a blunt pistol bullet. Out to 100 yd that hardly matters
+  (the speed changes by 15 % or less).
+- The .50 BMG 750 A-MAX past 2 km. It flies on Hornady's single G1 BC
+  (1.050), set for supersonic speeds; at 2 miles in the Ballistics Range's
+  desert air (1,500 m, 32 °C) it is at Mach 0.93. A long boat-tail's G1 BC
+  falls as it slows, so a constant one under-states drop there. With the
+  only G7 figure found (0.510, a retailer's listing, unconfirmed) the drop
+  at 3,219 m is 48.5 mil instead of 45.3 (10 m at the target) and the time
+  of flight 6.73 s instead of 6.43. Not changed until a measured G7 or a
+  Doppler C_D(M) curve for the bullet is in hand (roadmap).
 - The Long Range Science .308 chart: the engine has 3–4 % more drop and
   drift at 1,000 yd. The independent solver agrees with the engine to
   0.01 %, so the difference is most likely in the chart's inputs: it does

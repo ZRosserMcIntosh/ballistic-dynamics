@@ -117,6 +117,97 @@
         "barrel_in": "published: SVD barrel 620 mm (24.4 in)",
         "sight_height_in": "estimated: the PSO-1 on the left side rail, about 2.7 in over the bore (its small offset to the left is not modelled)"
       }
+    },
+    {
+      "id": "glock_17",
+      "name": "Glock 17 (9 mm)",
+      "twist_in": 9.84,
+      "twist_direction": "right",
+      "barrel_in": 4.49,
+      "sight_height_in": 0.75,
+      "provenance": {
+        "twist_in": "published: (secondary) a factory-pattern G17 barrel listing (Midwest Gun Works): hexagonal right-hand rifling, 250 mm (9.84 in); not checked against Glock's own sheet",
+        "barrel_in": "published: Glock 17, 114 mm (4.49 in) barrel",
+        "sight_height_in": "estimated: the top of the factory sights about 0.75 in over the bore axis"
+      }
+    },
+    {
+      "id": "colt_1911",
+      "name": "Colt 1911 Government (.45 ACP)",
+      "twist_in": 16,
+      "twist_direction": "left",
+      "barrel_in": 5,
+      "sight_height_in": 0.7,
+      "provenance": {
+        "twist_in": "published: (secondary) 5 in Government .45 barrels, 1 turn in 16 in, left hand (Nighthawk Custom's drop-in barrel); Colt's own rifling is left-hand by tradition, not checked against a Colt sheet",
+        "barrel_in": "published: 1911 Government Model, 5 in barrel",
+        "sight_height_in": "estimated: GI-pattern sights about 0.7 in over the bore"
+      }
+    },
+    {
+      "id": "sw_686",
+      "name": "Smith & Wesson 686, 4 in (.357 Magnum)",
+      "twist_in": 18.75,
+      "twist_direction": "right",
+      "barrel_in": 4,
+      "sight_height_in": 0.75,
+      "provenance": {
+        "twist_in": "estimated: 1 turn in 18.75 in, right hand, the twist Smith & Wesson revolvers in .357 are commonly listed with; not checked against S&W's sheet",
+        "barrel_in": "published: the 686's 4 in barrel (Federal's 4 in vented test barrel matches it)",
+        "sight_height_in": "estimated: the ramp front and adjustable rear about 0.75 in over the bore"
+      }
+    },
+    {
+      "id": "fn_fiveseven",
+      "name": "FN Five-seveN (5.7x28 mm)",
+      "twist_in": 9.1,
+      "twist_direction": "right",
+      "barrel_in": 4.8,
+      "sight_height_in": 0.7,
+      "provenance": {
+        "twist_in": "estimated: 1 turn in 231 mm (9.1 in), right hand, the P90's published twist for the same cartridge; the pistol's own figure was not found",
+        "barrel_in": "published: FN Five-seveN, 4.8 in barrel (as stated with FN's SS197SR velocity)",
+        "sight_height_in": "estimated: about 0.7 in over the bore"
+      }
+    },
+    {
+      "id": "mp5a3",
+      "name": "Heckler & Koch MP5A3 (9 mm)",
+      "twist_in": 10,
+      "twist_direction": "right",
+      "barrel_in": 8.86,
+      "sight_height_in": 1.4,
+      "provenance": {
+        "twist_in": "published: H&K MP5 LE brochure: six grooves, right hand; 1 turn in 254 mm (10 in) (other references round it to 250 mm)",
+        "barrel_in": "published: MP5A2-A5, 225 mm (8.86 in)",
+        "sight_height_in": "estimated: the drum rear and hooded front post about 1.4 in over the bore"
+      }
+    },
+    {
+      "id": "fn_p90",
+      "name": "FN P90 (5.7x28 mm)",
+      "twist_in": 9.1,
+      "twist_direction": "right",
+      "barrel_in": 10.4,
+      "sight_height_in": 1.5,
+      "provenance": {
+        "twist_in": "published: FN P90, 1 turn in 231 mm (9.1 in), right hand (FN America lists 1:9 in)",
+        "barrel_in": "published: FN P90 technical data, 264 mm (10.4 in)",
+        "sight_height_in": "estimated: the integral ring reflex sight about 1.5 in over the bore"
+      }
+    },
+    {
+      "id": "thompson_m1a1",
+      "name": "Thompson M1A1 (.45 ACP)",
+      "twist_in": 16,
+      "twist_direction": "right",
+      "barrel_in": 10.5,
+      "sight_height_in": 1.1,
+      "provenance": {
+        "twist_in": "estimated: 1 turn in 16 in, right hand, as Auto-Ordnance's Thompson-pattern carbines are rifled; the wartime M1A1's figure was not found",
+        "barrel_in": "published: (secondary) M1A1 barrel 10.5 in (267 mm)",
+        "sight_height_in": "estimated: the fixed L-shaped rear aperture about 1.1 in over the bore"
+      }
     }
   ]
 }

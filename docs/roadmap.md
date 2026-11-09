@@ -21,7 +21,11 @@ skipped. Small PRs, one milestone or less each.
   secondary sources in docs/validation.md; recheck the Long Range Science
   .308 gap against Federal's table.
 - Add a bullet's own Doppler C_D(M) curve to the library (Lapua publishes
-  them for the Scenar).
+  them for the Scenar), and a measured G7 or Doppler curve for the .50 BMG
+  750 A-MAX: its constant G1 under-states the drop at 2 miles by about
+  3 mil (docs/validation.md).
+- Confirm the twists marked estimated or secondary for the handguns and
+  sub-machine guns (Glock 17, 1911, 686, Five-seveN, Thompson M1A1).
 
 - Measure the bullet lengths (all estimated); Milestone 3 uses them for Sg.
 - Dynamic stability (S_d) through the transonic zone, and measured

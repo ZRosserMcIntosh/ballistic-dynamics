@@ -110,6 +110,94 @@
         "muzzle_velocity_fps": "published: (secondary) Wikipedia, SVD article, 830 m/s from the SVD; another source ties 830 m/s to the later 7N14, so 7N1 may be a few m/s slower",
         "test_barrel_in": "published: the SVD barrel, 620 mm (24.4 in)"
       }
+    },
+    {
+      "id": "federal_9mm_115_fmj",
+      "name": "9 mm Luger Federal American Eagle 115 gr FMJ (AE9DP)",
+      "projectile": "fmj_355_115",
+      "muzzle_velocity_fps": 1180,
+      "test_barrel_in": 4,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Federal AE9DP, 1180 fps",
+        "test_barrel_in": "published: Federal AE9DP, 4 in test barrel"
+      }
+    },
+    {
+      "id": "federal_9mm_124_fmj",
+      "name": "9 mm Luger Federal American Eagle 124 gr FMJ (AE9AP)",
+      "projectile": "fmj_355_124",
+      "muzzle_velocity_fps": 1150,
+      "test_barrel_in": 4,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Federal AE9AP, 1150 fps",
+        "test_barrel_in": "published: Federal AE9AP, 4 in test barrel"
+      }
+    },
+    {
+      "id": "mp5_9mm_124_fmj",
+      "name": "9 mm 124 gr FMJ from the MP5's 225 mm barrel",
+      "projectile": "fmj_355_124",
+      "muzzle_velocity_fps": 1313,
+      "test_barrel_in": 8.86,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Heckler & Koch MP5 LE brochure, 1313 fps (400 m/s; Australian Army and Maltese police data also give 400 m/s). The load is not stated: 124 gr NATO-weight ball is assumed",
+        "test_barrel_in": "published: MP5A2-A5 barrel 225 mm (8.86 in)"
+      }
+    },
+    {
+      "id": "federal_45acp_230_fmj",
+      "name": ".45 Auto Federal American Eagle 230 gr FMJ (AE45A)",
+      "projectile": "fmj_452_230",
+      "muzzle_velocity_fps": 890,
+      "test_barrel_in": 5,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Federal AE45A, 890 fps",
+        "test_barrel_in": "published: Federal AE45A, 5 in test barrel"
+      }
+    },
+    {
+      "id": "thompson_45acp_230",
+      "name": ".45 ACP 230 gr ball from the Thompson M1A1's 10.5 in barrel",
+      "projectile": "fmj_452_230",
+      "muzzle_velocity_fps": 935,
+      "test_barrel_in": 10.5,
+      "provenance": {
+        "muzzle_velocity_fps": "published: (secondary) Thompson submachine gun references (Wikipedia and mirrors), 935 ft/s (285 m/s)",
+        "test_barrel_in": "published: (secondary) M1A1 barrel 10.5 in (267 mm)"
+      }
+    },
+    {
+      "id": "federal_357mag_158_jsp",
+      "name": ".357 Magnum Federal American Eagle 158 gr JSP (AE357A)",
+      "projectile": "jsp_357_158",
+      "muzzle_velocity_fps": 1240,
+      "test_barrel_in": 4,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Federal AE357A, 1240 fps",
+        "test_barrel_in": "published: Federal AE357A, 4 in vented test barrel (the gap of a revolver's cylinder simulated)"
+      }
+    },
+    {
+      "id": "fn_57_ss197sr",
+      "name": "5.7x28 mm FN SS197SR 40 gr V-MAX, from the Five-seveN",
+      "projectile": "vmax_224_40_57",
+      "muzzle_velocity_fps": 1738,
+      "test_barrel_in": 4.8,
+      "provenance": {
+        "muzzle_velocity_fps": "published: FN SS197SR, 1738 fps from the Five-seveN (as FN's figures are listed by retailers)",
+        "test_barrel_in": "published: the Five-seveN's 4.8 in barrel, as stated with FN's figure"
+      }
+    },
+    {
+      "id": "fn_57_ss197sr_p90",
+      "name": "5.7x28 mm FN SS197SR 40 gr V-MAX, from the P90",
+      "projectile": "vmax_224_40_57",
+      "muzzle_velocity_fps": 1885,
+      "test_barrel_in": 10.4,
+      "provenance": {
+        "muzzle_velocity_fps": "estimated: 1885 fps, linear between FN's published 1738 fps from the 4.8 in Five-seveN and 2034 fps from the 16.04 in PS90 at the P90's 10.4 in",
+        "test_barrel_in": "published: FN P90 technical data, 264 mm (10.4 in) barrel"
+      }
     }
   ]
 }
