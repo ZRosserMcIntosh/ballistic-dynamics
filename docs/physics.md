@@ -202,12 +202,32 @@ r½(x) = a θ (x/θ)^(1/3)        u₀/U = b (x/θ)^(−2/3)
 so a trace widens as the cube root of its age and fades as its two-thirds
 power. The width coefficient a = 0.6 is estimated at the order of measured
 values; b follows from momentum (a Gaussian deficit profile carrying the
-drag needs a²b = ln 2, so b = 1.93). **Main gap:** a itself is estimated; the
-near wake (the first ~15–20 diameters, until the far-wake width passes the
-bullet's) is held at the bullet's radius; the trace's optical strength is
-taken as proportional to the velocity deficit, not computed from the
-temperature and density in the wake; no wake vortex shedding or spin swirl;
-the wind carrying it is sampled now at where it was shed.
+drag needs a²b = ln 2, so b = 1.93).
+
+**What bends the light** is the wake's heat, not its slowness. The drag's
+work stays in the wake as heat (ρ c_p ∫ΔT dA = D per metre, as
+ρ U ∫u dA = D carries its momentum), so with the same profile the centreline
+excess is
+
+```
+ΔT/T = (u₀/U) (γ − 1) M²          index = ΔT/T · ρ / 1.225
+```
+
+and the refractive index there falls by `index` × 2.9e-4 (n − 1 scales with
+density). A fast round's wake is far hotter for its momentum: ΔT/T is 2.1×
+the deficit for a .308 at Mach 2.3, 0.4× for a 9 mm at Mach 1, 0.26× for a
+.45 at Mach 0.8. Above Mach 1 the shocks carry the wave drag off as sound
+(the crack); the wake is given only the drag the shape has at Mach 0.8
+(friction and base, estimated), C_D(0.8)/C_D(M) of it: about 0.4 for a
+boat-tail at Mach 2.3.
+
+**Main gap:** a and the wake's subsonic share of the drag are estimated;
+the near wake (the first ~15–20 diameters, until the far-wake width passes
+the bullet's) is held at the bullet's radius; the heat is taken to have the
+deficit's profile; the shock waves' own (small, short-range) refraction is
+not in the wake; no wake vortex shedding, spin swirl, buoyancy, or shredding
+by the air's own turbulence; the wind carrying it is sampled now at where it
+was shed.
 
 ## 5. Every round unique — not started (Milestone 4)
 

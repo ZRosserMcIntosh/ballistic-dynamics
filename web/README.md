@@ -34,6 +34,7 @@ const card = B.table(cartridgeIndex, 91.44, 0.0381, 914.4, 91.44);  // range car
 | `bd_error_text(i)` | error i |
 | `bd_catalog()` | the library as JSON, SI values, provenance per field |
 | `bd_station(p, T, RH, alt)` | sets the air from a station reading (clears the wind); rounds already fired keep the air they were fired into |
+| `bd_wake(t, spacing, maxAge, mass, diameter)` (`B.wake`) | the selected round's trace at engine time t: 7 floats per stretch, x, y, z (ENU), half-width (m), velocity deficit, age (s), and the refractive-index change in sea-level n − 1 (its heat: the optical strength) |
 | `bd_air(x, y, z, t)` | 9 doubles: pressure, temperature, density, speed of sound, relative humidity, density altitude, wind east, north, up (the layers and gusts set by `bd_wind`) |
 | `bd_wind(azimuth, n)` (`B.wind`) | wind layers along the line of fire: n quadruples (from range m, speed m/s, from bearing rad, gust RMS m/s) in the text buffer; for rounds fired after it |
 | `bd_zero(i, zeroRange, sightHeight)` | the bore elevation (rad) that zeroes cartridge i, in the station's still air |

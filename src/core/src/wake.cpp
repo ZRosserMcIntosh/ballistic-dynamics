@@ -6,6 +6,12 @@
 
 namespace bd {
 
+Real wakeDragShare(const DragModel& drag, Real mach, const WakeParams& p) {
+    if (!(mach > p.subsonicMach)) return 1.0;
+    const Real cdM = drag.table().cd(mach), cdSub = drag.table().cd(p.subsonicMach);
+    return cdM > cdSub && cdM > 0 ? cdSub / cdM : 1.0;
+}
+
 Real wakeMomentumThickness(Real dragArea) { return std::sqrt(dragArea > 0 ? dragArea / kTwoPi : 0); }
 
 void farWake(Real theta, Real radius, Real x, const WakeParams& p, Real& halfWidth, Real& deficit) {
@@ -45,11 +51,15 @@ std::vector<WakeElement> wakeAt(const PointMassRound& r, Real mass, Real diamete
             // Drag area from the model: |a| = factor rho U^2 = (1/2) rho U^2 Cd A / m,
             // several times larger for a tumbling round (taken as tumbling all
             // the way: the usual case is a round unstable from the muzzle).
+            const Real mach = shed.speedOfSound > 0 ? U / shed.speedOfSound : 0;
             Real dragArea = 2.0 * mass * r.drag().factor(U, shed.speedOfSound);
             if (r.tumbling()) dragArea *= r.options().tumbleDragFactor;
+            // Only the wake's share of it: above Mach 1 the shocks carry the wave drag away.
+            dragArea *= wakeDragShare(r.drag(), mach, p);
             WakeElement e;
             farWake(wakeMomentumThickness(dragArea), 0.5 * diameter, U * age, p, e.radius, e.deficit);
             if (e.deficit < p.minDeficit) continue;
+            e.index = wakeHeat(e.deficit, mach) * shed.density / kSeaLevelDensity;
             // It drifts with the wind where it is (sampled now, at where it was shed).
             e.position = at.position + air.sample(at.position, t).wind * age;
             e.age = age;

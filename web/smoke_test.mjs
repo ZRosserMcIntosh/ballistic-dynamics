@@ -76,7 +76,9 @@ const r = B.round(), nose = B.noseAt(0.25);
 if (!(r.spin > 15000 && r.stability > sg)) fail('spin state ' + JSON.stringify(r));
 if (!(Math.abs(Math.hypot(...nose) - 1) < 1e-12)) fail('nose');
 const wk = B.wake(0.4, 1.0, 0.3, 175 * 6.479891e-5, 0.308 * inch);
-if (!(wk.length > 6 * 100 && wk.length % 6 === 0)) fail('wake ' + wk.length);
+if (!(wk.length > 7 * 100 && wk.length % 7 === 0)) fail('wake ' + wk.length);
+// The optical strength: hot (index > 0) and weaker with age.
+if (!(wk[6] > 0 && wk[6] < wk[wk.length - 1])) fail('wake index ' + wk[6] + ' ' + wk[wk.length - 1]);
 
 // Many rounds at once: each flies exactly as it would alone, in the air and
 // wind it was fired into, whatever is fired or changed after it.

@@ -448,8 +448,9 @@ BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeig
     return sim().text.c_str();
 }
 
-// The round's wake (the trace) at engine time t: float32, the count, then 6
-// per stretch: x, y, z (ENU), half-width (m), deficit (strength), age (s).
+// The round's wake (the trace) at engine time t: float32, the count, then 7
+// per stretch: x, y, z (ENU), half-width (m), velocity deficit, age (s), and
+// the refractive-index change in sea-level n - 1 (the optical strength).
 // Stretches every `spacing` m, up to `maxAge` s old; mass (kg) and diameter
 // (m) of the bullet.
 BD_EXPORT const float* bd_wake(double t, double spacing, double maxAge, double mass, double diameter) {
@@ -460,9 +461,9 @@ BD_EXPORT const float* bd_wake(double t, double spacing, double maxAge, double m
         p.spacing = spacing;
         p.maxAge = maxAge;
         for (const WakeElement& e : wakeAt(*r, mass, diameter, t, p))
-            for (double v : {e.position.x, e.position.y, e.position.z, e.radius, e.deficit, e.age})
+            for (double v : {e.position.x, e.position.y, e.position.z, e.radius, e.deficit, e.age, e.index})
                 S.wake.push_back(static_cast<float>(v));
-        S.wake[0] = static_cast<float>((S.wake.size() - 1) / 6);
+        S.wake[0] = static_cast<float>((S.wake.size() - 1) / 7);
     }
     return S.wake.data();
 }
