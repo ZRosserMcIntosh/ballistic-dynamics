@@ -62,14 +62,14 @@
         0.648
       ],
       "bc_g7": [
-        0.32
+        0.322
       ],
       "provenance": {
         "diameter_in": "published: Lapua catalogue, .338 16.2 g Scenar",
         "mass_gr": "published: Lapua catalogue, 16.2 g (250 gr)",
         "length_in": "estimated: about 1.63 in for a 250 gr .338 match hollow point; not used before Milestone 3",
         "bc_g1": "published: Lapua product page 4318017, G1 0.648",
-        "bc_g7": "published: Applied Ballistics (Litz), Lapua 250 Scenar G7 0.320"
+        "bc_g7": "published: Lapua product page 4318017, G7 0.322 (as quoted by search summaries and Eurooptic); Applied Ballistics (Litz) measured 0.320"
       }
     },
     {

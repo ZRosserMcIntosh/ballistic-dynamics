@@ -87,10 +87,11 @@ stability of a longer monolithic bullet, and its length is estimated.
 
 The two Soviet 7.62×54R loads, the Type L light ball from the Mosin M91/30
 (G1 0.338, 865 m/s) and the 7N1 sniper load from the SVD (G7 0.206,
-830 m/s), are in the same position. Their BCs come from secondary pages that
+823 m/s), are in the same position. Their BCs come from secondary pages that
 mark them "citation needed". The 865 m/s figure is the commonly quoted one and
-was not checked against a Soviet manual. The 830 m/s figure may belong to the
-later 7N14. Checking both against the Soviet firing tables (for example, the
+was not checked against a Soviet manual (chronographed M91s have given 827 to
+840 m/s with surplus light ball). The 7N1 was 830 m/s until November 2026; a
+Cold War ammunition table gives 823 m/s, and 830 belongs to the later 7N14. Checking both against the Soviet firing tables (for example, the
 SVD manual's table for the PSO-1 drum) is an open item.
 
 ## Independent audit (October 2026)
@@ -126,7 +127,7 @@ Standard day, 100 yd zero, no wind, firing north, no Earth rotation:
 |---|---|---|---|---|---|---|
 | .308 175 SMK, 1:11.25 | 1.90 | 1000 yd | 1.791 s | 9.4 in | 11.2 in | 0.83 |
 | 6.5 CM 140 ELD-M, 1:8 | 1.59 | 1000 yd | 1.496 s | 6.2 in | 7.3 in | 0.85 |
-| .338 LM 250 Scenar, 1:10 | 1.92 | 1500 yd | 2.500 s | 19.3 in | 20.9 in | 0.92 |
+| .338 LM 250 Scenar, 1:10 (2970 fps) | 1.93 | 1500 yd | 2.436 s | 18.5 in | 20.0 in | 0.93 |
 | .50 BMG 750 A-MAX, 1:15 | 2.04 | 2000 yd | 3.095 s | 31.3 in | 32.0 in | 0.98 |
 | 5.56 M855, 1:7 | 2.48 | 600 yd | 0.871 s | 2.8 in | 3.6 in | 0.79 |
 | 9 mm 124 GDHP, 1:10 | 11.95 | 100 yd | 0.289 s | 0.7 in | 1.7 in | 0.39 |
