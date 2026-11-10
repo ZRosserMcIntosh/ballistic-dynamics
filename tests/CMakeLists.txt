@@ -6,6 +6,7 @@ set(BD_TEST_SOURCES
   test_point_mass.cpp
   test_spin.cpp
   test_wake.cpp
+  test_variation.cpp
 )
 add_executable(bd_tests ${BD_TEST_SOURCES})
 target_link_libraries(bd_tests PRIVATE bd_core bd_aviation)

@@ -16,8 +16,10 @@ engine flies through) and **OpenRoad Dynamics** (vehicles).
 deterministic maths, the data library, the browser build, the point-mass
 trajectory (G1/G7 drag, zeroing, range cards, bullet-time interpolation),
 and spin (Miller stability, spin drift, aerodynamic jump, the wobble,
-tumbling) with Coriolis and Eötvös are in. **Not yet:** dynamic (transonic)
-stability, per-round variation (Milestone 4) and materials (5).
+tumbling) with Coriolis and Eötvös are in, and every round is its own
+(Milestone 4: velocity spread and powder temperature, BC spread, the
+barrel's throw, seeded per round). **Not yet:** dynamic (transonic)
+stability, scope cant and the solver API (the rest of 4) and materials (5).
 The [roadmap](docs/roadmap.md) has the rest, and nothing beyond what is
 listed here is claimed.
 
@@ -36,7 +38,7 @@ listed here is claimed.
 | Frames | SI inside; ENU world as Aviation's; line of fire x downrange, y left, z up (ISO 8855's order, as OpenRoad) ([ADR 0001](docs/decisions/0001-frames-and-units.md)) | `tests/test_foundations.cpp` |
 | Browser | WebAssembly build (wasi-sdk 25, no exceptions or RTTI, 230 KB) with a C ABI: the air, wind layers, zeroing, firing, bullet-time state, range cards; Node smoke test | `web/`, `web/smoke_test.mjs` |
 
-41 test cases, on Linux (gcc, clang, sanitizers), macOS, Windows and WASM in
+48 test cases, on Linux (gcc, clang, sanitizers), macOS, Windows and WASM in
 CI. What each scenario gives against its reference is in
 [docs/validation.md](docs/validation.md); how far each model goes, and its main
 gap, in [docs/physics.md](docs/physics.md) and the
@@ -51,7 +53,7 @@ git clone --recurse-submodules https://github.com/ZRosserMcIntosh/ballistic-dyna
 # or, in an existing clone: git submodule update --init
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build
-./build/tests/bd_tests                  # 41 test cases
+./build/tests/bd_tests                  # 48 test cases
 ./build/tests/bd_tests "point mass"     # a filter
 BD_VERBOSE=1 ./build/tests/bd_tests validation   # the comparison tables
 ./build/bdemo list                      # the data library, with provenance

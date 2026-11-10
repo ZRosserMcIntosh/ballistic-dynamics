@@ -229,10 +229,34 @@ not in the wake; no wake vortex shedding, spin swirl, buoyancy, or shredding
 by the air's own turbulence; the wind carrying it is sampled now at where it
 was shed.
 
-## 5. Every round unique — not started (Milestone 4)
+## 5. Every round unique (Milestone 4, in part)
 
-Lot muzzle velocity and spread, powder temperature, barrel length, cold
-bore; BC spread, imbalance, barrel vibration; scope, cant and the solver.
+`bd/variation.hpp`. Each round draws its own muzzle velocity, BC and barrel
+throw from its own seeded stream (seed, stream), so the same pair is the
+same round on every machine (a shared link, a duel):
+
+```
+v0    = v_published + k (T_powder − T_reference) + σ_v z1
+BC    = BC_published (1 + σ_BC z2)
+bore += (σ_a z3 up, σ_a z4 right),   σ_a = group / 3.08
+```
+
+z1..z4 independent standard normals, always drawn in that order (switching
+one cause off leaves the others' draws alone). σ_a comes from the rifle's
+mean 5-shot group: for a circular normal the expected 5-shot extreme spread
+is 3.08 σ (Grubbs). The zero stays at the published velocity (the zeroing
+day); the powder's temperature moves the flight. `spreadAt` gives the
+spread of impacts at a range by cause, linearised (a second flight with v0
++1 m/s, another with the BC +1 %, and the throw times the range): for a .308
+175 SMK at 1,000 yd with 12 fps, 0.75 % BC and a 0.75 MOA rifle it predicts
+6.83 in vertical and 2.55 in horizontal, and 400 flown rounds give 6.81 and
+2.58 (`tests/test_variation.cpp`).
+
+**Main gap:** every spread figure in the library is estimated (makers do not
+publish them); the throw is a circular normal (no barrel-harmonic vertical
+stringing, no cold-bore shot, no heating string); no lateral throw from
+bullet imbalance beyond the rifle's group; the scope (cant, parallax,
+tracking error) and the solver API are still to come.
 
 ## 6. Materials — not started (Milestone 5)
 

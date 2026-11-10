@@ -9,8 +9,14 @@
       "test_barrel_in": 24,
       "provenance": {
         "muzzle_velocity_fps": "published: Federal Premium catalogue, GM308M2, 2600 fps",
-        "test_barrel_in": "published: Federal Premium ballistics are from a 24 in test barrel for .308 Win"
-      }
+        "test_barrel_in": "published: Federal Premium ballistics are from a 24 in test barrel for .308 Win",
+        "velocity_sd_fps": "estimated: match factory ammunition typically chronographs 8 to 15 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: an IMR 4064-class extruded powder, not sold as temperature-stable: about 1.5 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 12,
+      "temp_coefficient_fps_per_f": 1.5,
+      "temp_reference_f": 70
     },
     {
       "id": "hornady_65cm_140",
@@ -20,8 +26,14 @@
       "test_barrel_in": 24,
       "provenance": {
         "muzzle_velocity_fps": "published: Hornady, 81500, 2710 fps",
-        "test_barrel_in": "published: Hornady, 81500, 24 in test barrel"
-      }
+        "test_barrel_in": "published: Hornady, 81500, 24 in test barrel",
+        "velocity_sd_fps": "estimated: Hornady Match typically chronographs 8 to 12 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: a temperature-stable extruded powder, as 6.5 Creedmoor match loads use: about 0.5 to 1 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 10,
+      "temp_coefficient_fps_per_f": 0.6,
+      "temp_reference_f": 70
     },
     {
       "id": "lapua_338lm_250",
@@ -31,8 +43,14 @@
       "test_barrel_in": 27.2,
       "provenance": {
         "muzzle_velocity_fps": "published: Lapua product page 4318017, 905 m/s (2970 fps), as quoted by search summaries of that page and by retailers (Lapua's page read 890 m/s, 2920 fps, when this record was first written)",
-        "test_barrel_in": "estimated: Lapua's page does not state it here; CIP test barrels for .338 LM are about 690 mm (27.2 in)"
-      }
+        "test_barrel_in": "estimated: Lapua's page does not state it here; CIP test barrels for .338 LM are about 690 mm (27.2 in)",
+        "velocity_sd_fps": "estimated: Lapua match ammunition typically chronographs under 12 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: about 1 fps per F for a magnum match load",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 10,
+      "temp_coefficient_fps_per_f": 1.0,
+      "temp_reference_f": 70
     },
     {
       "id": "hornady_50bmg_750",
@@ -42,8 +60,14 @@
       "test_barrel_in": 29,
       "provenance": {
         "muzzle_velocity_fps": "published: Hornady, .50 BMG 750 gr A-MAX Match, 2820 fps",
-        "test_barrel_in": "estimated: .50 BMG factory velocities are usually from 29-30 in barrels; Hornady's summary does not state it"
-      }
+        "test_barrel_in": "estimated: .50 BMG factory velocities are usually from 29-30 in barrels; Hornady's summary does not state it",
+        "velocity_sd_fps": "estimated: .50 BMG match ammunition, about 15 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: about 1.5 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 15,
+      "temp_coefficient_fps_per_f": 1.5,
+      "temp_reference_f": 70
     },
     {
       "id": "federal_xm855",
@@ -53,8 +77,14 @@
       "test_barrel_in": 20,
       "provenance": {
         "muzzle_velocity_fps": "published: Federal XM855 load data, 3020 fps",
-        "test_barrel_in": "estimated: a 20 in barrel, the M16A2 length 5.56 factory data is usually quoted for"
-      }
+        "test_barrel_in": "estimated: a 20 in barrel, the M16A2 length 5.56 factory data is usually quoted for",
+        "velocity_sd_fps": "estimated: military-specification ball, 20 to 30 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: a ball powder, about 1.2 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 25,
+      "temp_coefficient_fps_per_f": 1.2,
+      "temp_reference_f": 70
     },
     {
       "id": "speer_9mm_124gd",
@@ -64,8 +94,14 @@
       "test_barrel_in": 4,
       "provenance": {
         "muzzle_velocity_fps": "published: Speer, 23618GD, 1150 fps",
-        "test_barrel_in": "published: Speer, 23618GD, 4 in test barrel"
-      }
+        "test_barrel_in": "published: Speer, 23618GD, 4 in test barrel",
+        "velocity_sd_fps": "estimated: premium pistol ammunition, about 10 to 20 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: fast pistol powders, under 1 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 15,
+      "temp_coefficient_fps_per_f": 0.8,
+      "temp_reference_f": 70
     },
     {
       "id": "cheytac_408_419",
@@ -75,8 +111,14 @@
       "test_barrel_in": 29,
       "provenance": {
         "muzzle_velocity_fps": "published: CheyTac product page, .408/419 gr, 2752 fps (839 m/s)",
-        "test_barrel_in": "estimated: the M200 Intervention's 29 in barrel, which CheyTac's figures are generally quoted from"
-      }
+        "test_barrel_in": "estimated: the M200 Intervention's 29 in barrel, which CheyTac's figures are generally quoted from",
+        "velocity_sd_fps": "estimated: factory match ammunition, about 10 to 15 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: about 1 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 12,
+      "temp_coefficient_fps_per_f": 1.0,
+      "temp_reference_f": 70
     },
     {
       "id": "hornady_65cm_147",
@@ -86,8 +128,14 @@
       "test_barrel_in": 24,
       "provenance": {
         "muzzle_velocity_fps": "published: Hornady 81501, 2695 fps (as listed by retailers)",
-        "test_barrel_in": "published: Hornady, 24 in test barrel (GAP Precision listing)"
-      }
+        "test_barrel_in": "published: Hornady, 24 in test barrel (GAP Precision listing)",
+        "velocity_sd_fps": "estimated: as the 140 gr load",
+        "temp_coefficient_fps_per_f": "estimated: as the 140 gr load",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 10,
+      "temp_coefficient_fps_per_f": 0.6,
+      "temp_reference_f": 70
     },
     {
       "id": "ussr_762x54r_l",
@@ -97,8 +145,14 @@
       "test_barrel_in": 28.7,
       "provenance": {
         "muzzle_velocity_fps": "estimated: 865 m/s, the figure commonly quoted for the light ball from the M91/30's 730 mm barrel; not checked against a Soviet manual here",
-        "test_barrel_in": "published: the M91/30 barrel, 730 mm (28.7 in)"
-      }
+        "test_barrel_in": "published: the M91/30 barrel, 730 mm (28.7 in)",
+        "velocity_sd_fps": "estimated: surplus light ball, 25 to 40 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: about 1.5 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 30,
+      "temp_coefficient_fps_per_f": 1.5,
+      "temp_reference_f": 70
     },
     {
       "id": "ussr_762x54r_7n1",
@@ -108,8 +162,14 @@
       "test_barrel_in": 24.4,
       "provenance": {
         "muzzle_velocity_fps": "published: (secondary) a Cold War small-arms ammunition table (issuu, dellvzla), 7N1 823 m/s (2700 fps) from the SVD; modernfirearms.net gives 820 m/s. The 830 m/s often quoted belongs to the later 7N14",
-        "test_barrel_in": "published: the SVD barrel, 620 mm (24.4 in)"
-      }
+        "test_barrel_in": "published: the SVD barrel, 620 mm (24.4 in)",
+        "velocity_sd_fps": "estimated: sniper-grade production, about 15 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: about 1.5 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 15,
+      "temp_coefficient_fps_per_f": 1.5,
+      "temp_reference_f": 70
     },
     {
       "id": "federal_9mm_115_fmj",
@@ -119,8 +179,14 @@
       "test_barrel_in": 4,
       "provenance": {
         "muzzle_velocity_fps": "published: Federal AE9DP, 1180 fps",
-        "test_barrel_in": "published: Federal AE9DP, 4 in test barrel"
-      }
+        "test_barrel_in": "published: Federal AE9DP, 4 in test barrel",
+        "velocity_sd_fps": "estimated: range ammunition, 15 to 25 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: fast pistol powders, under 1 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 18,
+      "temp_coefficient_fps_per_f": 0.8,
+      "temp_reference_f": 70
     },
     {
       "id": "federal_9mm_124_fmj",
@@ -130,8 +196,14 @@
       "test_barrel_in": 4,
       "provenance": {
         "muzzle_velocity_fps": "published: Federal AE9AP, 1150 fps",
-        "test_barrel_in": "published: Federal AE9AP, 4 in test barrel"
-      }
+        "test_barrel_in": "published: Federal AE9AP, 4 in test barrel",
+        "velocity_sd_fps": "estimated: range ammunition, 15 to 25 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: fast pistol powders, under 1 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 18,
+      "temp_coefficient_fps_per_f": 0.8,
+      "temp_reference_f": 70
     },
     {
       "id": "mp5_9mm_124_fmj",
@@ -141,8 +213,14 @@
       "test_barrel_in": 8.86,
       "provenance": {
         "muzzle_velocity_fps": "published: Heckler & Koch MP5 LE brochure, 1313 fps (400 m/s; Australian Army and Maltese police data also give 400 m/s). The load is not stated: 124 gr NATO-weight ball is assumed",
-        "test_barrel_in": "published: MP5A2-A5 barrel 225 mm (8.86 in)"
-      }
+        "test_barrel_in": "published: MP5A2-A5 barrel 225 mm (8.86 in)",
+        "velocity_sd_fps": "estimated: as 124 gr range ammunition",
+        "temp_coefficient_fps_per_f": "estimated: as the pistol load",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 18,
+      "temp_coefficient_fps_per_f": 0.8,
+      "temp_reference_f": 70
     },
     {
       "id": "federal_45acp_230_fmj",
@@ -152,8 +230,14 @@
       "test_barrel_in": 5,
       "provenance": {
         "muzzle_velocity_fps": "published: Federal AE45A, 890 fps",
-        "test_barrel_in": "published: Federal AE45A, 5 in test barrel"
-      }
+        "test_barrel_in": "published: Federal AE45A, 5 in test barrel",
+        "velocity_sd_fps": "estimated: range ammunition, about 15 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: low-pressure .45 Auto loads, about 0.5 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 15,
+      "temp_coefficient_fps_per_f": 0.6,
+      "temp_reference_f": 70
     },
     {
       "id": "thompson_45acp_230",
@@ -163,8 +247,14 @@
       "test_barrel_in": 10.5,
       "provenance": {
         "muzzle_velocity_fps": "published: (secondary) Thompson submachine gun references (Wikipedia and mirrors), 935 ft/s (285 m/s)",
-        "test_barrel_in": "published: (secondary) M1A1 barrel 10.5 in (267 mm)"
-      }
+        "test_barrel_in": "published: (secondary) M1A1 barrel 10.5 in (267 mm)",
+        "velocity_sd_fps": "estimated: as the pistol load",
+        "temp_coefficient_fps_per_f": "estimated: as the pistol load",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 15,
+      "temp_coefficient_fps_per_f": 0.6,
+      "temp_reference_f": 70
     },
     {
       "id": "federal_357mag_158_jsp",
@@ -174,8 +264,14 @@
       "test_barrel_in": 4,
       "provenance": {
         "muzzle_velocity_fps": "published: Federal AE357A, 1240 fps",
-        "test_barrel_in": "published: Federal AE357A, 4 in vented test barrel (the gap of a revolver's cylinder simulated)"
-      }
+        "test_barrel_in": "published: Federal AE357A, 4 in vented test barrel (the gap of a revolver's cylinder simulated)",
+        "velocity_sd_fps": "estimated: magnum revolver loads, about 20 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: about 1 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 20,
+      "temp_coefficient_fps_per_f": 1.0,
+      "temp_reference_f": 70
     },
     {
       "id": "fn_57_ss197sr",
@@ -185,8 +281,14 @@
       "test_barrel_in": 4.8,
       "provenance": {
         "muzzle_velocity_fps": "published: FN SS197SR, 1738 fps from the Five-seveN (as FN's figures are listed by retailers)",
-        "test_barrel_in": "published: the Five-seveN's 4.8 in barrel, as stated with FN's figure"
-      }
+        "test_barrel_in": "published: the Five-seveN's 4.8 in barrel, as stated with FN's figure",
+        "velocity_sd_fps": "estimated: about 20 fps SD",
+        "temp_coefficient_fps_per_f": "estimated: about 1 fps per F",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 20,
+      "temp_coefficient_fps_per_f": 1.0,
+      "temp_reference_f": 70
     },
     {
       "id": "fn_57_ss197sr_p90",
@@ -196,8 +298,14 @@
       "test_barrel_in": 10.4,
       "provenance": {
         "muzzle_velocity_fps": "estimated: 1885 fps, linear between FN's published 1738 fps from the 4.8 in Five-seveN and 2034 fps from the 16.04 in PS90 at the P90's 10.4 in",
-        "test_barrel_in": "published: FN P90 technical data, 264 mm (10.4 in) barrel"
-      }
+        "test_barrel_in": "published: FN P90 technical data, 264 mm (10.4 in) barrel",
+        "velocity_sd_fps": "estimated: as the pistol figure",
+        "temp_coefficient_fps_per_f": "estimated: as the pistol figure",
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+      },
+      "velocity_sd_fps": 20,
+      "temp_coefficient_fps_per_f": 1.0,
+      "temp_reference_f": 70
     }
   ]
 }

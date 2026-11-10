@@ -20,6 +20,7 @@
 #include "bd/spin.hpp"
 #include "bd/wake.hpp"
 #include "bd/units.hpp"
+#include "bd/variation.hpp"
 
 #define BD_EXPORT extern "C" __attribute__((visibility("default")))
 
@@ -48,6 +49,12 @@ struct Sim {
     Real twist = 0;          // m per turn, signed; 0: no spin
     Real latitude = 0;       // rad
     int flags = 0;           // 1 spin, 2 Earth rotation
+    // Milestone 4 (bd_powder, bd_group): the powder's temperature (K, 0: the
+    // published velocity) and the rifle's mean 5-shot group (MOA, 0: none).
+    Real powder = 0;
+    Real group = 0;
+    RoundDraw lastDraw;
+    Real lastSpeed = 0;
     std::string text;
     std::vector<double> sample;
     std::vector<float> wake;
@@ -74,6 +81,16 @@ const AirSource* flightAir() {
 }
 
 PointMassOptions physicsFor(const ProjectileDef& p, Real muzzleSpeed);
+
+// The cartridge's variation: its velocity spread and temperature, its
+// bullet's BC spread, and the set rifle group.
+VariationModel variationOf(const CartridgeDef& c, const ProjectileDef& p) {
+    VariationModel m = variationFor(c, p, nullptr);
+    if (sim().group > 0) m.angleSd = units::moa(sim().group) / kFiveShotSpreadPerSigma;
+    return m;
+}
+// The muzzle velocity at the set powder temperature.
+Real powderSpeed(const CartridgeDef& c, const ProjectileDef& p) { return muzzleSpeedAt(c, variationOf(c, p), sim().powder); }
 
 // The drag model of cartridge i (its preferred model: own curve, G7, G1).
 bool cartridgeModel(int i, DragModel& drag, const CartridgeDef*& c, const ProjectileDef*& p) {
@@ -309,35 +326,100 @@ BD_EXPORT double bd_zero(int cartridge, double zeroRange, double sightHeight) {
     return zeroElevation(s, *sim().air);
 }
 
-// Fires cartridge i from (x, y, z) ENU along azimuth / elevation (rad) at
-// engine time t0, keeping its trace for bullet-time replay. Returns the new
-// round's id (from 1; 0 if it cannot fire) and selects it: bd_advance,
-// bd_round, bd_nose_at, bd_state_at and bd_wake read the selected round. Any
-// number of rounds can be in flight at once (bd_select, bd_release).
-BD_EXPORT int bd_fire(int cartridge, double x, double y, double z, double azimuth, double elevation, double t0) {
+namespace {
+int fire(int cartridge, double x, double y, double z, double azimuth, double elevation, double t0, std::uint64_t seed,
+         std::uint64_t stream) {
     DragModel drag;
     const CartridgeDef* c;
     const ProjectileDef* p;
     if (!cartridgeModel(cartridge, drag, c, p)) return 0;
+    Sim& S = sim();
+    S.lastDraw = seed ? drawRound(variationOf(*c, *p), seed, stream) : RoundDraw{};
+    S.lastSpeed = powderSpeed(*c, *p) + S.lastDraw.velocityOffset;
     Launch l;
     l.position = {x, y, z};
-    l.direction = frames::directionFromAzEl(azimuth, elevation);
-    l.muzzleSpeed = c->muzzleVelocity;
+    l.direction = thrownDirection(frames::directionFromAzEl(azimuth, elevation), S.lastDraw);
+    l.muzzleSpeed = S.lastSpeed;
     l.time = t0;
     flightAir();
-    PointMassOptions o = physicsFor(*p, c->muzzleVelocity);
+    PointMassOptions o = physicsFor(*p, S.lastSpeed);
     o.keepTrace = true;
     o.maxTime = 15.0;
-    Sim& S = sim();
     Flight f;
     f.air = S.air;
     f.wind = S.wind;
-    f.round = std::make_unique<PointMassRound>(drag, *flightAir(), l, o);
+    f.round = std::make_unique<PointMassRound>(drag.scaledBc(S.lastDraw.bcFactor), *flightAir(), l, o);
     const int id = S.nextId++;
     S.flights.emplace(id, std::move(f));
     if (S.flights.size() > kMaxFlights) S.flights.erase(S.flights.begin());
     S.current = id;
     return id;
+}
+}  // namespace
+
+// Fires cartridge i from (x, y, z) ENU along azimuth / elevation (rad) at
+// engine time t0, keeping its trace for bullet-time replay, at the powder's
+// velocity (bd_powder). Returns the new round's id (from 1; 0 if it cannot
+// fire) and selects it: bd_advance, bd_round, bd_nose_at, bd_state_at and
+// bd_wake read the selected round. Any number of rounds can be in flight at
+// once (bd_select, bd_release). Every round of a load is the same round;
+// bd_fire_round draws each its own.
+BD_EXPORT int bd_fire(int cartridge, double x, double y, double z, double azimuth, double elevation, double t0) {
+    return fire(cartridge, x, y, z, azimuth, elevation, t0, 0, 0);
+}
+
+// Milestone 4: as bd_fire, with this round's own draw from stream (seed,
+// stream): its muzzle velocity, BC and the barrel's throw (the load's
+// spreads and the bd_group rifle). seed 0: no draw. seed and stream are
+// integers up to 2^53 (exact in a double); the same pair gives the same
+// round on every machine.
+BD_EXPORT int bd_fire_round(int cartridge, double x, double y, double z, double azimuth, double elevation, double t0,
+                            double seed, double stream) {
+    return fire(cartridge, x, y, z, azimuth, elevation, t0, static_cast<std::uint64_t>(seed), static_cast<std::uint64_t>(stream));
+}
+
+// The powder's temperature (K) for the calls that follow: bd_fire, and the
+// flights of bd_table and bd_spread (their zero stays at the published
+// velocity, the zeroing day's). 0: the published velocity.
+BD_EXPORT void bd_powder(double temperature) { sim().powder = temperature > 0 ? temperature : 0; }
+
+// The rifle's mean 5-shot group (MOA) for bd_fire_round and bd_spread; 0: none.
+BD_EXPORT void bd_group(double moa) { sim().group = moa > 0 ? moa : 0; }
+
+// The last fired round's draw: muzzle velocity (m/s, as it left), its
+// velocity offset (m/s), BC factor, the barrel's throw up and right (rad).
+BD_EXPORT const double* bd_last_draw() {
+    Sim& S = sim();
+    S.sample = {S.lastSpeed, S.lastDraw.velocityOffset, S.lastDraw.bcFactor, S.lastDraw.up, S.lastDraw.right};
+    return S.sample.data();
+}
+
+// The spread of impacts at `range` for cartridge i zeroed at zeroRange (the
+// set physics, station air and wind, firing along `azimuth`): standard
+// deviations (m) vertical, horizontal, and the vertical from the velocity,
+// the BC and the barrel.
+BD_EXPORT const double* bd_spread(int cartridge, double zeroRange, double sightHeight, double range, double azimuth) {
+    Sim& S = sim();
+    S.sample.assign(5, 0.0);
+    DragModel drag;
+    const CartridgeDef* c;
+    const ProjectileDef* p;
+    if (!cartridgeModel(cartridge, drag, c, p)) return S.sample.data();
+    flightAir();
+    RangeSetup s;
+    s.drag = drag;
+    s.muzzleSpeed = c->muzzleVelocity;
+    s.mass = p->mass;
+    s.sightHeight = sightHeight;
+    s.zeroRange = zeroRange;
+    s.azimuth = azimuth;
+    s.physics = physicsFor(*p, c->muzzleVelocity);
+    const Real e = zeroElevation(s, *S.air);
+    s.muzzleSpeed = powderSpeed(*c, *p);
+    s.physics = physicsFor(*p, s.muzzleSpeed);
+    const Spread sp = spreadAt(s, *flightAir(), e, range, variationOf(*c, *p));
+    S.sample = {sp.vertical, sp.horizontal, sp.fromVelocity, sp.fromBc, sp.fromBarrel};
+    return S.sample.data();
 }
 
 // Selects round `id` for the round calls. 1 if it exists.
@@ -427,6 +509,9 @@ BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeig
         s.azimuth = azimuth;
         s.physics = physicsFor(*p, c->muzzleVelocity);
         const Real e = zeroElevation(s, *sim().air);
+        // Zeroed at the published velocity; flown at the powder's (bd_powder).
+        s.muzzleSpeed = powderSpeed(*c, *p);
+        s.physics = physicsFor(*p, s.muzzleSpeed);
         s.time = std::isfinite(t0) ? t0 : 0.0;
         std::vector<Real> ranges;
         for (Real r = 0; r <= maxRange + 1e-9; r += step) ranges.push_back(r);

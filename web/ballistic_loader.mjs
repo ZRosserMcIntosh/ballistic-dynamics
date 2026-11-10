@@ -76,6 +76,12 @@ export default async function createBallisticModule(wasmBytes) {
     const a = new Float32Array(memory.buffer, p + 4, n * 7).slice();
     return a;
   };
+  // Milestone 4: the last round's draw, and the spread of impacts at a range.
+  B.lastDraw = () => { const a = new Float64Array(memory.buffer, ex.bd_last_draw(), 5); return { speed: a[0], velocityOffset: a[1], bcFactor: a[2], up: a[3], right: a[4] }; };
+  B.spread = (cartridge, zeroRange, sightHeight, range, azimuth = 0) => {
+    const a = new Float64Array(memory.buffer, ex.bd_spread(cartridge, zeroRange, sightHeight, range, azimuth), 5);
+    return { vertical: a[0], horizontal: a[1], fromVelocity: a[2], fromBc: a[3], fromBarrel: a[4] };
+  };
   B.noseAt = (t) => Array.from(new Float64Array(memory.buffer, ex.bd_nose_at(t), 3));
   // Bullet time: the round at any engine time it has already flown, smooth between steps.
   B.stateAt = (t) => {
