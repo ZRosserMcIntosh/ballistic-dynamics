@@ -50,6 +50,14 @@ DragModel DragModel::bullet(const DragTable& curve, Real mass, Real diameter) {
     return d;
 }
 
+DragModel DragModel::scaledBc(Real k) const {
+    DragModel d = *this;
+    if (!(k > 0)) return d;
+    for (Real& v : d.bc_.values) v *= k;
+    d.curveFactor_ /= k;
+    return d;
+}
+
 Real DragModel::bcAt(Real speed) const {
     if (kind_ != Kind::StandardBc) return 0;
     for (std::size_t i = 0; i < bc_.values.size(); ++i)

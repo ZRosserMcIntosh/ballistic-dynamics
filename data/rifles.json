@@ -11,8 +11,10 @@
       "provenance": {
         "twist_in": "published: American Rifleman, The Remington M24 Sniper Weapon System (2016): 5R rifling, one turn in 11.25 in, right hand",
         "barrel_in": "published: American Rifleman (2016), 24 in free-floated barrel",
-        "sight_height_in": "estimated: a 30 mm tube scope in low rings over a Remington 700 action sits about 1.5 to 2 in above the bore"
-      }
+        "sight_height_in": "estimated: a 30 mm tube scope in low rings over a Remington 700 action sits about 1.5 to 2 in above the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of the M24 with M118 match is held to about 1 MOA; the gun and its load, not the shooter"
+      },
+      "group_moa": 0.9
     },
     {
       "id": "bolt_65cm",
@@ -24,8 +26,10 @@
       "provenance": {
         "twist_in": "published: SAAMI Z299.4 6.5 Creedmoor drawing, 1 turn in 8 in",
         "barrel_in": "estimated: 24 in, the length Hornady quotes its 6.5 Creedmoor velocities from",
-        "sight_height_in": "estimated: a 30 mm scope in medium rings, 1.5 to 2 in over the bore"
-      }
+        "sight_height_in": "estimated: a 30 mm scope in medium rings, 1.5 to 2 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a good factory bolt gun with match ammunition; the gun and its load, not the shooter"
+      },
+      "group_moa": 0.6
     },
     {
       "id": "bolt_338lm",
@@ -37,8 +41,10 @@
       "provenance": {
         "twist_in": "published: C.I.P. TDCC .338 Lapua Magnum, twist 254 mm (1 in 10 in)",
         "barrel_in": "estimated: 27 in, typical of .338 LM sniper rifles (AI AWM, Sako TRG-42)",
-        "sight_height_in": "estimated: a 34 mm scope on a 20 MOA rail, about 2 in over the bore"
-      }
+        "sight_height_in": "estimated: a 34 mm scope on a 20 MOA rail, about 2 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a .338 LM precision rifle with match ammunition; the gun and its load, not the shooter"
+      },
+      "group_moa": 0.7
     },
     {
       "id": "m107_50bmg",
@@ -50,8 +56,10 @@
       "provenance": {
         "twist_in": "published: C.I.P. TDCC 12.7x99 / .50 BMG, twist 381 mm (1 in 15 in)",
         "barrel_in": "published: Barrett M82A1 / M107, 29 in barrel",
-        "sight_height_in": "estimated: a large scope over the M107's rail, about 2.5 in over the bore"
-      }
+        "sight_height_in": "estimated: a large scope over the M107's rail, about 2.5 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a semi-automatic .50 with match ammunition, 1 to 2 MOA; the gun and its load, not the shooter"
+      },
+      "group_moa": 1.5
     },
     {
       "id": "m16a2",
@@ -63,8 +71,10 @@
       "provenance": {
         "twist_in": "published: M16A2 / M4 barrels are rifled 1 turn in 7 in for the M855",
         "barrel_in": "published: M16A2 20 in barrel",
-        "sight_height_in": "estimated: an optic on a flat-top AR sits about 2.6 in over the bore"
-      }
+        "sight_height_in": "estimated: an optic on a flat-top AR sits about 2.6 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of an M16A2 with M855 ball, 2 to 4 MOA; the gun and its load, not the shooter"
+      },
+      "group_moa": 2.5
     },
     {
       "id": "pistol_9mm",
@@ -76,8 +86,10 @@
       "provenance": {
         "twist_in": "published: SAAMI 9 mm Luger, 1 turn in 10 in",
         "barrel_in": "published: Speer quotes 23618GD from a 4 in test barrel",
-        "sight_height_in": "estimated: iron sights about 0.5 in over the bore of a service pistol"
-      }
+        "sight_height_in": "estimated: iron sights about 0.5 in over the bore of a service pistol",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a service pistol from a machine rest, about 1.5 in at 25 yd; the gun and its load, not the shooter"
+      },
+      "group_moa": 6
     },
     {
       "id": "m200_408",
@@ -89,8 +101,10 @@
       "provenance": {
         "twist_in": "published: .408 CheyTac rifling 1 turn in 13 in (330.2 mm)",
         "barrel_in": "published: CheyTac M200, 29 in barrel",
-        "sight_height_in": "estimated: a large tactical scope on the M200's raised rail, about 2.4 in over the bore"
-      }
+        "sight_height_in": "estimated: a large tactical scope on the M200's raised rail, about 2.4 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of CheyTac claims sub-MOA for the M200 with its ammunition; the gun and its load, not the shooter"
+      },
+      "group_moa": 0.6
     },
     {
       "id": "m9130_pu",
@@ -102,8 +116,10 @@
       "provenance": {
         "twist_in": "published: Mosin–Nagant rifling 1 turn in 240 mm (9.45 in)",
         "barrel_in": "published: M91/30 barrel 730 mm (28.7 in)",
-        "sight_height_in": "estimated: the PU on its side mount, centred over the bore about 1.9 in up"
-      }
+        "sight_height_in": "estimated: the PU on its side mount, centred over the bore about 1.9 in up",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a Mosin sniper with surplus light ball, about 2 MOA; the gun and its load, not the shooter"
+      },
+      "group_moa": 2.0
     },
     {
       "id": "svd_pso1",
@@ -115,8 +131,115 @@
       "provenance": {
         "twist_in": "published: SVD rifling 1 turn in 240 mm (9.45 in) since 1975 (320 mm before)",
         "barrel_in": "published: SVD barrel 620 mm (24.4 in)",
-        "sight_height_in": "estimated: the PSO-1 on the left side rail, about 2.7 in over the bore (its small offset to the left is not modelled)"
-      }
+        "sight_height_in": "estimated: the PSO-1 on the left side rail, about 2.7 in over the bore (its small offset to the left is not modelled)",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of an SVD with 7N1, about 1 to 1.5 MOA; the gun and its load, not the shooter"
+      },
+      "group_moa": 1.5
+    },
+    {
+      "id": "glock_17",
+      "name": "Glock 17 (9 mm)",
+      "twist_in": 9.84,
+      "twist_direction": "right",
+      "barrel_in": 4.49,
+      "sight_height_in": 0.75,
+      "provenance": {
+        "twist_in": "published: (secondary) a factory-pattern G17 barrel listing (Midwest Gun Works): hexagonal right-hand rifling, 250 mm (9.84 in); not checked against Glock's own sheet",
+        "barrel_in": "published: Glock 17, 114 mm (4.49 in) barrel",
+        "sight_height_in": "estimated: the top of the factory sights about 0.75 in over the bore axis",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a Glock 17 from a machine rest, about 1.5 in at 25 yd; the gun and its load, not the shooter"
+      },
+      "group_moa": 6
+    },
+    {
+      "id": "colt_1911",
+      "name": "Colt 1911 Government (.45 ACP)",
+      "twist_in": 16,
+      "twist_direction": "left",
+      "barrel_in": 5,
+      "sight_height_in": 0.7,
+      "provenance": {
+        "twist_in": "published: (secondary) 5 in Government .45 barrels, 1 turn in 16 in, left hand (Nighthawk Custom's drop-in barrel); Colt's own rifling is left-hand by tradition, not checked against a Colt sheet",
+        "barrel_in": "published: 1911 Government Model, 5 in barrel",
+        "sight_height_in": "estimated: GI-pattern sights about 0.7 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a Government Model from a machine rest, about 1.25 in at 25 yd; the gun and its load, not the shooter"
+      },
+      "group_moa": 5
+    },
+    {
+      "id": "sw_686",
+      "name": "Smith & Wesson 686, 4 in (.357 Magnum)",
+      "twist_in": 18.75,
+      "twist_direction": "right",
+      "barrel_in": 4,
+      "sight_height_in": 0.75,
+      "provenance": {
+        "twist_in": "estimated: 1 turn in 18.75 in, right hand, the twist Smith & Wesson revolvers in .357 are commonly listed with; not checked against S&W's sheet",
+        "barrel_in": "published: the 686's 4 in barrel (Federal's 4 in vented test barrel matches it)",
+        "sight_height_in": "estimated: the ramp front and adjustable rear about 0.75 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a 4 in revolver from a machine rest, about 1.25 in at 25 yd; the gun and its load, not the shooter"
+      },
+      "group_moa": 5
+    },
+    {
+      "id": "fn_fiveseven",
+      "name": "FN Five-seveN (5.7x28 mm)",
+      "twist_in": 9.1,
+      "twist_direction": "right",
+      "barrel_in": 4.8,
+      "sight_height_in": 0.7,
+      "provenance": {
+        "twist_in": "estimated: 1 turn in 231 mm (9.1 in), right hand, the P90's published twist for the same cartridge; the pistol's own figure was not found",
+        "barrel_in": "published: FN Five-seveN, 4.8 in barrel (as stated with FN's SS197SR velocity)",
+        "sight_height_in": "estimated: about 0.7 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of about 1.25 in at 25 yd from a rest; the gun and its load, not the shooter"
+      },
+      "group_moa": 5
+    },
+    {
+      "id": "mp5a3",
+      "name": "Heckler & Koch MP5A3 (9 mm)",
+      "twist_in": 10,
+      "twist_direction": "right",
+      "barrel_in": 8.86,
+      "sight_height_in": 1.4,
+      "provenance": {
+        "twist_in": "published: H&K MP5 LE brochure: six grooves, right hand; 1 turn in 254 mm (10 in) (other references round it to 250 mm)",
+        "barrel_in": "published: MP5A2-A5, 225 mm (8.86 in)",
+        "sight_height_in": "estimated: the drum rear and hooded front post about 1.4 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of the closed-bolt MP5 from a rest, about 3 MOA; the gun and its load, not the shooter"
+      },
+      "group_moa": 3
+    },
+    {
+      "id": "fn_p90",
+      "name": "FN P90 (5.7x28 mm)",
+      "twist_in": 9.1,
+      "twist_direction": "right",
+      "barrel_in": 10.4,
+      "sight_height_in": 1.5,
+      "provenance": {
+        "twist_in": "published: FN P90, 1 turn in 231 mm (9.1 in), right hand (FN America lists 1:9 in)",
+        "barrel_in": "published: FN P90 technical data, 264 mm (10.4 in)",
+        "sight_height_in": "estimated: the integral ring reflex sight about 1.5 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of the P90 from a rest, about 3 MOA; the gun and its load, not the shooter"
+      },
+      "group_moa": 3
+    },
+    {
+      "id": "thompson_m1a1",
+      "name": "Thompson M1A1 (.45 ACP)",
+      "twist_in": 16,
+      "twist_direction": "right",
+      "barrel_in": 10.5,
+      "sight_height_in": 1.1,
+      "provenance": {
+        "twist_in": "estimated: 1 turn in 16 in, right hand, as Auto-Ordnance's Thompson-pattern carbines are rifled; the wartime M1A1's figure was not found",
+        "barrel_in": "published: (secondary) M1A1 barrel 10.5 in (267 mm)",
+        "sight_height_in": "estimated: the fixed L-shaped rear aperture about 1.1 in over the bore",
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of an open-bolt Thompson, about 6 MOA; the gun and its load, not the shooter"
+      },
+      "group_moa": 6
     }
   ]
 }

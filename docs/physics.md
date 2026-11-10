@@ -202,17 +202,61 @@ r½(x) = a θ (x/θ)^(1/3)        u₀/U = b (x/θ)^(−2/3)
 so a trace widens as the cube root of its age and fades as its two-thirds
 power. The width coefficient a = 0.6 is estimated at the order of measured
 values; b follows from momentum (a Gaussian deficit profile carrying the
-drag needs a²b = ln 2, so b = 1.93). **Main gap:** a itself is estimated; the
-near wake (the first ~15–20 diameters, until the far-wake width passes the
-bullet's) is held at the bullet's radius; the trace's optical strength is
-taken as proportional to the velocity deficit, not computed from the
-temperature and density in the wake; no wake vortex shedding or spin swirl;
-the wind carrying it is sampled now at where it was shed.
+drag needs a²b = ln 2, so b = 1.93).
 
-## 5. Every round unique — not started (Milestone 4)
+**What bends the light** is the wake's heat, not its slowness. The drag's
+work stays in the wake as heat (ρ c_p ∫ΔT dA = D per metre, as
+ρ U ∫u dA = D carries its momentum), so with the same profile the centreline
+excess is
 
-Lot muzzle velocity and spread, powder temperature, barrel length, cold
-bore; BC spread, imbalance, barrel vibration; scope, cant and the solver.
+```
+ΔT/T = (u₀/U) (γ − 1) M²          index = ΔT/T · ρ / 1.225
+```
+
+and the refractive index there falls by `index` × 2.9e-4 (n − 1 scales with
+density). A fast round's wake is far hotter for its momentum: ΔT/T is 2.1×
+the deficit for a .308 at Mach 2.3, 0.4× for a 9 mm at Mach 1, 0.26× for a
+.45 at Mach 0.8. Above Mach 1 the shocks carry the wave drag off as sound
+(the crack); the wake is given only the drag the shape has at Mach 0.8
+(friction and base, estimated), C_D(0.8)/C_D(M) of it: about 0.4 for a
+boat-tail at Mach 2.3.
+
+**Main gap:** a and the wake's subsonic share of the drag are estimated;
+the near wake (the first ~15–20 diameters, until the far-wake width passes
+the bullet's) is held at the bullet's radius; the heat is taken to have the
+deficit's profile; the shock waves' own (small, short-range) refraction is
+not in the wake; no wake vortex shedding, spin swirl, buoyancy, or shredding
+by the air's own turbulence; the wind carrying it is sampled now at where it
+was shed.
+
+## 5. Every round unique (Milestone 4, in part)
+
+`bd/variation.hpp`. Each round draws its own muzzle velocity, BC and barrel
+throw from its own seeded stream (seed, stream), so the same pair is the
+same round on every machine (a shared link, a duel):
+
+```
+v0    = v_published + k (T_powder − T_reference) + σ_v z1
+BC    = BC_published (1 + σ_BC z2)
+bore += (σ_a z3 up, σ_a z4 right),   σ_a = group / 3.08
+```
+
+z1..z4 independent standard normals, always drawn in that order (switching
+one cause off leaves the others' draws alone). σ_a comes from the rifle's
+mean 5-shot group: for a circular normal the expected 5-shot extreme spread
+is 3.08 σ (Grubbs). The zero stays at the published velocity (the zeroing
+day); the powder's temperature moves the flight. `spreadAt` gives the
+spread of impacts at a range by cause, linearised (a second flight with v0
++1 m/s, another with the BC +1 %, and the throw times the range): for a .308
+175 SMK at 1,000 yd with 12 fps, 0.75 % BC and a 0.75 MOA rifle it predicts
+6.83 in vertical and 2.55 in horizontal, and 400 flown rounds give 6.81 and
+2.58 (`tests/test_variation.cpp`).
+
+**Main gap:** every spread figure in the library is estimated (makers do not
+publish them); the throw is a circular normal (no barrel-harmonic vertical
+stringing, no cold-bore shot, no heating string); no lateral throw from
+bullet imbalance beyond the rifle's group; the scope (cant, parallax,
+tracking error) and the solver API are still to come.
 
 ## 6. Materials — not started (Milestone 5)
 

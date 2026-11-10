@@ -16,8 +16,10 @@ engine flies through) and **OpenRoad Dynamics** (vehicles).
 deterministic maths, the data library, the browser build, the point-mass
 trajectory (G1/G7 drag, zeroing, range cards, bullet-time interpolation),
 and spin (Miller stability, spin drift, aerodynamic jump, the wobble,
-tumbling) with Coriolis and Eötvös are in. **Not yet:** dynamic (transonic)
-stability, per-round variation (Milestone 4) and materials (5).
+tumbling) with Coriolis and Eötvös are in, and every round is its own
+(Milestone 4: velocity spread and powder temperature, BC spread, the
+barrel's throw, seeded per round). **Not yet:** dynamic (transonic)
+stability, scope cant and the solver API (the rest of 4) and materials (5).
 The [roadmap](docs/roadmap.md) has the rest, and nothing beyond what is
 listed here is claimed.
 
@@ -25,18 +27,18 @@ listed here is claimed.
 
 | Area | What is implemented | Evidence |
 |---|---|---|
-| Point mass | The round in the world frame with drag from the BRL G1 or G7 table scaled by its (stepped) BC, or its own C_D(Mach); air and wind sampled along the path at every Runge-Kutta stage; zeroing and range cards (drop, drift, time, speed, energy, Mach) | `tests/test_point_mass.cpp`: six cartridges (.308 175 SMK, 6.5 CM 140 ELD-M, .338 LM 250 Scenar, .50 BMG 750 A-MAX, 5.56 M855, 9 mm 124 Gold Dot) agree with an independent solver to 0.06 % in drop, and with published figures to within 0.05 in to +4 % ([validation](docs/validation.md)) |
+| Point mass | The round in the world frame with drag from the BRL G1 or G7 table scaled by its (stepped) BC, or its own C_D(Mach); air and wind sampled along the path at every Runge-Kutta stage; zeroing and range cards (drop, drift, time, speed, energy, Mach) | `tests/test_point_mass.cpp`: six cartridges (.308 175 SMK, 6.5 CM 140 ELD-M, .338 LM 250 Scenar, .50 BMG 750 A-MAX, 5.56 M855, 9 mm 124 Gold Dot) agree with an independent solver to 0.06 % in drop, and with published figures to within 0.05 in to +4 %; Federal's 9 mm, .45 Auto and .357 Magnum velocity charts to 0.4 % ([validation](docs/validation.md)) |
 | Spin and the Earth | Miller's stability with its velocity and air corrections, then Sg ∝ p²/(ρV²C_mα) downrange; the yaw of repose and its lift (spin drift); Litz's aerodynamic jump from a crosswind; the epicyclic wobble for drawing; tumbling below Sg 1; Coriolis and Eötvös at any latitude and direction of fire | `tests/test_spin.cpp`: spin drift 0.79–0.98 of Litz's measured-data formula for five rifle loads without tuning; Coriolis against closed forms and the integrated lateral equation to 0.3 % |
 | Bullet time | The state at any instant of the flight, smooth between the 1 ms steps (cubic Hermite, within 20 µm of a 20× finer run), so a camera can follow the round at 1/1000 speed with the same physics ([bullet-time.md](docs/bullet-time.md)) | `tests/test_point_mass.cpp`, `web/smoke_test.mjs` |
 | Air | Aviation Dynamics' U.S. Standard Atmosphere 1976 with temperature and pressure deviations and humidity (moist density from the virtual temperature, speed of sound, density altitude) and its wind and turbulence field, compiled unchanged from a pinned submodule behind a host-facing `AirSource` interface ([ADR 0003](docs/decisions/0003-atmosphere-source.md)). A shooter's station reading (pressure, temperature, humidity, elevation) becomes Aviation's conditions exactly | `tests/test_air.cpp` |
 | Wind on the range | Layers by distance along the line of fire with seeded gusts and blended joins, over any air; the shooter's call and the true wind as two sources | `tests/test_air.cpp` |
 | Clock | Fixed 1 ms steps counted as integers, RK4; the host's frame rate does not change the result ([ADR 0002](docs/decisions/0002-fixed-step-rk4.md)) | `tests/test_foundations.cpp` (60 Hz, 144 Hz, one call and a jittery host end bit-identical) |
 | Determinism | Elementary functions on correctly rounded operations only (fdlibm's algorithms), no FMA contraction, seeded xoshiro256** streams per round; golden hashes of the maths and of a whole trajectory that every platform must reproduce ([ADR 0004](docs/decisions/0004-determinism.md)) | `tests/test_foundations.cpp`, `tests/test_point_mass.cpp`, `web/smoke_test.mjs` |
-| Data | JSON library of drag curves, projectiles, cartridges and rifles; units in the field names; a `published:` / `measured:` / `estimated:` note required for every number ([data-format.md](docs/data-format.md)) | `tests/test_data.cpp` |
+| Data | JSON library of drag curves, projectiles, cartridges and guns (rifles, and since this round handguns and sub-machine guns: Glock 17, 1911, S&W 686, Five-seveN, MP5, P90, Thompson); units in the field names; a `published:` / `measured:` / `estimated:` note required for every number ([data-format.md](docs/data-format.md)) | `tests/test_data.cpp` |
 | Frames | SI inside; ENU world as Aviation's; line of fire x downrange, y left, z up (ISO 8855's order, as OpenRoad) ([ADR 0001](docs/decisions/0001-frames-and-units.md)) | `tests/test_foundations.cpp` |
 | Browser | WebAssembly build (wasi-sdk 25, no exceptions or RTTI, 230 KB) with a C ABI: the air, wind layers, zeroing, firing, bullet-time state, range cards; Node smoke test | `web/`, `web/smoke_test.mjs` |
 
-40 test cases, on Linux (gcc, clang, sanitizers), macOS, Windows and WASM in
+48 test cases, on Linux (gcc, clang, sanitizers), macOS, Windows and WASM in
 CI. What each scenario gives against its reference is in
 [docs/validation.md](docs/validation.md); how far each model goes, and its main
 gap, in [docs/physics.md](docs/physics.md) and the
@@ -51,7 +53,7 @@ git clone --recurse-submodules https://github.com/ZRosserMcIntosh/ballistic-dyna
 # or, in an existing clone: git submodule update --init
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build
-./build/tests/bd_tests                  # 40 test cases
+./build/tests/bd_tests                  # 48 test cases
 ./build/tests/bd_tests "point mass"     # a filter
 BD_VERBOSE=1 ./build/tests/bd_tests validation   # the comparison tables
 ./build/bdemo list                      # the data library, with provenance

@@ -34,10 +34,16 @@ const card = B.table(cartridgeIndex, 91.44, 0.0381, 914.4, 91.44);  // range car
 | `bd_error_text(i)` | error i |
 | `bd_catalog()` | the library as JSON, SI values, provenance per field |
 | `bd_station(p, T, RH, alt)` | sets the air from a station reading (clears the wind); rounds already fired keep the air they were fired into |
+| `bd_wake(t, spacing, maxAge, mass, diameter)` (`B.wake`) | the selected round's trace at engine time t: 7 floats per stretch, x, y, z (ENU), half-width (m), velocity deficit, age (s), and the refractive-index change in sea-level n − 1 (its heat: the optical strength) |
 | `bd_air(x, y, z, t)` | 9 doubles: pressure, temperature, density, speed of sound, relative humidity, density altitude, wind east, north, up (the layers and gusts set by `bd_wind`) |
 | `bd_wind(azimuth, n)` (`B.wind`) | wind layers along the line of fire: n quadruples (from range m, speed m/s, from bearing rad, gust RMS m/s) in the text buffer; for rounds fired after it |
 | `bd_zero(i, zeroRange, sightHeight)` | the bore elevation (rad) that zeroes cartridge i, in the station's still air |
 | `bd_fire(i, x, y, z, azimuth, elevation, t0)` | fires cartridge i (its preferred drag model) at engine time t0, keeping the trace; returns the round's id (from 1; 0 if it cannot fire) and selects it |
+| `bd_fire_round(i, x, y, z, azimuth, elevation, t0, seed, stream)` | as `bd_fire`, with this round's own draw (velocity, BC, barrel throw) from stream (seed, stream): the same pair is the same round everywhere; seed 0, no draw |
+| `bd_powder(T)` | the powder's temperature (K) for the flights that follow (`bd_fire`, `bd_fire_round`, and the flights of `bd_table` and `bd_spread`; zeros stay at the published velocity); 0: as published |
+| `bd_group(moa)` | the rifle's mean 5-shot group for `bd_fire_round` and `bd_spread`; 0: none |
+| `bd_last_draw()` (`B.lastDraw`) | 5 doubles: the last round's muzzle velocity, its velocity offset, BC factor, throw up and right (rad) |
+| `bd_spread(i, zeroRange, sightHeight, range, azimuth)` (`B.spread`) | standard deviations (m) at a range: vertical, horizontal, and the vertical from the velocity, the BC and the barrel |
 | `bd_select(id)` | selects round `id` for `bd_advance`, `bd_round`, `bd_nose_at`, `bd_state_at` and `bd_wake`; 1 if it exists. Any number of rounds fly at once, each exactly as it would alone |
 | `bd_release(id)` | frees round `id` (0: all). Past 256 rounds the oldest is released |
 | `bd_advance(t, maxSteps)` | whole 1 ms steps up to engine time t |
