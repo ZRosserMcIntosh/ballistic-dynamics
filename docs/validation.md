@@ -172,6 +172,53 @@ per bullet (Doppler or spark-range data) would.
 | Firing north, 3 m/s from the west to 400 m, 5 m/s from the east after | +3 m/s east at 100 m; −5 m/s at 700 m; halfway (−1) at 400 m; full values 10 m either side | as expected, continuous through the join |
 | Gusting layer, 6 m/s with 1.5 m/s RMS | mean 6, RMS 1.5 over a long record; same seed same bits | within ± 0.15 of both; identical per seed, different between seeds |
 
+## The shooter layer (ADR 0005)
+
+`BD_VERBOSE=1 ./build/tests/bd_tests shooter` (Linux, gcc), and `bdemo shoot`.
+
+**Free recoil.** The guns with shooter data and the loads they are paired with
+in the tests. Charges and masses are estimated (data/), and the gas speed is
+the free-recoil convention.
+
+| Gun | Load | p (N s) | V (m/s) | E (ft lb) | Commonly quoted | Kick, standing (deg/s per shot) |
+|---|---|---|---|---|---|---|
+| M16A2 | 5.56 XM855 | 6.11 | 1.53 | 3.45 | about 3–4.5 for an AR-15 | 11.0 |
+| MP5A3 | 9 mm 124 gr | 3.66 | 1.09 | 1.47 | a pistol-calibre carbine: 1–2 | 14.9 |
+| P90 | 5.7×28 SS197SR | 1.99 | 0.66 | 0.49 | under 1 | 13.5 |
+| Thompson M1A1 | .45 ACP 230 gr | 4.68 | 0.90 | 1.55 | a heavy .45 carbine: 1–2 | 27.4 |
+| Glock 17 | 9 mm 124 gr GD | 3.29 | 3.63 | 4.40 | about 4–5 for a service 9 mm | 28.2 |
+| 1911 | .45 Auto 230 gr | 4.48 | 3.59 | 5.93 | about 5–7 for a steel .45 | 46.2 |
+| M24 | .308 175 gr | 12.98 | 1.81 | 8.67 | about 9–11 for a heavy .308 bolt gun | 26.3 |
+| SVD | 7N1 | 12.42 | 2.74 | 12.53 | about 11–14 | 26.1 |
+| M107 | .50 BMG 750 gr | 63.12 | 4.35 | 101 | about 100 unbraked; the M107's brake takes a large share, not modelled | 33.6 |
+
+The "commonly quoted" column is the range free-recoil tables give for the
+class. It was not checked against a particular table from the build
+environment, and that check is an open item. The test holds the energies to
+those bands: 3–4.5 ft lb for the M16A2, 7–14 for the M24, 80–120 for the
+unbraked M107.
+
+**The kick.**
+
+| Check | Expected | Engine |
+|---|---|---|
+| One M24 shot at the sight, standing | rise `ω0²/2a` at `ω0/a` (constant pull) | 18.9°/s gives 1.20° at 126 ms, within 2 % and 3 ms of the closed form; back on the aim, never below it |
+| The braced first shot, the next at 75 ms | `1 − 0.3` and `1 − 0.3 × 75/350` of the base, times the draw | to 1e-12 |
+| From the hip | `hip_kick` times the shouldered kick | to 1e-12 |
+| M16A2 three-round burst (`bdemo shoot`) | climbs and settles | about 0.37°, back on the aim in about 470 ms |
+
+**The weapon on the clock.**
+
+| Check | Expected | Engine |
+|---|---|---|
+| Thompson at 700 rpm, 6 s held, at 60 Hz, 144 Hz, one call, a jittery host | 70 shots at the same steps; mean interval 85.714 ms | identical, bit for bit; intervals of 85 or 86 ms, mean exact |
+| A click after a second idle | the shot on the first step of that frame | step 1000; the view and the gun have kicked in that frame |
+| Semi, a burst tap, a bolt pressed every 100 ms | 1 shot per press; 3 at 75 ms; one per 800 ms | as expected |
+| Glock: 18 presses | 17 shots, a click, a reload; full after `reload_s` | as expected |
+| MP5 at the sight, firing, turning 30°/s, moving 3 m/s | no cone | every shot on the bore; bloom 0 |
+| M855 from the shot to 25, 50, 100 m | the flight times quoted in ADR 0005 | 28, 56, 116 ms |
+| A scripted string, native and browser | the same bits | `535c7230c9b51317` native (gcc, clang, sanitizers); the browser string `5bcdfaece1f41fd9` native and in wasm32 |
+
 ## Determinism
 
 | Check | Reference | Engine |

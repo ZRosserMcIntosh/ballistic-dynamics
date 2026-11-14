@@ -71,6 +71,9 @@ struct CartridgeDef {
     Real velocitySd = 0;      // m/s, shot-to-shot standard deviation of the muzzle velocity
     Real tempCoefficient = 0; // m/s per K: how the muzzle velocity follows the powder's temperature
     Real tempReference = 0;   // K, the powder temperature the published velocity is for
+    // The shooter layer (ADR 0005; optional, 0 when not known):
+    Real charge = 0;          // kg of powder: its gas leaves the muzzle too and adds to the recoil
+    Real gasSpeed = 0;        // m/s, the powder gas's mean exit speed in the free-recoil convention
     ProvenanceMap provenance;
 };
 
@@ -81,13 +84,54 @@ struct RifleDef {
     Real barrel = 0;         // m
     Real sightHeight = 0;    // m, bore axis to the optic's axis
     Real groupMoa = 0;       // mean 5-shot group (extreme spread, MOA) of this rifle with its load; 0: unknown
+    // The shooter layer (ADR 0005; all optional, 0 or empty when not known):
+    Real mass = 0;           // kg, the gun as fired: loaded, with its optic (what recoils)
+    Real cyclicRate = 0;     // rounds per second of the action (automatic, burst and semi-automatic)
+    std::vector<std::string> fireModes;  // "semi", "auto", "burst2".."burst4", "manual" (bolt, lever, pump)
+    int magazine = 0;        // rounds in a full magazine or cylinder
+    Real manualCycle = 0;    // s, working a manual action between shots
+    Real reloadTime = 0;     // s, a trained shooter's magazine change (or the whole loading of a fixed magazine)
+    Real adsTime = 0;        // s, from the hip to the sight
+    Real sprintOut = 0;      // s, from a sprint to the gun on target
+    Real boreLever = 0;      // m, the bore axis's height over where the shooter takes the recoil
+    Real gyration = 0;       // m, the gun's radius of gyration in pitch about its centre of mass
+    ProvenanceMap provenance;
+};
+
+// The shooter's body in one stance (ADR 0005): how it takes the recoil, how
+// its hip-fire cone opens and closes, and its hold at the sight. Gameplay
+// figures are `estimated:`, and docs/physics.md section 7 says which are.
+struct StanceDef {
+    std::string id, name;
+    Real holdInertia = 0;      // kg m^2: arms and upper body moving with the gun in pitch
+    Real recenter = 0;         // rad/s^2: the hold's constant pull back toward the aim
+    Real returnFraction = 0;   // the kick's motion back toward the aim, as a fraction of its rate
+    Real kickClamp = 0;        // rad: the most the view is kicked off the aim
+    Real kickPitchSd = 0;      // fraction: shot-to-shot spread of the pitch kick
+    Real kickYawSd = 0;        // fraction of the pitch kick: the yaw kick's standard deviation
+    Real hipKick = 0;          // factor on the kick from the hip (1: as shouldered)
+    Real bracedReduction = 0;  // fraction taken off a shot that meets a settled, braced shooter
+    Real settleTime = 0;       // s for the shooter to settle after a shot
+    Real gunKick = 0;          // factor: the gun's visual kick rate against the view's
+    Real gunKickAccel = 0;     // rad/s^2: the gun's spring back to the hold
+    Real gunKickDecay = 0;     // 1/s: viscous damping of the gun's kick
+    Real gunKickMax = 0;       // rad: the most the gun moves in the hands
+    Real hipConeMin = 0;       // rad: the hip-fire cone's half-angle when settled
+    Real hipConeMax = 0;       // rad: and when fully opened
+    Real bloomPerShot = 0;     // cone opening (0..1) per hip shot
+    Real bloomPerTurn = 0;     // per radian turned at the hip
+    Real bloomPerMetre = 0;    // per metre moved at the hip
+    Real bloomAirborne = 0;    // per second off the ground
+    Real bloomRecovery = 0;    // per second, the cone closing
+    Real holdWobble = 0;       // rad: amplitude of the hold's wander at the sight
+    Real wobblePeriod = 0;     // s: its period (about a breath)
     ProvenanceMap provenance;
 };
 
 class Library {
 public:
     // Parses one JSON document holding any of "drag_curves", "projectiles",
-    // "cartridges", "rifles". Returns the errors (empty when fine); records
+    // "cartridges", "rifles", "stances". Returns the errors (empty when fine); records
     // with errors are skipped, the rest are kept.
     std::vector<std::string> load(const std::string& jsonText);
     // Cross-references (a cartridge's projectile, a projectile's drag curve).
@@ -97,17 +141,20 @@ public:
     const ProjectileDef* projectile(const std::string& id) const;
     const CartridgeDef* cartridge(const std::string& id) const;
     const RifleDef* rifle(const std::string& id) const;
+    const StanceDef* stance(const std::string& id) const;
 
     const std::vector<DragCurveDef>& dragCurves() const { return drag_; }
     const std::vector<ProjectileDef>& projectiles() const { return projectiles_; }
     const std::vector<CartridgeDef>& cartridges() const { return cartridges_; }
     const std::vector<RifleDef>& rifles() const { return rifles_; }
+    const std::vector<StanceDef>& stances() const { return stances_; }
 
 private:
     std::vector<DragCurveDef> drag_;
     std::vector<ProjectileDef> projectiles_;
     std::vector<CartridgeDef> cartridges_;
     std::vector<RifleDef> rifles_;
+    std::vector<StanceDef> stances_;
 };
 
 // Checks that every number (or array of numbers) in `record`, at any depth, has

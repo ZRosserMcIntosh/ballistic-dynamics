@@ -12,11 +12,15 @@
         "test_barrel_in": "published: Federal Premium ballistics are from a 24 in test barrel for .308 Win",
         "velocity_sd_fps": "estimated: match factory ammunition typically chronographs 8 to 15 fps SD",
         "temp_coefficient_fps_per_f": "estimated: an IMR 4064-class extruded powder, not sold as temperature-stable: about 1.5 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 175 gr .308 Win loads take about 42 to 44 gr of an IMR 4064-class powder in the handloading manuals; Federal does not publish its charge",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 12,
       "temp_coefficient_fps_per_f": 1.5,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 43,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "hornady_65cm_140",
@@ -29,11 +33,15 @@
         "test_barrel_in": "published: Hornady, 81500, 24 in test barrel",
         "velocity_sd_fps": "estimated: Hornady Match typically chronographs 8 to 12 fps SD",
         "temp_coefficient_fps_per_f": "estimated: a temperature-stable extruded powder, as 6.5 Creedmoor match loads use: about 0.5 to 1 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 140 gr 6.5 Creedmoor loads take about 40 to 43 gr in the handloading manuals; Hornady does not publish its charge",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 10,
       "temp_coefficient_fps_per_f": 0.6,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 41.5,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "lapua_338lm_250",
@@ -46,11 +54,15 @@
         "test_barrel_in": "estimated: Lapua's page does not state it here; CIP test barrels for .338 LM are about 690 mm (27.2 in)",
         "velocity_sd_fps": "estimated: Lapua match ammunition typically chronographs under 12 fps SD",
         "temp_coefficient_fps_per_f": "estimated: about 1 fps per F for a magnum match load",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 250 gr .338 Lapua Magnum loads take about 88 to 95 gr in the handloading manuals",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 10,
       "temp_coefficient_fps_per_f": 1.0,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 92,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "hornady_50bmg_750",
@@ -63,11 +75,15 @@
         "test_barrel_in": "estimated: .50 BMG factory velocities are usually from 29-30 in barrels; Hornady's summary does not state it",
         "velocity_sd_fps": "estimated: .50 BMG match ammunition, about 15 fps SD",
         "temp_coefficient_fps_per_f": "estimated: about 1.5 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 750 gr .50 BMG loads take about 220 to 240 gr of a slow powder",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 15,
       "temp_coefficient_fps_per_f": 1.5,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 230,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "federal_xm855",
@@ -80,11 +96,15 @@
         "test_barrel_in": "estimated: a 20 in barrel, the M16A2 length 5.56 factory data is usually quoted for",
         "velocity_sd_fps": "estimated: military-specification ball, 20 to 30 fps SD",
         "temp_coefficient_fps_per_f": "estimated: a ball powder, about 1.2 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: M855 is loaded with about 26 gr of a WC844-class ball powder",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 25,
       "temp_coefficient_fps_per_f": 1.2,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 26,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "speer_9mm_124gd",
@@ -97,11 +117,15 @@
         "test_barrel_in": "published: Speer, 23618GD, 4 in test barrel",
         "velocity_sd_fps": "estimated: premium pistol ammunition, about 10 to 20 fps SD",
         "temp_coefficient_fps_per_f": "estimated: fast pistol powders, under 1 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 124 gr 9 mm loads take about 5.5 to 6.5 gr in the handloading manuals",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 15,
       "temp_coefficient_fps_per_f": 0.8,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 6.0,
+      "gas_velocity_fps": 4000
     },
     {
       "id": "cheytac_408_419",
@@ -114,11 +138,15 @@
         "test_barrel_in": "estimated: the M200 Intervention's 29 in barrel, which CheyTac's figures are generally quoted from",
         "velocity_sd_fps": "estimated: factory match ammunition, about 10 to 15 fps SD",
         "temp_coefficient_fps_per_f": "estimated: about 1 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: the .408 CheyTac's large case, about 115 to 120 gr for the 419 gr bullet",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 12,
       "temp_coefficient_fps_per_f": 1.0,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 118,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "hornady_65cm_147",
@@ -131,11 +159,15 @@
         "test_barrel_in": "published: Hornady, 24 in test barrel (GAP Precision listing)",
         "velocity_sd_fps": "estimated: as the 140 gr load",
         "temp_coefficient_fps_per_f": "estimated: as the 140 gr load",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 147 gr 6.5 Creedmoor loads take about 39 to 42 gr in the handloading manuals",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 10,
       "temp_coefficient_fps_per_f": 0.6,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 40.5,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "ussr_762x54r_l",
@@ -148,11 +180,15 @@
         "test_barrel_in": "published: the M91/30 barrel, 730 mm (28.7 in)",
         "velocity_sd_fps": "estimated: surplus light ball, 25 to 40 fps SD",
         "temp_coefficient_fps_per_f": "estimated: about 1.5 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: Soviet light ball, about 47 to 50 gr of its issue powder",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 30,
       "temp_coefficient_fps_per_f": 1.5,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 48,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "ussr_762x54r_7n1",
@@ -165,11 +201,15 @@
         "test_barrel_in": "published: the SVD barrel, 620 mm (24.4 in)",
         "velocity_sd_fps": "estimated: sniper-grade production, about 15 fps SD",
         "temp_coefficient_fps_per_f": "estimated: about 1.5 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 7N1, about 46 to 48 gr",
+        "gas_velocity_fps": "estimated: the conventional powder-gas exit speed in free-recoil calculations for rifle cartridges, 4,700 fps; the true jet speed follows the muzzle pressure"
       },
       "velocity_sd_fps": 15,
       "temp_coefficient_fps_per_f": 1.5,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 47,
+      "gas_velocity_fps": 4700
     },
     {
       "id": "federal_9mm_115_fmj",
@@ -182,11 +222,15 @@
         "test_barrel_in": "published: Federal AE9DP, 4 in test barrel",
         "velocity_sd_fps": "estimated: range ammunition, 15 to 25 fps SD",
         "temp_coefficient_fps_per_f": "estimated: fast pistol powders, under 1 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 115 gr 9 mm loads take about 5.5 to 6.5 gr",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 18,
       "temp_coefficient_fps_per_f": 0.8,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 6.0,
+      "gas_velocity_fps": 4000
     },
     {
       "id": "federal_9mm_124_fmj",
@@ -199,11 +243,15 @@
         "test_barrel_in": "published: Federal AE9AP, 4 in test barrel",
         "velocity_sd_fps": "estimated: range ammunition, 15 to 25 fps SD",
         "temp_coefficient_fps_per_f": "estimated: fast pistol powders, under 1 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 124 gr 9 mm FMJ loads take about 5.2 to 6 gr",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 18,
       "temp_coefficient_fps_per_f": 0.8,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 5.6,
+      "gas_velocity_fps": 4000
     },
     {
       "id": "mp5_9mm_124_fmj",
@@ -216,11 +264,15 @@
         "test_barrel_in": "published: MP5A2-A5 barrel 225 mm (8.86 in)",
         "velocity_sd_fps": "estimated: as 124 gr range ammunition",
         "temp_coefficient_fps_per_f": "estimated: as the pistol load",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 124 gr 9 mm FMJ loads take about 5.2 to 6 gr",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 18,
       "temp_coefficient_fps_per_f": 0.8,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 5.6,
+      "gas_velocity_fps": 4000
     },
     {
       "id": "federal_45acp_230_fmj",
@@ -233,11 +285,15 @@
         "test_barrel_in": "published: Federal AE45A, 5 in test barrel",
         "velocity_sd_fps": "estimated: range ammunition, about 15 fps SD",
         "temp_coefficient_fps_per_f": "estimated: low-pressure .45 Auto loads, about 0.5 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 230 gr .45 Auto ball takes about 5 to 6 gr of a fast powder",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 15,
       "temp_coefficient_fps_per_f": 0.6,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 5.5,
+      "gas_velocity_fps": 4000
     },
     {
       "id": "thompson_45acp_230",
@@ -250,11 +306,15 @@
         "test_barrel_in": "published: (secondary) M1A1 barrel 10.5 in (267 mm)",
         "velocity_sd_fps": "estimated: as the pistol load",
         "temp_coefficient_fps_per_f": "estimated: as the pistol load",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 230 gr .45 ACP ball takes about 5 to 6 gr of a fast powder",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 15,
       "temp_coefficient_fps_per_f": 0.6,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 5.5,
+      "gas_velocity_fps": 4000
     },
     {
       "id": "federal_357mag_158_jsp",
@@ -267,11 +327,15 @@
         "test_barrel_in": "published: Federal AE357A, 4 in vented test barrel (the gap of a revolver's cylinder simulated)",
         "velocity_sd_fps": "estimated: magnum revolver loads, about 20 fps SD",
         "temp_coefficient_fps_per_f": "estimated: about 1 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 158 gr .357 Magnum loads take about 13 to 15 gr of a slow powder",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 20,
       "temp_coefficient_fps_per_f": 1.0,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 14,
+      "gas_velocity_fps": 4000
     },
     {
       "id": "fn_57_ss197sr",
@@ -284,11 +348,15 @@
         "test_barrel_in": "published: the Five-seveN's 4.8 in barrel, as stated with FN's figure",
         "velocity_sd_fps": "estimated: about 20 fps SD",
         "temp_coefficient_fps_per_f": "estimated: about 1 fps per F",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 5.7x28 mm loads take about 6 to 7 gr of a fine powder",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 20,
       "temp_coefficient_fps_per_f": 1.0,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 6.3,
+      "gas_velocity_fps": 4000
     },
     {
       "id": "fn_57_ss197sr_p90",
@@ -301,11 +369,15 @@
         "test_barrel_in": "published: FN P90 technical data, 264 mm (10.4 in) barrel",
         "velocity_sd_fps": "estimated: as the pistol figure",
         "temp_coefficient_fps_per_f": "estimated: as the pistol figure",
-        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure"
+        "temp_reference_f": "estimated: 70 F, the middle of SAAMI's 70 ± 10 F velocity-test conditions; the maker does not state the powder temperature of its figure",
+        "charge_gr": "estimated: 5.7x28 mm loads take about 6 to 7 gr of a fine powder",
+        "gas_velocity_fps": "estimated: a lower gas exit speed than the rifle convention for a handgun's lower muzzle pressure; the gas is about a tenth of a handgun's recoil momentum, so this moves the total by a few per cent"
       },
       "velocity_sd_fps": 20,
       "temp_coefficient_fps_per_f": 1.0,
-      "temp_reference_f": 70
+      "temp_reference_f": 70,
+      "charge_gr": 6.3,
+      "gas_velocity_fps": 4000
     }
   ]
 }

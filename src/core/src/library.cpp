@@ -113,6 +113,24 @@ struct Reader {
         }
         return d * scale;
     }
+    // An optional array of strings; empty when absent.
+    std::vector<std::string> strs(const char* key) {
+        std::vector<std::string> out;
+        const json::Value* v = obj.find(key);
+        if (!v) return out;
+        if (!v->isArray()) {
+            bad(std::string("\"") + key + "\" must be an array of strings");
+            return out;
+        }
+        for (const auto& e : v->items()) {
+            if (!e.isString()) {
+                bad(std::string("\"") + key + "\" must be an array of strings");
+                return {};
+            }
+            out.push_back(e.asString());
+        }
+        return out;
+    }
     std::vector<Real> nums(const char* key, Real scale, bool required = true) {
         std::vector<Real> out;
         const json::Value* v = obj.find(key);
@@ -201,7 +219,8 @@ std::vector<std::string> Library::load(const std::string& jsonText) {
     }
     for (const auto& [section, list] : root.members()) {
         if (section == "comment" || section == "schema") continue;
-        if (section != "drag_curves" && section != "projectiles" && section != "cartridges" && section != "rifles") {
+        if (section != "drag_curves" && section != "projectiles" && section != "cartridges" && section != "rifles" &&
+            section != "stances") {
             errors.push_back("unknown section \"" + section + "\"");
             continue;
         }
@@ -274,9 +293,12 @@ std::vector<std::string> Library::load(const std::string& jsonText) {
                     else c.tempReference = (t->asNumber() - 32.0) / 1.8 + 273.15;
                 }
                 if (c.tempCoefficient > 0 && !(c.tempReference > 0)) r.bad("\"temp_coefficient_fps_per_f\" needs \"temp_reference_f\"");
+                c.charge = r.num("charge_gr", units::kGrain, false);
+                c.gasSpeed = r.num("gas_velocity_fps", units::kFoot, false);
+                if ((c.charge > 0) != (c.gasSpeed > 0)) r.bad("\"charge_gr\" and \"gas_velocity_fps\" go together");
                 c.provenance = std::move(prov);
                 if (r.ok && errors.size() == before) insert(cartridges_, std::move(c), where, errors);
-            } else {
+            } else if (section == "rifles") {
                 RifleDef f;
                 f.id = id;
                 f.name = name;
@@ -287,8 +309,59 @@ std::vector<std::string> Library::load(const std::string& jsonText) {
                 f.barrel = r.num("barrel_in", units::kInch);
                 f.sightHeight = r.num("sight_height_in", units::kInch, false, true);
                 f.groupMoa = r.num("group_moa", 1.0, false, true);
+                f.mass = r.num("mass_lb", units::kPound, false);
+                f.cyclicRate = r.num("cyclic_rate_rpm", 1.0 / 60.0, false);
+                f.fireModes = r.strs("fire_modes");
+                for (const auto& m : f.fireModes)
+                    if (m != "semi" && m != "auto" && m != "manual" && m != "burst2" && m != "burst3" && m != "burst4")
+                        r.bad("\"fire_modes\" must be semi, auto, burst2, burst3, burst4 or manual");
+                const Real mag = r.num("magazine_rounds", 1.0, false);
+                f.magazine = static_cast<int>(mag);
+                if (static_cast<Real>(f.magazine) != mag) r.bad("\"magazine_rounds\" must be a whole number");
+                f.manualCycle = r.num("manual_cycle_s", 1.0, false);
+                f.reloadTime = r.num("reload_s", 1.0, false);
+                f.adsTime = r.num("ads_s", 1.0, false);
+                f.sprintOut = r.num("sprint_out_s", 1.0, false, true);
+                f.boreLever = r.num("bore_lever_in", units::kInch, false, true);
+                f.gyration = r.num("gyration_in", units::kInch, false);
+                for (const auto& m : f.fireModes) {
+                    if (m == "manual" && !(f.manualCycle > 0)) r.bad("a \"manual\" fire mode needs \"manual_cycle_s\"");
+                    if (m != "manual" && !(f.cyclicRate > 0)) r.bad("fire mode \"" + m + "\" needs \"cyclic_rate_rpm\"");
+                }
                 f.provenance = std::move(prov);
                 if (r.ok && errors.size() == before) insert(rifles_, std::move(f), where, errors);
+            } else {
+                constexpr Real kDeg = kPi / 180.0;
+                StanceDef st;
+                st.id = id;
+                st.name = name;
+                st.holdInertia = r.num("hold_inertia_kg_m2", 1.0, true, true);
+                st.recenter = r.num("recenter_deg_per_s2", kDeg);
+                st.returnFraction = r.num("return_percent", 0.01);
+                st.kickClamp = r.num("kick_clamp_deg", kDeg);
+                st.kickPitchSd = r.num("kick_pitch_sd_percent", 0.01, true, true);
+                st.kickYawSd = r.num("kick_yaw_sd_percent", 0.01, true, true);
+                st.hipKick = r.num("hip_kick_percent", 0.01);
+                st.bracedReduction = r.num("braced_reduction_percent", 0.01, true, true);
+                st.settleTime = r.num("settle_s", 1.0);
+                st.gunKick = r.num("gun_kick_percent", 0.01, true, true);
+                st.gunKickAccel = r.num("gun_kick_accel_deg_per_s2", kDeg);
+                st.gunKickDecay = r.num("gun_kick_decay_per_s", 1.0, true, true);
+                st.gunKickMax = r.num("gun_kick_max_deg", kDeg);
+                st.hipConeMin = r.num("hip_cone_min_moa", units::kMoa, true, true);
+                st.hipConeMax = r.num("hip_cone_max_moa", units::kMoa, true, true);
+                st.bloomPerShot = r.num("bloom_per_shot", 1.0, true, true);
+                st.bloomPerTurn = r.num("bloom_per_deg_turned", 1.0 / kDeg, true, true);
+                st.bloomPerMetre = r.num("bloom_per_m_moved", 1.0, true, true);
+                st.bloomAirborne = r.num("bloom_per_s_airborne", 1.0, true, true);
+                st.bloomRecovery = r.num("bloom_recovery_per_s", 1.0);
+                st.holdWobble = r.num("hold_wobble_moa", units::kMoa, true, true);
+                st.wobblePeriod = r.num("wobble_period_s", 1.0);
+                if (st.returnFraction > 1) r.bad("\"return_percent\" must be at most 100");
+                if (st.bracedReduction > 1) r.bad("\"braced_reduction_percent\" must be at most 100");
+                if (st.hipConeMax < st.hipConeMin) r.bad("\"hip_cone_max_moa\" is below \"hip_cone_min_moa\"");
+                st.provenance = std::move(prov);
+                if (r.ok && errors.size() == before) insert(stances_, std::move(st), where, errors);
             }
         }
     }
@@ -315,5 +388,6 @@ const DragCurveDef* Library::dragCurve(const std::string& id) const { return byI
 const ProjectileDef* Library::projectile(const std::string& id) const { return byId(projectiles_, id); }
 const CartridgeDef* Library::cartridge(const std::string& id) const { return byId(cartridges_, id); }
 const RifleDef* Library::rifle(const std::string& id) const { return byId(rifles_, id); }
+const StanceDef* Library::stance(const std::string& id) const { return byId(stances_, id); }
 
 }  // namespace bd

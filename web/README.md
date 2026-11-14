@@ -25,6 +25,15 @@ function frame() {                                    // 1/1000 speed
   const s = B.stateAt(t);                             // ...and the camera draws between steps
 }
 const card = B.table(cartridgeIndex, 91.44, 0.0381, 914.4, 91.44);  // range card, SI
+
+// The shooter layer: an M16A2 in hand; every frame, input then advance, then fly the shots.
+B.bd_weapon(rifleIndex, cartridgeIndex, standingIndex, 42, 0, 0);
+function shooterFrame(t, look, mouse) {
+  B.bd_weapon_look(...look);
+  B.weaponInput({ trigger: mouse.left, ads: mouse.right }, mouse.turnRate, 0, 1);
+  for (const e of B.weaponAdvance(t)) if (e.kind === 'shot') B.bd_fire_shot(cartridgeIndex, ...muzzle, e.index);
+  const s = B.weaponState();                          // camera += s.viewPitch, s.viewYaw; viewmodel += s.gunPitch
+}
 ```
 
 | Call | Returns |
@@ -50,4 +59,12 @@ const card = B.table(cartridgeIndex, 91.44, 0.0381, 914.4, 91.44);  // range car
 | `bd_round()` (`B.round`) | 8 doubles: time, position, velocity, stopped |
 | `bd_state_at(t)` (`B.stateAt`) | bullet time: 7 doubles, the state at any flown instant, smooth between steps (advance one step ahead first) |
 | `bd_table(i, zeroRange, sightHeight, maxRange, step, azimuth, t0)` (`B.table`, azimuth and t0 default 0) | a range card fired at engine time t0 (so it meets the same gusts as a round fired then): range, drop, windage, time, speed, energy, Mach, Sg (SI) |
+| `bd_weapon(rifle, cartridge, stance, seed, streamBase, t0)` | the shooter layer (ADR 0005): puts rifle i with cartridge j in hand, in stance k (`catalog().stances`), its clock from engine time t0; its shots draw from streams streamBase + 1, + 2, ... of seed; 1, or 0 without shooter data |
+| `bd_weapon_stance(k)`, `bd_weapon_look(x, y, z)` | changes stance; where the shooter looks (ENU), before the kick and the hold |
+| `bd_weapon_input(flags, turnRate, moveSpeed, mode)` (`B.weaponInput({trigger, ads, sprinting, airborne, reload}, turn, speed, mode)`) | this frame's input, held for every step of the next advance; mode indexes the rifle's `fireModes` |
+| `bd_weapon_advance(t)` (`B.weaponAdvance(t)`) | the weapon's 1 ms steps up to engine time t; returns this frame's events (a press fires on the first step of the frame it is given in) |
+| `bd_weapon_event(i)` | 13 doubles: kind (0 shot, 1 dry fire, 2 reload start, 3 reload end), time, step, shot number, seed, stream, bore x, y, z (ENU), the hip cone's part up and right (rad), the kick it gave (rad/s), rounds left |
+| `bd_fire_shot(cartridge, x, y, z, i)` | flies event i's shot from the muzzle along its bore, at its time, with its round's own draw; returns the round's id, selected as `bd_fire`'s |
+| `bd_weapon_state()` (`B.weaponState`) | 12 doubles: camera offset pitch and yaw (the kick and the hold), the kick alone, the gun in the hands (viewmodel only), the sight fraction, the hip cone's half-angle, its bloom, rounds, reloading, shots fired |
+| `bd_recoil(rifle, cartridge, stance)` (`B.recoil`) | free recoil: momentum (N s), the free gun's velocity (m/s) and energy (J), and the view's pitch rate per shot (rad/s) before the stance's factors |
 | `bd_determinism()` | the determinism hashes (maths, trajectory), 16 hex digits each |
