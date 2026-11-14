@@ -95,6 +95,12 @@ struct RifleDef {
     Real sprintOut = 0;      // s, from a sprint to the gun on target
     Real boreLever = 0;      // m, the bore axis's height over where the shooter takes the recoil
     Real gyration = 0;       // m, the gun's radius of gyration in pitch about its centre of mass
+    // Tracers (ADR 0006): "western" or "eastern" sets the colour of its family's
+    // tracer rounds (red for NATO's, green for the Soviet bloc's); `tracer`
+    // ("red", "green", "none") overrides it. One round in tracerEvery is a tracer.
+    std::string origin;
+    std::string tracer;      // the resolved colour: "red", "green" or "" (none)
+    int tracerEvery = 0;
     ProvenanceMap provenance;
 };
 

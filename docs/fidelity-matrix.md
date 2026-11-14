@@ -24,7 +24,9 @@ Legend: ✅ implemented and tested · 🟡 partial or simplified · ⛔ not star
 | Recoil and the kick | 🟡 | Free recoil from momentum; the view's kick `p h / (M k² + I_hold)` with a constant pull, slowed return and no overshoot; a visual gun spring; braced first shot | Free-recoil energies in the commonly quoted ranges; the rise against its closed form | The shooter's response tuned, not measured; no brakes or suppressors; handgun flip under-stated |
 | Aim (hip cone, sight, hold) | 🟡 | Hip bloom from shots, turning, moving, airborne; a binary sight gate with no cone; the hold's wander in the camera | `tests/test_shooter.cpp` | Every figure tuned for play |
 | Scope, cant, solver | ⛔ | — | — | Milestone 4 |
-| World query and material handoff | ⛔ | — | — | Milestone 5 |
+| World query and material handoff | 🟡 | The host's segment query once per 4 ms chord (sag < 0.02 mm), the hit timed inside its step; the 25 m no-lead rule for bodies; damage to bodies is the host's table (ADR 0006) | `tests/test_world.cpp`: the wall crossing, the no-lead rule, frame independence | The material handoff interface (penetration) not started |
+| Tracers | 🟡 | Colour by the gun's origin (western red, eastern green) or its override; one round in `tracer_every` | `tests/test_shooter.cpp` | The tracer's burn and its own ballistics not modelled |
+| Cost (fast paths) | ✅ | `ColumnAir` (6 ns a sample), the drag table's bucket index (the same bits), chorded world queries | `bdemo bench`; `tests/test_world.cpp` | Gusting range winds cost about 0.38 µs a step |
 | Gelatine, wood, steel, soil, ricochet | ⛔ | — | — | Milestone 5 |
 | Scale (SoA, 5,000 rounds) | ⛔ | — | — | Milestone 6 |
 | Browser range | ⛔ | — | — | Milestone 7 |

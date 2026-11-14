@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "bd/aviation_air.hpp"
+#include "bench.hpp"
 #include "bd/determinism.hpp"
 #include "bd/library.hpp"
 #include "bd/shooter.hpp"
@@ -245,7 +246,9 @@ int shoot(int argc, char** argv) {
         g.advance(1.0 + i * 1e-3, in, ev);
         const char* what = "";
         for (std::size_t k = before; k < ev.size(); ++k)
-            what = ev[k].kind == shooter::EventKind::Shot ? "shot" : ev[k].kind == shooter::EventKind::DryFire ? "click"
+            what = ev[k].kind == shooter::EventKind::Shot
+                       ? (ev[k].tracer == shooter::Tracer::Red ? "shot, red tracer"
+                          : ev[k].tracer == shooter::Tracer::Green ? "shot, green tracer" : "shot") : ev[k].kind == shooter::EventKind::DryFire ? "click"
                    : ev[k].kind == shooter::EventKind::ReloadStart ? "reload" : "loaded";
         if (*what || i % 25 == 0)
             std::printf("%8d %9.3f %9.3f %9.3f %9.1f %6d  %s\n", i, g.kickPitch() * 180 / kPi, g.kickYaw() * 180 / kPi,
@@ -263,6 +266,7 @@ int main(int argc, char** argv) {
     if (!std::strcmp(cmd, "determinism")) return determinism();
     if (!std::strcmp(cmd, "table")) return table(argc, argv);
     if (!std::strcmp(cmd, "shoot")) return shoot(argc, argv);
-    std::fprintf(stderr, "usage: bdemo list | air P T RH alt | table cartridge ... | shoot rifle cartridge ... | determinism\n");
+    if (!std::strcmp(cmd, "bench")) return bench(argc, argv);
+    std::fprintf(stderr, "usage: bdemo list | air P T RH alt | table cartridge ... | shoot rifle cartridge ... | bench | determinism\n");
     return 2;
 }

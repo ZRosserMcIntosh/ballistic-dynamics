@@ -8,6 +8,7 @@ set(BD_TEST_SOURCES
   test_wake.cpp
   test_variation.cpp
   test_shooter.cpp
+  test_world.cpp
 )
 add_executable(bd_tests ${BD_TEST_SOURCES})
 target_link_libraries(bd_tests PRIVATE bd_core bd_aviation bd_shooter)

@@ -468,3 +468,32 @@ TEST_CASE("shooter: the browser's scripted string (web/smoke_test.mjs) has these
     CHECK(shots == 14);  // 800 rpm for 1 s: shots at 0, 75, ..., 975 ms
     CHECK(std::string(hex) == "5bcdfaece1f41fd9");
 }
+
+TEST_CASE("shooter: western guns trace red, eastern green, one round in five") {
+    const Library& lib = bdtest::library();
+    CHECK(lib.rifle("m16a2")->tracer == "red" && lib.rifle("glock_17")->tracer == "red");
+    CHECK(lib.rifle("svd_pso1")->tracer == "green" && lib.rifle("m9130_pu")->tracer == "green");
+    // An override and a refusal.
+    Library l;
+    const std::string base = R"({"rifles":[{"id":"x","name":"x","twist_in":10,"barrel_in":16,"origin":"eastern",)";
+    const std::string prov = R"("provenance":{"twist_in":"estimated: test","barrel_in":"estimated: test"}}]})";
+    CHECK(l.load(base + R"("tracer":"red",)" + prov).empty());
+    CHECK(l.rifle("x") && l.rifle("x")->tracer == "red");
+    CHECK(!Library().load(base + R"("tracer":"blue",)" + prov).empty());
+    CHECK(!Library().load(R"({"rifles":[{"id":"y","name":"y","twist_in":10,"barrel_in":16,"origin":"northern",)" + prov).empty());
+    // Every fifth shot of a string is a tracer, in the gun's colour.
+    WeaponSpec w = specOf("mp5a3", "mp5_9mm_124_fmj");
+    Weapon g(w, stance("standing"), 1);
+    std::vector<ShooterEvent> ev;
+    ShooterInput in;
+    in.trigger = true;
+    in.mode = 1;
+    g.advance(1.0, in, ev);
+    const auto shots = shotsOf(ev);
+    CHECK(shots.size() >= 10);
+    bool pattern = true;
+    for (const auto& e : shots) pattern = pattern && (e.tracer == (e.shot % 5 == 0 ? Tracer::Red : Tracer::None));
+    CHECK(pattern);
+    WeaponSpec svd = specOf("svd_pso1", "ussr_762x54r_7n1");
+    CHECK(svd.tracer == Tracer::Green && svd.tracerEvery == 5);
+}
