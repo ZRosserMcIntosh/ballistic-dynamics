@@ -16,6 +16,7 @@
 #include "bd/aviation_air.hpp"
 #include "bd/determinism.hpp"
 #include "bd/library.hpp"
+#include "bd/shooter.hpp"
 #include "bd/solver.hpp"
 #include "bd/spin.hpp"
 #include "bd/wake.hpp"
@@ -58,6 +59,10 @@ struct Sim {
     std::string text;
     std::vector<double> sample;
     std::vector<float> wake;
+    // The shooter layer (ADR 0005): one weapon in hand.
+    std::unique_ptr<shooter::Weapon> weapon;
+    shooter::ShooterInput input;
+    std::vector<shooter::ShooterEvent> events;
 };
 
 Sim* g = nullptr;
@@ -246,8 +251,29 @@ BD_EXPORT const char* bd_catalog() {
         jsonNum(o, r.twist);
         o += ",\"rightHand\":";
         o += r.rightHandTwist ? "true" : "false";
-        o += ',';
+        o += ",\"mass\":";
+        jsonNum(o, r.mass);
+        o += ",\"magazine\":";
+        jsonNum(o, r.magazine);
+        o += ",\"fireModes\":[";
+        for (std::size_t k = 0; k < r.fireModes.size(); ++k) {
+            if (k) o += ',';
+            jsonString(o, r.fireModes[k]);
+        }
+        o += "],";
         provenance(o, r.provenance);
+        o += '}';
+    }
+    o += "],\"stances\":[";
+    for (std::size_t i = 0; i < L.stances().size(); ++i) {
+        const auto& st = L.stances()[i];
+        if (i) o += ',';
+        o += "{\"id\":";
+        jsonString(o, st.id);
+        o += ",\"name\":";
+        jsonString(o, st.name);
+        o += ',';
+        provenance(o, st.provenance);
         o += '}';
     }
     o += "]}";
@@ -327,8 +353,7 @@ BD_EXPORT double bd_zero(int cartridge, double zeroRange, double sightHeight) {
 }
 
 namespace {
-int fire(int cartridge, double x, double y, double z, double azimuth, double elevation, double t0, std::uint64_t seed,
-         std::uint64_t stream) {
+int fireAlong(int cartridge, const Vec3& from, const Vec3& bore, double t0, std::uint64_t seed, std::uint64_t stream) {
     DragModel drag;
     const CartridgeDef* c;
     const ProjectileDef* p;
@@ -337,8 +362,8 @@ int fire(int cartridge, double x, double y, double z, double azimuth, double ele
     S.lastDraw = seed ? drawRound(variationOf(*c, *p), seed, stream) : RoundDraw{};
     S.lastSpeed = powderSpeed(*c, *p) + S.lastDraw.velocityOffset;
     Launch l;
-    l.position = {x, y, z};
-    l.direction = thrownDirection(frames::directionFromAzEl(azimuth, elevation), S.lastDraw);
+    l.position = from;
+    l.direction = thrownDirection(bore, S.lastDraw);
     l.muzzleSpeed = S.lastSpeed;
     l.time = t0;
     flightAir();
@@ -354,6 +379,11 @@ int fire(int cartridge, double x, double y, double z, double azimuth, double ele
     if (S.flights.size() > kMaxFlights) S.flights.erase(S.flights.begin());
     S.current = id;
     return id;
+}
+
+int fire(int cartridge, double x, double y, double z, double azimuth, double elevation, double t0, std::uint64_t seed,
+         std::uint64_t stream) {
+    return fireAlong(cartridge, {x, y, z}, frames::directionFromAzEl(azimuth, elevation), t0, seed, stream);
 }
 }  // namespace
 
@@ -577,4 +607,138 @@ BD_EXPORT const char* bd_determinism() {
                   static_cast<unsigned long long>(t), static_cast<unsigned long long>(s));
     putText(b);
     return sim().text.c_str();
+}
+
+// ---- The shooter layer (ADR 0005) ----
+
+namespace {
+
+bool weaponParts(int rifle, int cartridge, int stance, shooter::WeaponSpec& w, const StanceDef*& st) {
+    const Library& L = sim().lib;
+    if (rifle < 0 || rifle >= static_cast<int>(L.rifles().size()) || cartridge < 0 ||
+        cartridge >= static_cast<int>(L.cartridges().size()) || stance < 0 || stance >= static_cast<int>(L.stances().size()))
+        return false;
+    const CartridgeDef& c = L.cartridges()[static_cast<std::size_t>(cartridge)];
+    const ProjectileDef* p = L.projectile(c.projectile);
+    if (!p) return false;
+    std::string err;
+    w = shooter::weaponSpecFor(L.rifles()[static_cast<std::size_t>(rifle)], c, *p, err);
+    st = &L.stances()[static_cast<std::size_t>(stance)];
+    return err.empty();
+}
+
+}  // namespace
+
+// Puts rifle i with cartridge j in the shooter's hands, in stance k, with its
+// clock starting at engine time t0. Its shots draw from streams streamBase + 1,
+// + 2, ... of seed (integers up to 2^53), the same streams bd_fire_shot flies
+// them with. Returns 1, or 0 when the rifle lacks shooter data.
+BD_EXPORT int bd_weapon(int rifle, int cartridge, int stance, double seed, double streamBase, double t0) {
+    shooter::WeaponSpec w;
+    const StanceDef* st = nullptr;
+    Sim& S = sim();
+    S.weapon.reset();
+    S.events.clear();
+    S.input = {};
+    if (!weaponParts(rifle, cartridge, stance, w, st)) return 0;
+    S.weapon = std::make_unique<shooter::Weapon>(w, *st, static_cast<std::uint64_t>(seed),
+                                                 static_cast<std::uint64_t>(streamBase), t0);
+    return 1;
+}
+
+// Changes stance (an index into the catalog's stances).
+BD_EXPORT int bd_weapon_stance(int stance) {
+    Sim& S = sim();
+    const Library& L = S.lib;
+    if (!S.weapon || stance < 0 || stance >= static_cast<int>(L.stances().size())) return 0;
+    S.weapon->setStance(L.stances()[static_cast<std::size_t>(stance)]);
+    return 1;
+}
+
+// Where the shooter looks (ENU), before the kick and the hold.
+BD_EXPORT void bd_weapon_look(double x, double y, double z) {
+    if (sim().weapon) sim().weapon->setLook({x, y, z});
+}
+
+// This frame's input, held for every step of the next bd_weapon_advance.
+// flags: 1 trigger, 2 aim down the sight, 4 sprinting, 8 airborne, 16 reload.
+// turnRate rad/s, moveSpeed m/s, mode an index into the rifle's fire modes.
+BD_EXPORT void bd_weapon_input(int flags, double turnRate, double moveSpeed, int mode) {
+    shooter::ShooterInput& in = sim().input;
+    in.trigger = (flags & 1) != 0;
+    in.ads = (flags & 2) != 0;
+    in.sprinting = (flags & 4) != 0;
+    in.airborne = (flags & 8) != 0;
+    in.reload = (flags & 16) != 0;
+    in.turnRate = turnRate;
+    in.moveSpeed = moveSpeed;
+    in.mode = mode;
+}
+
+// Runs the weapon's whole 1 ms steps up to engine time t. Returns how many
+// events happened (read them with bd_weapon_event); a press given before this
+// call fires on the first step of it, so its shot belongs to this frame.
+BD_EXPORT int bd_weapon_advance(double t) {
+    Sim& S = sim();
+    S.events.clear();
+    if (!S.weapon) return 0;
+    S.weapon->advance(t, S.input, S.events);
+    return static_cast<int>(S.events.size());
+}
+
+// Event i of the last advance: 13 doubles: kind (0 shot, 1 dry fire, 2 reload
+// start, 3 reload end), time, step, and for a shot its number, seed, stream,
+// the bore (x, y, z ENU), the hip cone's part (up, right, rad), the kick it
+// gave (rad/s) and the rounds left.
+BD_EXPORT const double* bd_weapon_event(int i) {
+    Sim& S = sim();
+    S.sample.assign(13, 0.0);
+    if (i < 0 || i >= static_cast<int>(S.events.size())) return S.sample.data();
+    const auto& e = S.events[static_cast<std::size_t>(i)];
+    S.sample = {static_cast<double>(e.kind), e.time, static_cast<double>(e.step), static_cast<double>(e.shot),
+                static_cast<double>(e.seed), static_cast<double>(e.stream), e.direction.x, e.direction.y, e.direction.z,
+                e.coneUp, e.coneRight, e.kick, static_cast<double>(e.magazine)};
+    return S.sample.data();
+}
+
+// Flies event i's shot: cartridge j from (x, y, z) ENU along that shot's bore,
+// at its time, with its round's own draw (its seed and stream). Returns the
+// round's id (0 if event i is not a shot), selected as bd_fire's is.
+BD_EXPORT int bd_fire_shot(int cartridge, double x, double y, double z, int i) {
+    Sim& S = sim();
+    if (i < 0 || i >= static_cast<int>(S.events.size())) return 0;
+    const auto& e = S.events[static_cast<std::size_t>(i)];
+    if (e.kind != shooter::EventKind::Shot) return 0;
+    return fireAlong(cartridge, {x, y, z}, e.direction, e.time, e.seed, e.stream);
+}
+
+// The weapon now, 12 doubles: add to the camera (pitch, yaw, rad: the kick
+// and the hold), the kick alone (pitch, yaw), the gun in the hands (pitch,
+// yaw, the viewmodel's only), the sight fraction (0 hip, 1 sight), the hip
+// cone's half-angle (rad), its bloom (0..1), rounds in the magazine,
+// reloading (0/1), shots fired.
+BD_EXPORT const double* bd_weapon_state() {
+    Sim& S = sim();
+    S.sample.assign(12, 0.0);
+    if (!S.weapon) return S.sample.data();
+    const shooter::Weapon& g = *S.weapon;
+    S.sample = {g.viewPitch(), g.viewYaw(), g.kickPitch(), g.kickYaw(), g.gunPitch(), g.gunYaw(), g.adsFraction(),
+                g.cone(), g.bloom(), static_cast<double>(g.magazine()), g.reloading() ? 1.0 : 0.0,
+                static_cast<double>(g.shotsFired())};
+    return S.sample.data();
+}
+
+// Free recoil of rifle i with cartridge j, and the kick in stance k: 4
+// doubles, momentum (N s), the free gun's velocity (m/s) and energy (J), the
+// view's pitch rate per shot before the stance's factors (rad/s). Zeros when
+// the rifle lacks shooter data.
+BD_EXPORT const double* bd_recoil(int rifle, int cartridge, int stance) {
+    Sim& S = sim();
+    S.sample.assign(4, 0.0);
+    shooter::WeaponSpec w;
+    const StanceDef* st = nullptr;
+    if (!weaponParts(rifle, cartridge, stance, w, st)) return S.sample.data();
+    const shooter::FreeRecoil f = shooter::freeRecoil(w);
+    S.sample = {f.momentum, f.velocity, f.energy, shooter::kickRate(w, *st)};
+    return S.sample.data();
 }

@@ -140,4 +140,60 @@ const at0 = B.table(i308, 100 * yd, 1.5 * inch, 1000, 1000, 0, 0).at(-1).windage
 const at9 = B.table(i308, 100 * yd, 1.5 * inch, 1000, 1000, 0, 9).at(-1).windage;
 if (at0 === at9) fail('table start time');
 
+// The shooter layer (ADR 0005): the scripted string of tests/test_shooter.cpp
+// ("the browser's scripted string") through the C ABI must hash the same bits.
+const SHOOTER_GOLDEN = '5bcdfaece1f41fd9';
+// bd::Hash64's start value, exactly as in src/core/include/bd/math.hpp.
+const fnv = { h: 1469598103934665603n };
+const dv = new DataView(new ArrayBuffer(8));
+const hashReal = (x) => {
+  dv.setFloat64(0, x, true);
+  for (let k = 0; k < 8; ++k) fnv.h = ((fnv.h ^ BigInt(dv.getUint8(k))) * 0x100000001b3n) & 0xffffffffffffffffn;
+};
+const rIdx = (id) => cat.rifles.findIndex((r) => r.id === id);
+const cIdx = (id) => cat.cartridges.findIndex((c) => c.id === id);
+const sIdx = (id) => cat.stances.findIndex((s) => s.id === id);
+if (!cat.stances || cat.stances.length < 3) fail('stances in the catalog');
+if (!B.bd_weapon(rIdx('mp5a3'), cIdx('mp5_9mm_124_fmj'), sIdx('standing'), 2026, 100, 0)) fail('bd_weapon');
+B.bd_weapon_look(0, 1, 0);
+let shotCount = 0, firstShot = null;
+for (let f = 1; f <= 120; ++f) {
+  B.weaponInput({ trigger: f <= 60, ads: f >= 30 }, 0, 0, 1);
+  for (const e of B.weaponAdvance(f / 60)) {
+    if (e.kind !== 'shot') continue;
+    if (!firstShot) firstShot = { frame: f, ...e };
+    ++shotCount;
+    e.direction.forEach(hashReal);
+    hashReal(e.kick);
+  }
+  const st = B.weaponState();
+  hashReal(st.viewPitch);
+  hashReal(st.viewYaw);
+}
+const shooterHash = fnv.h.toString(16).padStart(16, '0');
+if (shotCount !== 14) fail(`shooter: ${shotCount} shots, expected 14`);
+if (shooterHash !== SHOOTER_GOLDEN) fail(`shooter hash ${shooterHash}, expected ${SHOOTER_GOLDEN}`);
+if (firstShot.frame !== 1 || firstShot.step !== 0) fail('shooter: the first shot is not on the first step of the click\'s frame');
+// Fly a shot from the M16A2: M855 reaches 50 m in about 56 ms (standard day,
+// powder as published, no rifle group set, and no spin: the .308's 1:11.25
+// twist set above would tumble the long M855, which wants 1:7).
+B.bd_station(101325, 288.15, 0, 0);
+B.wind(0, []);
+B.bd_powder(0);
+B.bd_group(0);
+B.bd_setup(0, 0, 0);
+B.bd_weapon(rIdx('m16a2'), cIdx('federal_xm855'), sIdx('standing'), 7, 0, 0);
+B.bd_weapon_look(0, 1, 0);
+B.weaponInput({ trigger: true, ads: true });
+const shot = B.weaponAdvance(1 / 60).find((e) => e.kind === 'shot');
+if (!shot) fail('shooter: no shot');
+const id = B.bd_fire_shot(cIdx('federal_xm855'), 0, 0, 1.5, shot.index);
+if (!id) fail('bd_fire_shot');
+let tof = 0;
+for (let t = 0.001; t < 0.5; t += 0.001) { B.bd_advance(t, 0); if (B.round().position[1] >= 50) { tof = B.round().time; break; } }
+if (!(tof > 0.050 && tof < 0.062)) fail(`shooter: M855 to 50 m in ${tof} s`);
+const rec = B.recoil(rIdx('m16a2'), cIdx('federal_xm855'), sIdx('standing'));
+if (!(rec.energy > 4 && rec.energy < 6)) fail(`shooter: M16A2 free recoil ${rec.energy} J`);
+console.log(`shooter: ${shotCount} shots, hash ${shooterHash}; M855 to 50 m in ${(tof * 1e3).toFixed(1)} ms; M16A2 free recoil ${rec.energy.toFixed(2)} J`);
+
 console.log(`ok: hashes ${h.join(' ')}; bullet time ${frames} frames, at most ${(maxJump * 1000).toFixed(1)} mm per frame`);

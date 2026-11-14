@@ -1,9 +1,10 @@
 # Data format
 
 The library is JSON: `data/drag_standard.json` (the G1 and G7 tables),
-`data/projectiles.json`, `data/cartridges.json`, `data/rifles.json`. A document holds any
-of the sections `drag_curves`, `projectiles`, `cartridges`, `rifles`, plus an
-optional `comment`.
+`data/projectiles.json`, `data/cartridges.json`, `data/rifles.json`,
+`data/stances.json`. A document holds any of the sections `drag_curves`,
+`projectiles`, `cartridges`, `rifles` and `stances`, plus an optional
+`comment`.
 
 ## Provenance
 
@@ -48,6 +49,14 @@ Units are in the field names and converted to SI on load:
 | `_f` | degree Fahrenheit | K |
 | `_fps_per_f` | ft/s per °F | m/s per K (× 0.3048 × 1.8) |
 | `_percent` | per cent | fraction (× 0.01) |
+| `_lb` | pound (mass) | kg (× 0.45359237) |
+| `_rpm` | rounds per minute | rounds per second (÷ 60) |
+| `_s` | second | s |
+| `_deg`, `_deg_per_s2` | degree, degree per s² | rad, rad/s² |
+| `_moa` | minute of angle | rad |
+| `_kg_m2` | kg m² | kg m² |
+| `_per_deg_turned` | per degree | per rad |
+| `_per_m_moved`, `_per_s`, `_per_s_airborne`, `_per_shot` | per metre, per second, per shot | as is |
 
 ## Records
 
@@ -67,12 +76,41 @@ and the `test_barrel_in` it was measured from. Optional: `velocity_sd_fps`
 (shot-to-shot standard deviation), `temp_coefficient_fps_per_f` and
 `temp_reference_f` (how the velocity follows the powder's temperature, and the
 temperature the published figure is for; the coefficient needs the
-reference).
+reference). For the shooter layer (ADR 0005): `charge_gr` and
+`gas_velocity_fps` together, the powder's mass and its gas's exit speed in
+the free-recoil convention.
 
 **rifles**: `id`, `name`, `twist_in` (inches per turn), `twist_direction`
 (`right` or `left`, default right), `barrel_in`, `sight_height_in`
 (optional), `group_moa` (optional: the mean 5-shot group, extreme spread in
-MOA, of the gun with its load).
+MOA, of the gun with its load). For the shooter layer (ADR 0005), all
+optional:
+
+- `mass_lb`: the gun as fired, loaded, with its optic.
+- `cyclic_rate_rpm`.
+- `fire_modes`: an array of `semi`, `auto`, `burst2`–`burst4` or `manual`.
+  Every mode but `manual` needs a cyclic rate; `manual` needs
+  `manual_cycle_s`.
+- `magazine_rounds`.
+- `reload_s`, `ads_s`, `sprint_out_s`.
+- `bore_lever_in`: the bore's height over where the shooter takes the recoil.
+- `gyration_in`: the gun's pitch radius of gyration about its centre of mass.
+
+**stances**: `id`, `name`, and the shooter's body in that position (all
+required):
+
+- **Taking the recoil:** `hold_inertia_kg_m2`, `recenter_deg_per_s2`,
+  `return_percent`, `kick_clamp_deg`, `kick_pitch_sd_percent`,
+  `kick_yaw_sd_percent`, `hip_kick_percent`, `braced_reduction_percent`,
+  `settle_s`.
+- **The gun in the hands:** `gun_kick_percent`, `gun_kick_accel_deg_per_s2`,
+  `gun_kick_decay_per_s`, `gun_kick_max_deg`.
+- **The hip cone:** `hip_cone_min_moa`, `hip_cone_max_moa`, `bloom_per_shot`,
+  `bloom_per_deg_turned`, `bloom_per_m_moved`, `bloom_per_s_airborne`,
+  `bloom_recovery_per_s`.
+- **The hold at the sight:** `hold_wobble_moa`, `wobble_period_s`.
+
+docs/physics.md section 7 says what each one does.
 
 The standard tables must have the ids `g1` and `g7`; a projectile with a
 `bc_g7` or `bc_g1` is flown on them.

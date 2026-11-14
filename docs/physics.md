@@ -2,9 +2,11 @@
 
 How far each model goes, and its main gap. Milestones 1 to 3 are in: the
 air, the clock, the deterministic maths, the point-mass trajectory, spin and
-the rotating Earth. The sections for dispersion and materials are listed
-with what they will hold, and are marked as not started; nothing below
-claims more than the code does. Source: [`src/core`](../src/core), [`src/aviation`](../src/aviation).
+the rotating Earth, with round-to-round variation from Milestone 4 and the
+shooter layer (section 7, ADR 0005). Materials are listed with what they will
+hold and marked as not started. Nothing below claims more than the code does.
+Source: [`src/core`](../src/core), [`src/aviation`](../src/aviation),
+[`src/shooter`](../src/shooter).
 
 ## 1. The air
 
@@ -263,3 +265,122 @@ tracking error) and the solver API are still to come.
 The host's segment query, the material handoff interface, gelatine, wood,
 drywall, sheet steel, soil, ricochet; the projectile's own deformation and
 breakup.
+
+## 7. The shooter layer (ADR 0005)
+
+`bd/shooter.hpp`, in its own library (`bd_shooter`). It covers what happens
+between the trigger and the launch, and what the shooter feels after it. The
+core still only flies rounds. The layer hands it shot events (the bore's
+direction, plus the round's seed and stream) and gives the host the camera and
+viewmodel offsets.
+
+**The weapon.**
+
+- **Clock.** States run on the 1 ms clock, counted as integers.
+  - The action's next readiness is held in microseconds, and the remainder is
+    carried. An automatic fires at exactly its cyclic rate on average, on the
+    first step at or after each readiness, at any frame rate.
+  - A press given with an advance call fires on that call's first step.
+- **Fire modes:** semi (re-arms on release), auto, burst *n* (the burst
+  completes after release), and manual (bolt, lever or pump, at its
+  `manual_cycle_s`).
+- **Magazine.** Pulling the trigger on an empty magazine clicks once and
+  starts the reload. A reload takes `reload_s` and refills the magazine; the
+  host keeps the reserve.
+- **Sprint.** A sprint holds the gun down, and `sprint_out_s` must pass before
+  it fires again.
+- **Sight.** The sight fraction moves at 1/`ads_s` per second.
+
+**Free recoil (physics).** The bullet and the powder gas leave with momentum
+
+```
+p = m_b v0 + m_c v_gas
+```
+
+and the free gun takes `V = p / M` and `E = ½ M V²`. `v_gas` follows the
+free-recoil tables' convention: 4,700 fps for rifle cartridges here, and
+4,000 fps estimated for handgun cartridges. Powder charges are estimated from
+handloading practice, because factories don't publish them.
+
+**The kick.** The recoil acts along the bore, a height `h` (`bore_lever_in`)
+above where the shooter takes it. Its angular impulse `p h` turns the gun and
+the arms and upper body moving with it:
+
+```
+ω0 = p h / (M k² + I_hold)
+```
+
+- `k` (`gyration_in`) is the gun's pitch radius of gyration about its centre
+  of mass.
+- `I_hold` is the stance's.
+
+A straight-line stock (an AR: `h` ≈ 0.6 in) climbs less for its momentum than
+a dropped one (a Thompson: about 1.9 in). That comes out of the geometry, not
+a per-gun recoil table.
+
+On each shot `ω0` is multiplied by:
+
+- the hip factor, lerped by the sight fraction;
+- a braced reduction of `1 − r s`, where `s` rises from 0 to 1 over
+  `settle_s` after a shot (a settled shooter takes the first shot of a string
+  better);
+- `1 + σ z5` from the round's stream.
+
+The yaw rate is `ω0 σ_yaw z6`.
+
+The view then integrates, per axis and per step:
+
+1. A constant pull toward the aim (`recenter`).
+2. Motion back toward the aim is slowed to `return_percent` of the rate.
+3. Passing the aim stops it dead.
+4. It is clamped at `kick_clamp_deg`.
+
+The rise from one shot is the closed form of a constant deceleration,
+`ω0² / 2a` at `ω0 / a`. The test checks the integration against it to 2 %.
+
+- **M24 at the sight, standing:** a .308 shot gives about 19°/s, peaks at
+  1.2° after 126 ms, and is back on the aim with no overshoot.
+- **M16A2 three-round burst** (`bdemo shoot m16a2 federal_xm855 standing 1`):
+  climbs about 0.37° and settles in about 470 ms.
+
+The gun's own motion in the hands is a visual-only spring (rate, pull, viscous
+damping, cap) driven by the same shots. It never moves the camera or the
+bore.
+
+**Aim.** A hip accumulator, from 0 to 1:
+
+- **Opens with:** each hip shot, every degree turned, every metre moved, and
+  each second off the ground.
+- **Closes:** at `bloom_recovery_per_s`, but only while nothing opens it.
+
+The hip cone's half-angle runs from `hip_cone_min` to `hip_cone_max` with
+it. Only *fully* at the sight (a binary gate, as in the IW engine) is the cone
+just `hip_cone_max × bloom`. Nothing adds to the bloom there, so it drains to
+zero: a laser.
+
+A shot's place in the cone is `u9` (radius) and `u10` (angle) of its stream,
+weighted to the centre.
+
+The hold's wander at the sight is two incommensurate sines per axis near a
+breath's period, scaled by the sight fraction. It is part of the camera
+offset, so the bore goes where the camera shows.
+
+**Draws.** A shot draws z5..z8, u9 and u10 from its round's stream, after
+`bd::drawRound`'s z1..z4. One `(seed, stream)` is the whole round, its recoil
+and its cone, on every machine.
+
+**Main gap:**
+
+- **The response is not measured.** The shooter's response (`I_hold`, the
+  pull, the return, the hip factor, the braced reduction, every bloom and
+  cone figure) is tuned for play and tagged `estimated:`. Muzzle rise against
+  high-speed footage of real shooters is an open item.
+- **The rigid-body lever model is simple.** It has no shoulder compliance, no
+  translation of the shooter, and no time-resolved barrel recoil. It
+  under-states handgun flip, where the wrist is the pivot.
+- **No muzzle brakes or compensators.** The M107's 101 ft lb is unbraked.
+- **No suppressors**, which change the gas term.
+- **One hold inertia per stance for every gun.**
+- **Gun masses and handling times** are estimated from commonly quoted
+  figures, not checked against manuals from the build environment.
+- **Hit feedback waits for Milestone 5's world query.**

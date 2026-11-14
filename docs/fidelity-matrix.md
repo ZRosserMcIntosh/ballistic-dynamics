@@ -1,7 +1,7 @@
 # Fidelity matrix
 
-What is modelled, how, and how far it is validated, as of Milestone 3
-(October 2026). Rows cover the whole brief, including what is not started.
+What is modelled, how, and how far it is validated, as of Milestone 4 and
+the shooter layer (November 2026). Rows cover the whole brief, including what is not started.
 
 Legend: ✅ implemented and tested · 🟡 partial or simplified · ⛔ not started.
 
@@ -19,7 +19,10 @@ Legend: ✅ implemented and tested · 🟡 partial or simplified · ⛔ not star
 | Coriolis and Eötvös | ✅ | −2Ω×v at the latitude, every RK stage | Vacuum closed forms to 0.1 %; with drag against the integrated lateral equation to 0.3 % | — |
 | Transonic instability, tumbling | 🟡 | Gyroscopic: Sg with the C_mα rise through Mach 1, tumbling below Sg 1 (drag × 4, estimated) | A 1:20 twist tumbles | Dynamic stability (S_d, the wobble's damping) not modelled: the usual transonic upset is not caught |
 | Wake (the trace) | 🟡 | Self-similar axisymmetric far wake shed along the path, aged, carried by the wind (`wakeAt`) | Cube-root growth, two-thirds decay, advection, determinism (`tests/test_wake.cpp`) | Coefficients estimated; optical strength ∝ velocity deficit, not computed from the wake's temperature |
-| Round-to-round variation | ⛔ | RNG streams only | — | Milestone 4 |
+| Round-to-round variation | ✅ | Velocity spread and powder temperature, BC spread, the barrel's throw from the group, seeded per round (Milestone 4) | `tests/test_variation.cpp` | Spread figures estimated; no barrel harmonics, cold bore or heating string |
+| Weapon (cycle, magazine, modes) | ✅ | 1 ms integer clock with the cycle's remainder carried; semi, auto, burst, manual; dry fire, reload, sprint-out; the shot on the click's first step (ADR 0005) | `tests/test_shooter.cpp`: exact rate at any frame rate, bit for bit | Handling times estimated |
+| Recoil and the kick | 🟡 | Free recoil from momentum; the view's kick `p h / (M k² + I_hold)` with a constant pull, slowed return and no overshoot; a visual gun spring; braced first shot | Free-recoil energies in the commonly quoted ranges; the rise against its closed form | The shooter's response tuned, not measured; no brakes or suppressors; handgun flip under-stated |
+| Aim (hip cone, sight, hold) | 🟡 | Hip bloom from shots, turning, moving, airborne; a binary sight gate with no cone; the hold's wander in the camera | `tests/test_shooter.cpp` | Every figure tuned for play |
 | Scope, cant, solver | ⛔ | — | — | Milestone 4 |
 | World query and material handoff | ⛔ | — | — | Milestone 5 |
 | Gelatine, wood, steel, soil, ricochet | ⛔ | — | — | Milestone 5 |

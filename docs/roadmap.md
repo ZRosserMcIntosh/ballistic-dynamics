@@ -9,12 +9,21 @@ skipped. Small PRs, one milestone or less each.
 | 2 | Point mass: G1/G7 and custom drag curves; drop, drift, time of flight and energy against published tables for .308 Win 175 gr, 6.5 Creedmoor 140 gr, .338 Lapua 250 gr, .50 BMG 750 gr, 5.56 mm M855, 9 mm 124 gr; convergence of the 1 ms step; whole-trajectory determinism hash; bullet-time interpolation | ✅ |
 | 3 | Spin and the Earth: stability, spin drift, aerodynamic jump, Coriolis and Eötvös, the epicycle damping out, transonic instability; against McCoy and published long-range data | ✅ except dynamic (transonic) stability, which is open below |
 | 4 | Every round unique: muzzle velocity, BC, imbalance and barrel spread; group sizes; scope and cant; the solver API | ✅ velocity spread and powder temperature, BC spread, the barrel's throw from the group, the spread of impacts; ⛔ scope and cant, the solver API |
+| 4s | The shooter layer (ADR 0005): the weapon on the 1 ms clock (exact cyclic rate, modes, magazine, reload, sprint-out), recoil from momentum and the MW2-shaped kick, the hip cone and the sight, the browser ABI | ✅ engine side; the shooter's response tuned, not yet measured |
 | 5 | World and materials: the segment-query interface, the material handoff ADR, gelatine, wood, steel, ricochet | ⛔ |
 | 6 | Scale: structure-of-arrays storage, the 5,000-round benchmark, determinism across native builds and browsers (including Aviation's air) | ⛔ |
 | 7 | The range at `/sao-paulo/ballistics/` in the Sao-Paulo repository, with the Sniper Elite-style bullet-time camera ([bullet-time.md](bullet-time.md)) | ⛔ (outside this repository: asked before); the engine side of bullet time is in (Milestone 2) |
 | 8 | Glass handoff: the interface PR in Glass, then sniping through glass; Rupert's drop | ⛔ (a PR in the Glass repository: asked before) |
 
 ## Open items
+
+- Measure muzzle rise and recovery on high-speed footage of real shooters
+  (standing, kneeling, prone; an AR, a .308 bolt gun, a 9 mm pistol) and fit
+  the stances' hold inertia, pull and return to it. Check the free-recoil
+  energies against a published table. Add muzzle brakes, compensators and
+  suppressors to the gas term.
+- Check the gun masses, cyclic rates and magazine capacities marked
+  "commonly quoted" against the manuals.
 
 - Read the manufacturers' own tables (Federal, Hornady, Lapua, Speer) and
   JBM, unreachable from the build environment so far, and replace the

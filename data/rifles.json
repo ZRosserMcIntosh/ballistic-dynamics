@@ -12,9 +12,28 @@
         "twist_in": "published: American Rifleman, The Remington M24 Sniper Weapon System (2016): 5R rifling, one turn in 11.25 in, right hand",
         "barrel_in": "published: American Rifleman (2016), 24 in free-floated barrel",
         "sight_height_in": "estimated: a 30 mm tube scope in low rings over a Remington 700 action sits about 1.5 to 2 in above the bore",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of the M24 with M118 match is held to about 1 MOA; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of the M24 with M118 match is held to about 1 MOA; the gun and its load, not the shooter",
+        "mass_lb": "estimated: M24 commonly quoted at about 12 lb without its optic and about 16 lb with the M3A scope and five rounds; not checked against the TM from the build environment",
+        "magazine_rounds": "published: M24 internal magazine, five rounds (American Rifleman, 2016)",
+        "manual_cycle_s": "estimated: working a Remington 700 bolt and settling back on the scope, about 0.6 to 1 s for a trained shooter",
+        "reload_s": "estimated: loading five rounds singly through the ejection port",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement (a heavy scoped rifle)",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; an HS Precision stock with a moderate drop",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; 43 in overall"
       },
-      "group_moa": 0.9
+      "group_moa": 0.9,
+      "mass_lb": 15.8,
+      "fire_modes": [
+        "manual"
+      ],
+      "magazine_rounds": 5,
+      "manual_cycle_s": 0.8,
+      "reload_s": 6.0,
+      "ads_s": 0.45,
+      "sprint_out_s": 0.4,
+      "bore_lever_in": 1.2,
+      "gyration_in": 12.4
     },
     {
       "id": "bolt_65cm",
@@ -57,9 +76,28 @@
         "twist_in": "published: C.I.P. TDCC 12.7x99 / .50 BMG, twist 381 mm (1 in 15 in)",
         "barrel_in": "published: Barrett M82A1 / M107, 29 in barrel",
         "sight_height_in": "estimated: a large scope over the M107's rail, about 2.5 in over the bore",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of a semi-automatic .50 with match ammunition, 1 to 2 MOA; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a semi-automatic .50 with match ammunition, 1 to 2 MOA; the gun and its load, not the shooter",
+        "mass_lb": "estimated: M107 commonly quoted at about 28.7 lb empty, plus its optic and ten rounds",
+        "cyclic_rate_rpm": "estimated: the recoiling barrel's cycle; fired far slower in practice",
+        "magazine_rounds": "published: M107 10-round box magazine",
+        "reload_s": "estimated: a heavy rifle's magazine change",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement (a 30 lb rifle)",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; a straight stock",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 57 in overall"
       },
-      "group_moa": 1.5
+      "group_moa": 1.5,
+      "mass_lb": 32.0,
+      "cyclic_rate_rpm": 300,
+      "fire_modes": [
+        "semi"
+      ],
+      "magazine_rounds": 10,
+      "reload_s": 4.0,
+      "ads_s": 0.6,
+      "sprint_out_s": 0.6,
+      "bore_lever_in": 1.0,
+      "gyration_in": 16.6
     },
     {
       "id": "m16a2",
@@ -72,9 +110,29 @@
         "twist_in": "published: M16A2 / M4 barrels are rifled 1 turn in 7 in for the M855",
         "barrel_in": "published: M16A2 20 in barrel",
         "sight_height_in": "estimated: an optic on a flat-top AR sits about 2.6 in over the bore",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of an M16A2 with M855 ball, 2 to 4 MOA; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of an M16A2 with M855 ball, 2 to 4 MOA; the gun and its load, not the shooter",
+        "mass_lb": "estimated: M16A2 commonly quoted at about 7.8 lb empty and 8.8 lb with a loaded 30-round magazine; not checked against the TM from the build environment",
+        "cyclic_rate_rpm": "estimated: the M16A2's cyclic rate is commonly quoted as 700 to 950 rounds a minute; the middle of that range",
+        "magazine_rounds": "published: the standard 30-round STANAG magazine",
+        "reload_s": "estimated: a trained shooter's magazine change, about 2 to 3 s",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; the AR's straight-line stock puts the bore almost in line with the shoulder",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; 39.6 in overall"
       },
-      "group_moa": 2.5
+      "group_moa": 2.5,
+      "mass_lb": 8.8,
+      "cyclic_rate_rpm": 800,
+      "fire_modes": [
+        "semi",
+        "burst3"
+      ],
+      "magazine_rounds": 30,
+      "reload_s": 2.5,
+      "ads_s": 0.3,
+      "sprint_out_s": 0.25,
+      "bore_lever_in": 0.6,
+      "gyration_in": 11.4
     },
     {
       "id": "pistol_9mm",
@@ -132,9 +190,28 @@
         "twist_in": "published: SVD rifling 1 turn in 240 mm (9.45 in) since 1975 (320 mm before)",
         "barrel_in": "published: SVD barrel 620 mm (24.4 in)",
         "sight_height_in": "estimated: the PSO-1 on the left side rail, about 2.7 in over the bore (its small offset to the left is not modelled)",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of an SVD with 7N1, about 1 to 1.5 MOA; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of an SVD with 7N1, about 1 to 1.5 MOA; the gun and its load, not the shooter",
+        "mass_lb": "estimated: SVD commonly quoted at about 4.3 kg with the PSO-1 and an empty magazine, plus ten rounds",
+        "cyclic_rate_rpm": "estimated: the action's cycle; the SVD is semi-automatic only and is fired far slower than this",
+        "magazine_rounds": "published: SVD 10-round box magazine",
+        "reload_s": "estimated: a trained shooter's magazine change",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement (a long scoped rifle)",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; the thumbhole stock is nearly straight",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 47 in overall"
       },
-      "group_moa": 1.5
+      "group_moa": 1.5,
+      "mass_lb": 10.0,
+      "cyclic_rate_rpm": 600,
+      "fire_modes": [
+        "semi"
+      ],
+      "magazine_rounds": 10,
+      "reload_s": 3.0,
+      "ads_s": 0.45,
+      "sprint_out_s": 0.4,
+      "bore_lever_in": 1.0,
+      "gyration_in": 13.6
     },
     {
       "id": "glock_17",
@@ -147,9 +224,28 @@
         "twist_in": "published: (secondary) a factory-pattern G17 barrel listing (Midwest Gun Works): hexagonal right-hand rifling, 250 mm (9.84 in); not checked against Glock's own sheet",
         "barrel_in": "published: Glock 17, 114 mm (4.49 in) barrel",
         "sight_height_in": "estimated: the top of the factory sights about 0.75 in over the bore axis",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of a Glock 17 from a machine rest, about 1.5 in at 25 yd; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a Glock 17 from a machine rest, about 1.5 in at 25 yd; the gun and its load, not the shooter",
+        "mass_lb": "estimated: Glock 17 commonly quoted at about 625 g empty and about 905 g with a full magazine; not checked against Glock's sheet",
+        "cyclic_rate_rpm": "estimated: the slide's cycle; the Glock 18, the same mechanism in automatic, is commonly quoted at about 1,100 to 1,200 rounds a minute",
+        "magazine_rounds": "published: Glock 17 standard magazine, 17 rounds",
+        "reload_s": "estimated: a trained shooter's pistol magazine change",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; Glock's low bore axis over the web of the hand",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 7.9 in overall"
       },
-      "group_moa": 6
+      "group_moa": 6,
+      "mass_lb": 2.0,
+      "cyclic_rate_rpm": 1100,
+      "fire_modes": [
+        "semi"
+      ],
+      "magazine_rounds": 17,
+      "reload_s": 1.8,
+      "ads_s": 0.2,
+      "sprint_out_s": 0.2,
+      "bore_lever_in": 0.9,
+      "gyration_in": 2.2
     },
     {
       "id": "colt_1911",
@@ -162,9 +258,28 @@
         "twist_in": "published: (secondary) 5 in Government .45 barrels, 1 turn in 16 in, left hand (Nighthawk Custom's drop-in barrel); Colt's own rifling is left-hand by tradition, not checked against a Colt sheet",
         "barrel_in": "published: 1911 Government Model, 5 in barrel",
         "sight_height_in": "estimated: GI-pattern sights about 0.7 in over the bore",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of a Government Model from a machine rest, about 1.25 in at 25 yd; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of a Government Model from a machine rest, about 1.25 in at 25 yd; the gun and its load, not the shooter",
+        "mass_lb": "estimated: 1911 Government commonly quoted at about 39 oz empty, plus a loaded 7-round magazine",
+        "cyclic_rate_rpm": "estimated: the slide's cycle, by analogy with automatic conversions; a pistol is fired far slower than this",
+        "magazine_rounds": "published: the 1911's standard 7-round magazine",
+        "reload_s": "estimated: a trained shooter's pistol magazine change",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; a higher bore over the hand than a Glock",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 8.6 in overall"
       },
-      "group_moa": 5
+      "group_moa": 5,
+      "mass_lb": 2.75,
+      "cyclic_rate_rpm": 900,
+      "fire_modes": [
+        "semi"
+      ],
+      "magazine_rounds": 7,
+      "reload_s": 1.9,
+      "ads_s": 0.2,
+      "sprint_out_s": 0.2,
+      "bore_lever_in": 1.1,
+      "gyration_in": 2.5
     },
     {
       "id": "sw_686",
@@ -207,9 +322,29 @@
         "twist_in": "published: H&K MP5 LE brochure: six grooves, right hand; 1 turn in 254 mm (10 in) (other references round it to 250 mm)",
         "barrel_in": "published: MP5A2-A5, 225 mm (8.86 in)",
         "sight_height_in": "estimated: the drum rear and hooded front post about 1.4 in over the bore",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of the closed-bolt MP5 from a rest, about 3 MOA; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of the closed-bolt MP5 from a rest, about 3 MOA; the gun and its load, not the shooter",
+        "mass_lb": "estimated: MP5A3 commonly quoted at about 2.9 kg empty, plus about 0.5 kg for a loaded 30-round magazine; not checked against an H&K sheet",
+        "cyclic_rate_rpm": "estimated: the MP5's cyclic rate is commonly quoted as about 800 rounds a minute",
+        "magazine_rounds": "published: the MP5's standard 30-round magazine",
+        "reload_s": "estimated: a trained shooter's magazine change",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; a near-straight stock with the bore slightly above",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 26 in with the stock out, mass bunched near the receiver"
       },
-      "group_moa": 3
+      "group_moa": 3,
+      "mass_lb": 7.4,
+      "cyclic_rate_rpm": 800,
+      "fire_modes": [
+        "semi",
+        "auto"
+      ],
+      "magazine_rounds": 30,
+      "reload_s": 2.6,
+      "ads_s": 0.25,
+      "sprint_out_s": 0.2,
+      "bore_lever_in": 0.9,
+      "gyration_in": 8.9
     },
     {
       "id": "fn_p90",
@@ -222,9 +357,29 @@
         "twist_in": "published: FN P90, 1 turn in 231 mm (9.1 in), right hand (FN America lists 1:9 in)",
         "barrel_in": "published: FN P90 technical data, 264 mm (10.4 in)",
         "sight_height_in": "estimated: the integral ring reflex sight about 1.5 in over the bore",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of the P90 from a rest, about 3 MOA; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of the P90 from a rest, about 3 MOA; the gun and its load, not the shooter",
+        "mass_lb": "estimated: P90 commonly quoted at about 2.6 kg empty and 3.0 kg with a loaded 50-round magazine; not checked against an FN sheet",
+        "cyclic_rate_rpm": "estimated: the P90's cyclic rate is commonly quoted as about 900 rounds a minute",
+        "magazine_rounds": "published: the P90's 50-round magazine",
+        "reload_s": "estimated: the P90's top magazine takes longer to seat than a box magazine",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; a bullpup with the bore about an inch over the butt's centre",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 20 in overall, and a bullpup's mass sits near the shoulder"
       },
-      "group_moa": 3
+      "group_moa": 3,
+      "mass_lb": 6.6,
+      "cyclic_rate_rpm": 900,
+      "fire_modes": [
+        "semi",
+        "auto"
+      ],
+      "magazine_rounds": 50,
+      "reload_s": 3.2,
+      "ads_s": 0.25,
+      "sprint_out_s": 0.2,
+      "bore_lever_in": 1.0,
+      "gyration_in": 5.8
     },
     {
       "id": "thompson_m1a1",
@@ -237,9 +392,29 @@
         "twist_in": "estimated: 1 turn in 16 in, right hand, as Auto-Ordnance's Thompson-pattern carbines are rifled; the wartime M1A1's figure was not found",
         "barrel_in": "published: (secondary) M1A1 barrel 10.5 in (267 mm)",
         "sight_height_in": "estimated: the fixed L-shaped rear aperture about 1.1 in over the bore",
-        "group_moa": "estimated: mean 5-shot group (extreme spread) of an open-bolt Thompson, about 6 MOA; the gun and its load, not the shooter"
+        "group_moa": "estimated: mean 5-shot group (extreme spread) of an open-bolt Thompson, about 6 MOA; the gun and its load, not the shooter",
+        "mass_lb": "estimated: Thompson M1A1 commonly quoted at about 10.5 lb empty, plus about 1 lb for a loaded 30-round magazine; not checked against the TM",
+        "cyclic_rate_rpm": "estimated: the M1A1's cyclic rate is commonly quoted as about 600 to 725 rounds a minute",
+        "magazine_rounds": "published: the M1A1's 30-round box magazine (it also took 20)",
+        "reload_s": "estimated: a trained shooter's magazine change",
+        "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
+        "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
+        "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; the Thompson's dropped wooden stock puts the bore well over the shoulder",
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 32 in overall"
       },
-      "group_moa": 6
+      "group_moa": 6,
+      "mass_lb": 11.5,
+      "cyclic_rate_rpm": 700,
+      "fire_modes": [
+        "semi",
+        "auto"
+      ],
+      "magazine_rounds": 30,
+      "reload_s": 3.0,
+      "ads_s": 0.3,
+      "sprint_out_s": 0.25,
+      "bore_lever_in": 1.9,
+      "gyration_in": 9.8
     }
   ]
 }

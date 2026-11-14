@@ -12,10 +12,12 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "bd/aviation_air.hpp"
 #include "bd/determinism.hpp"
 #include "bd/library.hpp"
+#include "bd/shooter.hpp"
 #include "bd/solver.hpp"
 #include "bd/spin.hpp"
 #include "bd/units.hpp"
@@ -46,7 +48,7 @@ void printProvenance(const ProvenanceMap& m) {
 int list() {
     Library lib;
     int bad = 0;
-    for (const char* f : {"/drag_standard.json", "/projectiles.json", "/cartridges.json", "/rifles.json"})
+    for (const char* f : {"/drag_standard.json", "/projectiles.json", "/cartridges.json", "/rifles.json", "/stances.json"})
         for (const auto& e : lib.load(readFile(std::string(BD_DATA_DIR) + f))) {
             std::fprintf(stderr, "%s\n", e.c_str());
             ++bad;
@@ -113,7 +115,7 @@ int table(int argc, char** argv) {
         return 2;
     }
     Library lib;
-    for (const char* f : {"/drag_standard.json", "/projectiles.json", "/cartridges.json", "/rifles.json"})
+    for (const char* f : {"/drag_standard.json", "/projectiles.json", "/cartridges.json", "/rifles.json", "/stances.json"})
         for (const auto& e : lib.load(readFile(std::string(BD_DATA_DIR) + f))) std::fprintf(stderr, "%s\n", e.c_str());
     const CartridgeDef* c = lib.cartridge(argv[2]);
     if (!c) {
@@ -200,6 +202,58 @@ int table(int argc, char** argv) {
     return 0;
 }
 
+// A string of shots: the weapon's events and the view's kick, millisecond by
+// millisecond where it moves (the shooter layer, ADR 0005).
+int shoot(int argc, char** argv) {
+    if (argc < 4) {
+        std::fprintf(stderr, "usage: bdemo shoot rifle cartridge [stance standing] [mode 0] [hold_ms 300] [ads 1] [seed 1]\n");
+        return 2;
+    }
+    Library lib;
+    for (const char* f : {"/drag_standard.json", "/projectiles.json", "/cartridges.json", "/rifles.json", "/stances.json"})
+        for (const auto& e : lib.load(readFile(std::string(BD_DATA_DIR) + f))) std::fprintf(stderr, "%s\n", e.c_str());
+    const RifleDef* r = lib.rifle(argv[2]);
+    const CartridgeDef* c = lib.cartridge(argv[3]);
+    const StanceDef* st = lib.stance(argc > 4 ? argv[4] : "standing");
+    if (!r || !c || !st || !lib.projectile(c->projectile)) {
+        std::fprintf(stderr, "unknown rifle, cartridge or stance\n");
+        return 2;
+    }
+    std::string err;
+    const shooter::WeaponSpec w = shooter::weaponSpecFor(*r, *c, *lib.projectile(c->projectile), err);
+    if (!err.empty()) {
+        std::fprintf(stderr, "%s: %s\n", r->id.c_str(), err.c_str());
+        return 1;
+    }
+    const shooter::FreeRecoil fr = shooter::freeRecoil(w);
+    std::printf("%s with %s, %s\n", r->name.c_str(), c->name.c_str(), st->name.c_str());
+    std::printf("free recoil: %.2f N s, %.2f m/s, %.2f J (%.2f ft lb); kick %.1f deg/s per shot (before the stance's factors)\n",
+                fr.momentum, fr.velocity, fr.energy, fr.energy / 1.3558179483314004,
+                shooter::kickRate(w, *st) * 180 / kPi);
+    shooter::ShooterInput in;
+    in.mode = argc > 5 ? std::atoi(argv[5]) : 0;
+    const Real hold = (argc > 6 ? std::atof(argv[6]) : 300) * 1e-3;
+    in.ads = argc > 7 ? std::atoi(argv[7]) != 0 : true;
+    shooter::Weapon g(w, *st, argc > 8 ? std::strtoull(argv[8], nullptr, 10) : 1);
+    std::vector<shooter::ShooterEvent> ev;
+    g.advance(1.0, in, ev);  // to the sight (or not), settled
+    std::printf("%8s %9s %9s %9s %9s %6s  %s\n", "t ms", "pitch deg", "yaw deg", "gun deg", "cone moa", "mag", "event");
+    const int ms = static_cast<int>(hold * 1000) + 1500;
+    for (int i = 1; i <= ms; ++i) {
+        in.trigger = i <= static_cast<int>(hold * 1000);
+        const std::size_t before = ev.size();
+        g.advance(1.0 + i * 1e-3, in, ev);
+        const char* what = "";
+        for (std::size_t k = before; k < ev.size(); ++k)
+            what = ev[k].kind == shooter::EventKind::Shot ? "shot" : ev[k].kind == shooter::EventKind::DryFire ? "click"
+                   : ev[k].kind == shooter::EventKind::ReloadStart ? "reload" : "loaded";
+        if (*what || i % 25 == 0)
+            std::printf("%8d %9.3f %9.3f %9.3f %9.1f %6d  %s\n", i, g.kickPitch() * 180 / kPi, g.kickYaw() * 180 / kPi,
+                        g.gunPitch() * 180 / kPi, g.cone() / units::kMoa, g.magazine(), what);
+    }
+    return 0;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -208,6 +262,7 @@ int main(int argc, char** argv) {
     if (!std::strcmp(cmd, "air")) return air(argc, argv);
     if (!std::strcmp(cmd, "determinism")) return determinism();
     if (!std::strcmp(cmd, "table")) return table(argc, argv);
-    std::fprintf(stderr, "usage: bdemo list | air P T RH alt | table cartridge ... | determinism\n");
+    if (!std::strcmp(cmd, "shoot")) return shoot(argc, argv);
+    std::fprintf(stderr, "usage: bdemo list | air P T RH alt | table cartridge ... | shoot rifle cartridge ... | determinism\n");
     return 2;
 }

@@ -7,9 +7,10 @@ set(BD_TEST_SOURCES
   test_spin.cpp
   test_wake.cpp
   test_variation.cpp
+  test_shooter.cpp
 )
 add_executable(bd_tests ${BD_TEST_SOURCES})
-target_link_libraries(bd_tests PRIVATE bd_core bd_aviation)
+target_link_libraries(bd_tests PRIVATE bd_core bd_aviation bd_shooter)
 target_compile_options(bd_tests PRIVATE ${BD_WARNINGS})
 target_compile_definitions(bd_tests PRIVATE BD_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
