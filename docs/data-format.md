@@ -95,6 +95,10 @@ optional:
 - `reload_s`, `ads_s`, `sprint_out_s`.
 - `bore_lever_in`: the bore's height over where the shooter takes the recoil.
 - `gyration_in`: the gun's pitch radius of gyration about its centre of mass.
+- `origin`: `western` or `eastern`. It sets the tracer colour (ADR 0006):
+  red for NATO tracer rounds, green for Soviet-bloc ones.
+- `tracer`: `red`, `green` or `none`, overriding the origin's colour.
+- `tracer_every`: every n-th round is a tracer.
 
 **stances**: `id`, `name`, and the shooter's body in that position (all
 required):

@@ -106,9 +106,10 @@ export default async function createBallisticModule(wasmBytes) {
   B.weaponAdvance = (t) => {
     const n = ex.bd_weapon_advance(t), out = [];
     for (let i = 0; i < n; ++i) {
-      const a = view(Float64Array, ex.bd_weapon_event(i), 13);
+      const a = view(Float64Array, ex.bd_weapon_event(i), 14);
       out.push({ index: i, kind: KINDS[a[0]], time: a[1], step: a[2], shot: a[3], seed: a[4], stream: a[5],
-        direction: [a[6], a[7], a[8]], coneUp: a[9], coneRight: a[10], kick: a[11], magazine: a[12] });
+        direction: [a[6], a[7], a[8]], coneUp: a[9], coneRight: a[10], kick: a[11], magazine: a[12],
+        tracer: [null, 'red', 'green'][a[13]] });
     }
     return out;
   };

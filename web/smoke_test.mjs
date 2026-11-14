@@ -156,13 +156,15 @@ const sIdx = (id) => cat.stances.findIndex((s) => s.id === id);
 if (!cat.stances || cat.stances.length < 3) fail('stances in the catalog');
 if (!B.bd_weapon(rIdx('mp5a3'), cIdx('mp5_9mm_124_fmj'), sIdx('standing'), 2026, 100, 0)) fail('bd_weapon');
 B.bd_weapon_look(0, 1, 0);
-let shotCount = 0, firstShot = null;
+let shotCount = 0, firstShot = null, tracers = 0;
 for (let f = 1; f <= 120; ++f) {
   B.weaponInput({ trigger: f <= 60, ads: f >= 30 }, 0, 0, 1);
   for (const e of B.weaponAdvance(f / 60)) {
     if (e.kind !== 'shot') continue;
     if (!firstShot) firstShot = { frame: f, ...e };
     ++shotCount;
+    if (e.tracer !== (e.shot % 5 === 0 ? 'red' : null)) fail(`shooter: shot ${e.shot} tracer ${e.tracer}`);
+    if (e.tracer) ++tracers;
     e.direction.forEach(hashReal);
     hashReal(e.kick);
   }
@@ -172,6 +174,8 @@ for (let f = 1; f <= 120; ++f) {
 }
 const shooterHash = fnv.h.toString(16).padStart(16, '0');
 if (shotCount !== 14) fail(`shooter: ${shotCount} shots, expected 14`);
+if (tracers !== 2) fail(`shooter: ${tracers} tracers, expected 2 (rounds 5 and 10, red)`);
+if (cat.rifles.find((r) => r.id === 'svd_pso1').tracer !== 'green') fail('shooter: the SVD traces green');
 if (shooterHash !== SHOOTER_GOLDEN) fail(`shooter hash ${shooterHash}, expected ${SHOOTER_GOLDEN}`);
 if (firstShot.frame !== 1 || firstShot.step !== 0) fail('shooter: the first shot is not on the first step of the click\'s frame');
 // Fly a shot from the M16A2: M855 reaches 50 m in about 56 ms (standard day,
@@ -194,6 +198,6 @@ for (let t = 0.001; t < 0.5; t += 0.001) { B.bd_advance(t, 0); if (B.round().pos
 if (!(tof > 0.050 && tof < 0.062)) fail(`shooter: M855 to 50 m in ${tof} s`);
 const rec = B.recoil(rIdx('m16a2'), cIdx('federal_xm855'), sIdx('standing'));
 if (!(rec.energy > 4 && rec.energy < 6)) fail(`shooter: M16A2 free recoil ${rec.energy} J`);
-console.log(`shooter: ${shotCount} shots, hash ${shooterHash}; M855 to 50 m in ${(tof * 1e3).toFixed(1)} ms; M16A2 free recoil ${rec.energy.toFixed(2)} J`);
+console.log(`shooter: ${shotCount} shots (${tracers} red tracers), hash ${shooterHash}; M855 to 50 m in ${(tof * 1e3).toFixed(1)} ms; M16A2 free recoil ${rec.energy.toFixed(2)} J`);
 
 console.log(`ok: hashes ${h.join(' ')}; bullet time ${frames} frames, at most ${(maxJump * 1000).toFixed(1)} mm per frame`);

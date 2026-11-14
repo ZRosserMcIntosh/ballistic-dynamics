@@ -255,6 +255,10 @@ BD_EXPORT const char* bd_catalog() {
         jsonNum(o, r.mass);
         o += ",\"magazine\":";
         jsonNum(o, r.magazine);
+        o += ",\"tracer\":";
+        jsonString(o, r.tracer);
+        o += ",\"tracerEvery\":";
+        jsonNum(o, r.tracerEvery);
         o += ",\"fireModes\":[";
         for (std::size_t k = 0; k < r.fireModes.size(); ++k) {
             if (k) o += ',';
@@ -686,18 +690,18 @@ BD_EXPORT int bd_weapon_advance(double t) {
     return static_cast<int>(S.events.size());
 }
 
-// Event i of the last advance: 13 doubles: kind (0 shot, 1 dry fire, 2 reload
+// Event i of the last advance: 14 doubles: kind (0 shot, 1 dry fire, 2 reload
 // start, 3 reload end), time, step, and for a shot its number, seed, stream,
 // the bore (x, y, z ENU), the hip cone's part (up, right, rad), the kick it
-// gave (rad/s) and the rounds left.
+// gave (rad/s), the rounds left and its tracer (0 none, 1 red, 2 green).
 BD_EXPORT const double* bd_weapon_event(int i) {
     Sim& S = sim();
-    S.sample.assign(13, 0.0);
+    S.sample.assign(14, 0.0);
     if (i < 0 || i >= static_cast<int>(S.events.size())) return S.sample.data();
     const auto& e = S.events[static_cast<std::size_t>(i)];
     S.sample = {static_cast<double>(e.kind), e.time, static_cast<double>(e.step), static_cast<double>(e.shot),
                 static_cast<double>(e.seed), static_cast<double>(e.stream), e.direction.x, e.direction.y, e.direction.z,
-                e.coneUp, e.coneRight, e.kick, static_cast<double>(e.magazine)};
+                e.coneUp, e.coneRight, e.kick, static_cast<double>(e.magazine), static_cast<double>(e.tracer)};
     return S.sample.data();
 }
 

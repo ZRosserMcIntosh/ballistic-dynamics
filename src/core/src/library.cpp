@@ -324,6 +324,17 @@ std::vector<std::string> Library::load(const std::string& jsonText) {
                 f.sprintOut = r.num("sprint_out_s", 1.0, false, true);
                 f.boreLever = r.num("bore_lever_in", units::kInch, false, true);
                 f.gyration = r.num("gyration_in", units::kInch, false);
+                f.origin = r.str("origin", false);
+                if (!f.origin.empty() && f.origin != "western" && f.origin != "eastern")
+                    r.bad("\"origin\" must be western or eastern");
+                f.tracer = r.str("tracer", false);
+                if (!f.tracer.empty() && f.tracer != "red" && f.tracer != "green" && f.tracer != "none")
+                    r.bad("\"tracer\" must be red, green or none");
+                if (f.tracer.empty()) f.tracer = f.origin == "eastern" ? "green" : f.origin == "western" ? "red" : "";
+                if (f.tracer == "none") f.tracer.clear();
+                const Real every = r.num("tracer_every", 1.0, false);
+                f.tracerEvery = static_cast<int>(every);
+                if (static_cast<Real>(f.tracerEvery) != every) r.bad("\"tracer_every\" must be a whole number");
                 for (const auto& m : f.fireModes) {
                     if (m == "manual" && !(f.manualCycle > 0)) r.bad("a \"manual\" fire mode needs \"manual_cycle_s\"");
                     if (m != "manual" && !(f.cyclicRate > 0)) r.bad("fire mode \"" + m + "\" needs \"cyclic_rate_rpm\"");

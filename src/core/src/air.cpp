@@ -22,6 +22,37 @@ void windToFrom(const Vec3& wind, Real& speed, Real& fromBearing) {
     fromBearing = b;
 }
 
+ColumnAir::ColumnAir(const AirSource& base, const Vec3& origin, Real time, Real zMin, Real zMax, Real spacing) {
+    if (!(spacing > 0)) spacing = 1.0;
+    if (!(zMax > zMin)) zMax = zMin;
+    const std::size_t n = static_cast<std::size_t>((zMax - zMin) / spacing) + 2;  // covers zMax
+    z0_ = zMin;
+    inv_ = 1.0 / spacing;
+    rows_.reserve(n);
+    for (std::size_t i = 0; i < n; ++i)
+        rows_.push_back(base.sample({origin.x, origin.y, zMin + spacing * static_cast<Real>(i)}, time));
+}
+
+AirSample ColumnAir::sample(const Vec3& p, Real) const {
+    const Real s = (p.z - z0_) * inv_;
+    if (!(s > 0)) return rows_.front();
+    const std::size_t last = rows_.size() - 1;
+    if (s >= static_cast<Real>(last)) return rows_.back();
+    const std::size_t i = static_cast<std::size_t>(s);
+    const Real f = s - static_cast<Real>(i);
+    const AirSample& a = rows_[i];
+    const AirSample& b = rows_[i + 1];
+    AirSample r;
+    r.pressure = a.pressure + f * (b.pressure - a.pressure);
+    r.temperature = a.temperature + f * (b.temperature - a.temperature);
+    r.density = a.density + f * (b.density - a.density);
+    r.speedOfSound = a.speedOfSound + f * (b.speedOfSound - a.speedOfSound);
+    r.relativeHumidity = a.relativeHumidity + f * (b.relativeHumidity - a.relativeHumidity);
+    r.densityAltitude = a.densityAltitude + f * (b.densityAltitude - a.densityAltitude);
+    r.wind = a.wind + (b.wind - a.wind) * f;
+    return r;
+}
+
 RangeWind::RangeWind(const AirSource& base, const Vec3& origin, Real azimuth, std::vector<WindLayer> layers, Mode mode,
                      Real blend, std::uint64_t seed)
     : base_(base), origin_(origin), layers_(std::move(layers)), mode_(mode), blend_(blend > 0 ? blend : 0) {

@@ -1,5 +1,5 @@
 {
-  "comment": "Ballistic Dynamics rifles: twist, barrel and the optic's height over the bore.",
+  "comment": "Ballistic Dynamics rifles: twist, barrel and the optic's height over the bore. origin (western or eastern) sets the tracer colour: red for NATO tracer rounds (M856, M62), green for Soviet-bloc ones (T-45, 7T3); tracer overrides it.",
   "rifles": [
     {
       "id": "m24_sws",
@@ -20,7 +20,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement (a heavy scoped rifle)",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; an HS Precision stock with a moderate drop",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; 43 in overall"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; 43 in overall",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 0.9,
       "mass_lb": 15.8,
@@ -33,7 +34,9 @@
       "ads_s": 0.45,
       "sprint_out_s": 0.4,
       "bore_lever_in": 1.2,
-      "gyration_in": 12.4
+      "gyration_in": 12.4,
+      "origin": "western",
+      "tracer_every": 5
     },
     {
       "id": "bolt_65cm",
@@ -48,7 +51,8 @@
         "sight_height_in": "estimated: a 30 mm scope in medium rings, 1.5 to 2 in over the bore",
         "group_moa": "estimated: mean 5-shot group (extreme spread) of a good factory bolt gun with match ammunition; the gun and its load, not the shooter"
       },
-      "group_moa": 0.6
+      "group_moa": 0.6,
+      "origin": "western"
     },
     {
       "id": "bolt_338lm",
@@ -63,7 +67,8 @@
         "sight_height_in": "estimated: a 34 mm scope on a 20 MOA rail, about 2 in over the bore",
         "group_moa": "estimated: mean 5-shot group (extreme spread) of a .338 LM precision rifle with match ammunition; the gun and its load, not the shooter"
       },
-      "group_moa": 0.7
+      "group_moa": 0.7,
+      "origin": "western"
     },
     {
       "id": "m107_50bmg",
@@ -84,7 +89,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement (a 30 lb rifle)",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; a straight stock",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 57 in overall"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 57 in overall",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 1.5,
       "mass_lb": 32.0,
@@ -97,7 +103,9 @@
       "ads_s": 0.6,
       "sprint_out_s": 0.6,
       "bore_lever_in": 1.0,
-      "gyration_in": 16.6
+      "gyration_in": 16.6,
+      "origin": "western",
+      "tracer_every": 5
     },
     {
       "id": "m16a2",
@@ -118,7 +126,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; the AR's straight-line stock puts the bore almost in line with the shoulder",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; 39.6 in overall"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; 39.6 in overall",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 2.5,
       "mass_lb": 8.8,
@@ -132,7 +141,9 @@
       "ads_s": 0.3,
       "sprint_out_s": 0.25,
       "bore_lever_in": 0.6,
-      "gyration_in": 11.4
+      "gyration_in": 11.4,
+      "origin": "western",
+      "tracer_every": 5
     },
     {
       "id": "pistol_9mm",
@@ -147,7 +158,8 @@
         "sight_height_in": "estimated: iron sights about 0.5 in over the bore of a service pistol",
         "group_moa": "estimated: mean 5-shot group (extreme spread) of a service pistol from a machine rest, about 1.5 in at 25 yd; the gun and its load, not the shooter"
       },
-      "group_moa": 6
+      "group_moa": 6,
+      "origin": "western"
     },
     {
       "id": "m200_408",
@@ -162,7 +174,8 @@
         "sight_height_in": "estimated: a large tactical scope on the M200's raised rail, about 2.4 in over the bore",
         "group_moa": "estimated: mean 5-shot group (extreme spread) of CheyTac claims sub-MOA for the M200 with its ammunition; the gun and its load, not the shooter"
       },
-      "group_moa": 0.6
+      "group_moa": 0.6,
+      "origin": "western"
     },
     {
       "id": "m9130_pu",
@@ -177,7 +190,8 @@
         "sight_height_in": "estimated: the PU on its side mount, centred over the bore about 1.9 in up",
         "group_moa": "estimated: mean 5-shot group (extreme spread) of a Mosin sniper with surplus light ball, about 2 MOA; the gun and its load, not the shooter"
       },
-      "group_moa": 2.0
+      "group_moa": 2.0,
+      "origin": "eastern"
     },
     {
       "id": "svd_pso1",
@@ -198,7 +212,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement (a long scoped rifle)",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; the thumbhole stock is nearly straight",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 47 in overall"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 47 in overall",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 1.5,
       "mass_lb": 10.0,
@@ -211,7 +226,9 @@
       "ads_s": 0.45,
       "sprint_out_s": 0.4,
       "bore_lever_in": 1.0,
-      "gyration_in": 13.6
+      "gyration_in": 13.6,
+      "origin": "eastern",
+      "tracer_every": 5
     },
     {
       "id": "glock_17",
@@ -232,7 +249,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; Glock's low bore axis over the web of the hand",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 7.9 in overall"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 7.9 in overall",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 6,
       "mass_lb": 2.0,
@@ -245,7 +263,9 @@
       "ads_s": 0.2,
       "sprint_out_s": 0.2,
       "bore_lever_in": 0.9,
-      "gyration_in": 2.2
+      "gyration_in": 2.2,
+      "origin": "western",
+      "tracer_every": 5
     },
     {
       "id": "colt_1911",
@@ -266,7 +286,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; a higher bore over the hand than a Glock",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 8.6 in overall"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 8.6 in overall",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 5,
       "mass_lb": 2.75,
@@ -279,7 +300,9 @@
       "ads_s": 0.2,
       "sprint_out_s": 0.2,
       "bore_lever_in": 1.1,
-      "gyration_in": 2.5
+      "gyration_in": 2.5,
+      "origin": "western",
+      "tracer_every": 5
     },
     {
       "id": "sw_686",
@@ -294,7 +317,8 @@
         "sight_height_in": "estimated: the ramp front and adjustable rear about 0.75 in over the bore",
         "group_moa": "estimated: mean 5-shot group (extreme spread) of a 4 in revolver from a machine rest, about 1.25 in at 25 yd; the gun and its load, not the shooter"
       },
-      "group_moa": 5
+      "group_moa": 5,
+      "origin": "western"
     },
     {
       "id": "fn_fiveseven",
@@ -309,7 +333,8 @@
         "sight_height_in": "estimated: about 0.7 in over the bore",
         "group_moa": "estimated: mean 5-shot group (extreme spread) of about 1.25 in at 25 yd from a rest; the gun and its load, not the shooter"
       },
-      "group_moa": 5
+      "group_moa": 5,
+      "origin": "western"
     },
     {
       "id": "mp5a3",
@@ -330,7 +355,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; a near-straight stock with the bore slightly above",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 26 in with the stock out, mass bunched near the receiver"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 26 in with the stock out, mass bunched near the receiver",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 3,
       "mass_lb": 7.4,
@@ -344,7 +370,9 @@
       "ads_s": 0.25,
       "sprint_out_s": 0.2,
       "bore_lever_in": 0.9,
-      "gyration_in": 8.9
+      "gyration_in": 8.9,
+      "origin": "western",
+      "tracer_every": 5
     },
     {
       "id": "fn_p90",
@@ -365,7 +393,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; a bullpup with the bore about an inch over the butt's centre",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 20 in overall, and a bullpup's mass sits near the shoulder"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 20 in overall, and a bullpup's mass sits near the shoulder",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 3,
       "mass_lb": 6.6,
@@ -379,7 +408,9 @@
       "ads_s": 0.25,
       "sprint_out_s": 0.2,
       "bore_lever_in": 1.0,
-      "gyration_in": 5.8
+      "gyration_in": 5.8,
+      "origin": "western",
+      "tracer_every": 5
     },
     {
       "id": "thompson_m1a1",
@@ -400,7 +431,8 @@
         "ads_s": "estimated: hip to sight for a trained shooter; a design figure for play, not a measurement",
         "sprint_out_s": "estimated: sprint to gun on target for a trained shooter; a design figure for play",
         "bore_lever_in": "estimated: the bore axis's height over the point that takes the recoil (the shoulder pocket's centre for a long gun, the web of the hand for a handgun), from the gun's layout; the Thompson's dropped wooden stock puts the bore well over the shoulder",
-        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 32 in overall"
+        "gyration_in": "estimated: the gun's pitch radius of gyration about its centre of mass, about its overall length / sqrt(12) for a slender gun, less where the mass is bunched; about 32 in overall",
+        "tracer_every": "estimated: a game default after the 4 ball : 1 tracer belt mix; magazines are often loaded the same way"
       },
       "group_moa": 6,
       "mass_lb": 11.5,
@@ -414,7 +446,9 @@
       "ads_s": 0.3,
       "sprint_out_s": 0.25,
       "bore_lever_in": 1.9,
-      "gyration_in": 9.8
+      "gyration_in": 9.8,
+      "origin": "western",
+      "tracer_every": 5
     }
   ]
 }

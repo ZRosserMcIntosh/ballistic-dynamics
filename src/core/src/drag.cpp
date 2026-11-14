@@ -4,10 +4,25 @@
 
 namespace bd {
 
+namespace {
+constexpr std::size_t kMachBuckets = 256;
+}
+
 DragTable::DragTable(std::vector<Real> mach, std::vector<Real> cd) : mach_(std::move(mach)), cd_(std::move(cd)) {
     if (mach_.size() != cd_.size()) {
         mach_.clear();
         cd_.clear();
+    }
+    const std::size_t n = mach_.size();
+    if (n < 2 || n > 65535) return;
+    indexStart_ = mach_[0];
+    indexScale_ = static_cast<Real>(kMachBuckets) / (mach_[n - 1] - mach_[0]);
+    index_.resize(kMachBuckets);
+    std::size_t lo = 0;
+    for (std::size_t b = 0; b < kMachBuckets; ++b) {
+        const Real start = indexStart_ + static_cast<Real>(b) / indexScale_;
+        while (lo + 2 < n && mach_[lo + 1] <= start) ++lo;
+        index_[b] = static_cast<std::uint16_t>(lo);
     }
 }
 
@@ -16,15 +31,26 @@ Real DragTable::cd(Real m) const {
     if (n == 0) return 0;
     if (!(m > mach_[0])) return cd_[0];
     if (m >= mach_[n - 1]) return cd_[n - 1];
-    // Binary search for the bracketing interval.
-    std::size_t lo = 0, hi = n - 1;
-    while (hi - lo > 1) {
-        const std::size_t mid = (lo + hi) / 2;
-        if (mach_[mid] <= m)
-            lo = mid;
-        else
-            hi = mid;
+    // The bracketing interval: the last lo with mach[lo] <= m (lo <= n - 2).
+    std::size_t lo;
+    if (!index_.empty()) {
+        std::size_t b = static_cast<std::size_t>((m - indexStart_) * indexScale_);
+        if (b >= kMachBuckets) b = kMachBuckets - 1;
+        lo = index_[b];
+        while (lo > 0 && mach_[lo] > m) --lo;  // the bucket's rounding, either way
+        while (lo + 2 < n && mach_[lo + 1] <= m) ++lo;
+    } else {
+        std::size_t l = 0, h = n - 1;
+        while (h - l > 1) {
+            const std::size_t mid = (l + h) / 2;
+            if (mach_[mid] <= m)
+                l = mid;
+            else
+                h = mid;
+        }
+        lo = l;
     }
+    const std::size_t hi = lo + 1;
     const Real t = (m - mach_[lo]) / (mach_[hi] - mach_[lo]);
     return cd_[lo] + t * (cd_[hi] - cd_[lo]);
 }

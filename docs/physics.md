@@ -3,8 +3,9 @@
 How far each model goes, and its main gap. Milestones 1 to 3 are in: the
 air, the clock, the deterministic maths, the point-mass trajectory, spin and
 the rotating Earth, with round-to-round variation from Milestone 4 and the
-shooter layer (section 7, ADR 0005). Materials are listed with what they will
-hold and marked as not started. Nothing below claims more than the code does.
+shooter layer (section 7, ADR 0005), and the world query with the 25 m
+no-lead rule (section 6, ADR 0006). The materials still to come are listed
+with what they will hold. Nothing below claims more than the code does.
 Source: [`src/core`](../src/core), [`src/aviation`](../src/aviation),
 [`src/shooter`](../src/shooter).
 
@@ -39,6 +40,11 @@ pinned submodule ([ADR 0003](decisions/0003-atmosphere-source.md)):
   direction wander, three incommensurate sines around a period), blended
   with a smoothstep over 20 m at each join. It replaces or adds to the base
   air's wind. The shooter's call and the true wind are two `RangeWind`s.
+
+**Fast path.** `ColumnAir` tabulates any source up a vertical column (1 m by
+default) and interpolates by height. Its worst density error is 9e-10 of the
+model, and a sample costs about 6 ns instead of about 200 ns (ADR 0006).
+Games fly it; validation flies the exact source.
 
 **Main gap.** Range-wind gusts are smooth sines, not a turbulence spectrum;
 for turbulence use Aviation's field (`AviationAir` over a `SimpleWeather`
@@ -260,11 +266,26 @@ stringing, no cold-bore shot, no heating string); no lateral throw from
 bullet imbalance beyond the rifle's group; the scope (cant, parallax,
 tracking error) and the solver API are still to come.
 
-## 6. Materials — not started (Milestone 5)
+## 6. The world and materials (Milestone 5, in part; ADR 0006)
 
-The host's segment query, the material handoff interface, gelatine, wood,
-drywall, sheet steel, soil, ricochet; the projectile's own deformation and
-breakup.
+**In:** the host's segment query and the round that flies against it
+(`bd/world.hpp`).
+
+- **Chords.** The host is asked once per 4 ms chord, from the last queried
+  state to the current one. The path's sag off the chord is `g h²/8`, under
+  0.02 mm. Chords are aligned to the round's own steps, so impacts don't
+  depend on the frame rate.
+- **The hit.** The hit's fraction along the chord gives its distance flown,
+  then its step, then its time inside that 1 ms step, linearly in distance
+  (within 0.2 µs). The velocity there comes from the step states' Hermite.
+- **The 25 m no-lead rule.** Up to 25 m of path the host places moving
+  bodies at the shot's time; beyond it, at the chord's mid-time.
+- **Click-frame resolution.** `resolveNoLead` flies the first 25 m at once,
+  so the frame of the click knows a close hit.
+
+**Not started:** the material handoff interface, gelatine (validation only:
+damage to bodies is the host's table, ADR 0006), wood, drywall, sheet steel,
+soil, ricochet, and the projectile's own deformation and breakup.
 
 ## 7. The shooter layer (ADR 0005)
 
@@ -383,4 +404,15 @@ and its cone, on every machine.
 - **One hold inertia per stance for every gun.**
 - **Gun masses and handling times** are estimated from commonly quoted
   figures, not checked against manuals from the build environment.
-- **Hit feedback waits for Milestone 5's world query.**
+- **Hit feedback.** Hit feedback comes from the world query (section 6): the
+  impact's time is known on the frame of the click inside 25 m, and when the
+  round arrives beyond it.
+
+**Tracers.** A gun's `origin` sets the colour of its family's tracer rounds:
+
+- **western:** red, like NATO's M856 and M62;
+- **eastern:** green, as Soviet-bloc tracers (T-45, 7T3) typically were.
+
+`tracer` overrides it. Every `tracer_every`-th shot is a tracer, and its
+event carries the colour. A tracer's own burn and its slightly different
+ballistics are not modelled; the tracer is drawn on the same round.

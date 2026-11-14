@@ -219,6 +219,29 @@ unbraked M107.
 | M855 from the shot to 25, 50, 100 m | the flight times quoted in ADR 0005 | 28, 56, 116 ms |
 | A scripted string, native and browser | the same bits | `535c7230c9b51317` native (gcc, clang, sanitizers); the browser string `5bcdfaece1f41fd9` native and in wasm32 |
 
+## The world and the budget (ADR 0006)
+
+`BD_VERBOSE=1 ./build/tests/bd_tests world` and `./build/bdemo bench`
+(Linux, gcc, this VM: timings move by about 15 % run to run).
+
+| Check | Expected | Engine |
+|---|---|---|
+| M855 into a wall at 40 m, 1-, 4- and 16-step chords | the flight's own crossing (Hermite) | time within 1e-10 s; height within the chord's sag (1.2 µm, 20 µm, 0.3 mm) |
+| A 10 cm body crossing at 7 m/s, aimed where it was at the shot | 20 m: hit (no lead); 50 m: missed unless led by v × flight time | as expected; without the rule the 20 m shot misses |
+| A 15 m hit resolved on the click's frame | true impact time | 16 ms after the shot |
+| Impacts at 1, 60 and 144 Hz | bit-identical | bit-identical |
+| `ColumnAir` against the model, 2,000 heights | density to 1e-8 | worst 9.0e-10; a 300 m flight within 1 µm |
+| The drag index against the binary search, G1 and G7 | bit-identical | at every table point ± 1e-12 and 100,000 random Mach numbers |
+
+| Cost (`bdemo bench`) | Engine |
+|---|---|
+| A step, exact air / column air / uniform air | 1.07 µs / 0.29 µs / 0.24 µs |
+| One air sample, exact / column | 209 ns / 5.8 ns |
+| A drag evaluation | 50 ns (70 ns before the index) |
+| A 25 m shot / a 300 m flight (column air) | 7.5 µs / 113 µs |
+| A game second: 20 players on full auto, every round to a hit, steady wind | 33 ms of one core |
+| A weapon for one second at 60 Hz, idle / firing | 13 µs / 20 µs |
+
 ## Determinism
 
 | Check | Reference | Engine |

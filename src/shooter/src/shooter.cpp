@@ -78,6 +78,8 @@ WeaponSpec weaponSpecFor(const RifleDef& rifle, const CartridgeDef& cartridge, c
         if (parseFireMode(m, d)) w.modes.push_back(d);
         else if (error.empty()) error = "unknown fire mode \"" + m + "\"";
     }
+    w.tracer = rifle.tracer == "red" ? Tracer::Red : rifle.tracer == "green" ? Tracer::Green : Tracer::None;
+    w.tracerEvery = rifle.tracerEvery;
     w.bulletMass = projectile.mass;
     w.muzzleSpeed = cartridge.muzzleVelocity;
     w.charge = cartridge.charge;
@@ -276,6 +278,7 @@ void Weapon::fire(const ModeDef& mode, std::vector<ShooterEvent>& events) {
     e.coneRight = right;
     e.kick = kick;
     e.magazine = magazine_;
+    if (spec_.tracerEvery > 0 && shots_ % spec_.tracerEvery == 0) e.tracer = spec_.tracer;
     events.push_back(e);
 }
 

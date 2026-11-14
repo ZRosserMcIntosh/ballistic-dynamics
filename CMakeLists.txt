@@ -40,6 +40,7 @@ add_library(bd_core
   src/core/src/spin.cpp
   src/core/src/wake.cpp
   src/core/src/variation.cpp
+  src/core/src/world.cpp
 )
 add_library(bd::core ALIAS bd_core)
 target_include_directories(bd_core PUBLIC src/core/include)
@@ -74,7 +75,7 @@ target_link_libraries(bd_shooter PUBLIC bd_core)
 target_compile_options(bd_shooter PRIVATE ${BD_WARNINGS})
 
 if(BD_BUILD_TOOLS)
-  add_executable(bdemo tools/bdemo/main.cpp)
+  add_executable(bdemo tools/bdemo/main.cpp tools/bdemo/bench.cpp)
   target_link_libraries(bdemo PRIVATE bd_core bd_aviation bd_shooter)
   target_compile_options(bdemo PRIVATE ${BD_WARNINGS})
 endif()

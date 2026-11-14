@@ -47,6 +47,31 @@ private:
     AirSample s_;
 };
 
+// Another source's air tabulated up a vertical column (ADR 0006): its
+// state and wind at `origin`'s horizontal position and at `time`, every
+// `spacing` metres of ENU height from zMin to zMax, interpolated linearly at
+// a point's height. The point's horizontal position and the time are ignored,
+// so the column holds one moment's air all around it. Above and below the
+// column, the end rows hold.
+//
+// Why: a full atmosphere sample (Aviation's model) costs about 200 ns, and an
+// RK4 step takes four of them. Air over a few hundred metres of flight changes
+// with height and hardly at all along it, and the column samples it in a few
+// nanoseconds. At 1 m spacing, linear interpolation of the standard
+// atmosphere's density is within a part in 10^8 of the model. Validation
+// flies the exact source; a game flies the column. Put a RangeWind over it for
+// the wind along the range.
+class ColumnAir final : public AirSource {
+public:
+    ColumnAir(const AirSource& base, const Vec3& origin, Real time, Real zMin, Real zMax, Real spacing = 1.0);
+    AirSample sample(const Vec3& positionEnu, Real time) const override;
+    std::size_t rows() const { return rows_.size(); }
+
+private:
+    Real z0_ = 0, inv_ = 1;
+    std::vector<AirSample> rows_;
+};
+
 // The horizontal wind (ENU, m/s) that blows FROM a bearing (rad, true,
 // clockwise from north) at a speed.
 Vec3 windFrom(Real speed, Real fromBearing);

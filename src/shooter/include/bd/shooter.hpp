@@ -48,6 +48,9 @@ FreeRecoil freeRecoil(Real bulletMass, Real muzzleSpeed, Real chargeMass, Real g
 
 enum class FireMode { Semi, Auto, Burst, Manual };
 
+// A tracer's colour: its family's (ADR 0006).
+enum class Tracer { None = 0, Red = 1, Green = 2 };
+
 struct ModeDef {
     FireMode mode = FireMode::Semi;
     int burst = 0;  // rounds per press, for Burst
@@ -71,6 +74,8 @@ struct WeaponSpec {
     Real muzzleSpeed = 0;    // m/s
     Real charge = 0;         // kg
     Real gasSpeed = 0;       // m/s
+    Tracer tracer = Tracer::None;
+    int tracerEvery = 0;     // every n-th shot is a tracer; 0: none
 };
 
 // From the library. On a missing figure, error names it and the spec is not usable.
@@ -119,6 +124,7 @@ struct ShooterEvent {
     Real coneUp = 0, coneRight = 0;  // rad: the hip cone's part of it
     Real kick = 0;            // rad/s: the pitch rate this shot gave the view
     int magazine = 0;         // rounds left after it
+    Tracer tracer = Tracer::None;  // this round's tracer, if it is one
 };
 
 class Weapon {
