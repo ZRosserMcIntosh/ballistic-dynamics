@@ -13,6 +13,71 @@
         "barrel_in": "published: American Rifleman (2016), 24 in free-floated barrel",
         "sight_height_in": "estimated: a 30 mm tube scope in low rings over a Remington 700 action sits about 1.5 to 2 in above the bore"
       }
+    },
+    {
+      "id": "bolt_65cm",
+      "name": "Bolt-action rifle, 6.5 Creedmoor",
+      "twist_in": 8,
+      "twist_direction": "right",
+      "barrel_in": 24,
+      "sight_height_in": 1.75,
+      "provenance": {
+        "twist_in": "published: SAAMI Z299.4 6.5 Creedmoor drawing, 1 turn in 8 in",
+        "barrel_in": "estimated: 24 in, the length Hornady quotes its 6.5 Creedmoor velocities from",
+        "sight_height_in": "estimated: a 30 mm scope in medium rings, 1.5 to 2 in over the bore"
+      }
+    },
+    {
+      "id": "bolt_338lm",
+      "name": "Bolt-action rifle, .338 Lapua Magnum",
+      "twist_in": 10,
+      "twist_direction": "right",
+      "barrel_in": 27,
+      "sight_height_in": 2.0,
+      "provenance": {
+        "twist_in": "published: C.I.P. TDCC .338 Lapua Magnum, twist 254 mm (1 in 10 in)",
+        "barrel_in": "estimated: 27 in, typical of .338 LM sniper rifles (AI AWM, Sako TRG-42)",
+        "sight_height_in": "estimated: a 34 mm scope on a 20 MOA rail, about 2 in over the bore"
+      }
+    },
+    {
+      "id": "m107_50bmg",
+      "name": ".50 BMG semi-automatic (M107 class)",
+      "twist_in": 15,
+      "twist_direction": "right",
+      "barrel_in": 29,
+      "sight_height_in": 2.6,
+      "provenance": {
+        "twist_in": "published: C.I.P. TDCC 12.7x99 / .50 BMG, twist 381 mm (1 in 15 in)",
+        "barrel_in": "published: Barrett M82A1 / M107, 29 in barrel",
+        "sight_height_in": "estimated: a large scope over the M107's rail, about 2.5 in over the bore"
+      }
+    },
+    {
+      "id": "m16a2",
+      "name": "M16A2 / M4-pattern rifle, 5.56 mm",
+      "twist_in": 7,
+      "twist_direction": "right",
+      "barrel_in": 20,
+      "sight_height_in": 2.6,
+      "provenance": {
+        "twist_in": "published: M16A2 / M4 barrels are rifled 1 turn in 7 in for the M855",
+        "barrel_in": "published: M16A2 20 in barrel",
+        "sight_height_in": "estimated: an optic on a flat-top AR sits about 2.6 in over the bore"
+      }
+    },
+    {
+      "id": "pistol_9mm",
+      "name": "9 mm service pistol",
+      "twist_in": 10,
+      "twist_direction": "right",
+      "barrel_in": 4,
+      "sight_height_in": 0.5,
+      "provenance": {
+        "twist_in": "published: SAAMI 9 mm Luger, 1 turn in 10 in",
+        "barrel_in": "published: Speer quotes 23618GD from a 4 in test barrel",
+        "sight_height_in": "estimated: iron sights about 0.5 in over the bore of a service pistol"
+      }
     }
   ]
 }

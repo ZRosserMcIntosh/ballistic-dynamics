@@ -6,7 +6,7 @@ import createBallisticModule from './dist/ballistic.mjs';
 // The same values as kDeterminismGolden and kTrajectoryGolden in
 // src/core/include/bd/determinism.hpp: the browser must compute the same bits
 // as every native build.
-const GOLDEN = ['7302405ad0a26843', '2ca1ba49af3e55d1'];
+const GOLDEN = ['7302405ad0a26843', '2ca1ba49af3e55d1', '86ee6c5cb23ef28e'];
 
 const fail = (m) => { console.error('FAIL', m); process.exit(1); };
 const B = await createBallisticModule();
@@ -21,6 +21,7 @@ for (const p of cat.projectiles)
 const h = B.determinism();
 if (h[0] !== GOLDEN[0]) fail(`maths hash ${h[0]}, expected ${GOLDEN[0]}`);
 if (h[1] !== GOLDEN[1]) fail(`trajectory hash ${h[1]}, expected ${GOLDEN[1]}`);
+if (h[2] !== GOLDEN[2]) fail(`spin hash ${h[2]}, expected ${GOLDEN[2]}`);
 
 // A hot, high station: the air reproduces the reading and thins with height.
 B.bd_station(83400, 303.15, 0.2, 1609);
@@ -55,4 +56,24 @@ while (wall < 0.05) {         // 50 ms of flight, 3,000 frames
 }
 // 790 m/s for 16.7 us is 13 mm per frame; never the 0.79 m of a whole step.
 if (!(maxJump < 0.02)) fail('bullet time jumps ' + maxJump);
+// Milestone 3: the M24's 1:11.25 right-hand twist drifts the .308 right; at
+// 45 N, firing north, Coriolis adds to it; in Sao Paulo it takes some away.
+B.wind(0, []);
+B.bd_setup(11.25 * inch, 0, 1);
+const sg = B.bd_stability(i308);
+if (!(sg > 1.8 && sg < 2.0)) fail('Sg ' + sg);
+const spinOnly = B.table(i308, 100 * yd, 1.5 * inch, 1000 * yd, 1000 * yd).at(-1).windage / inch;
+B.bd_setup(11.25 * inch, 45 * Math.PI / 180, 3);
+const north = B.table(i308, 100 * yd, 1.5 * inch, 1000 * yd, 1000 * yd).at(-1).windage / inch;
+B.bd_setup(11.25 * inch, -23.55 * Math.PI / 180, 3);
+const sp = B.table(i308, 100 * yd, 1.5 * inch, 1000 * yd, 1000 * yd).at(-1).windage / inch;
+console.log(`.308 at 1000 yd, Sg ${sg.toFixed(2)}: spin drift ${spinOnly.toFixed(1)} in; with Coriolis at 45 N ${north.toFixed(1)}, at Sao Paulo ${sp.toFixed(1)}`);
+if (!(spinOnly > 8 && spinOnly < 11)) fail('spin drift ' + spinOnly);
+if (!(north > spinOnly && sp < spinOnly)) fail('Coriolis direction');
+if (!B.bd_fire(i308, 0, 0, 0, 0, e, 0)) fail('fire with spin');
+B.bd_advance(0.5, 0);
+const r = B.round(), nose = B.noseAt(0.25);
+if (!(r.spin > 15000 && r.stability > sg)) fail('spin state ' + JSON.stringify(r));
+if (!(Math.abs(Math.hypot(...nose) - 1) < 1e-12)) fail('nose');
+
 console.log(`ok: hashes ${h.join(' ')}; bullet time ${frames} frames, at most ${(maxJump * 1000).toFixed(1)} mm per frame`);
