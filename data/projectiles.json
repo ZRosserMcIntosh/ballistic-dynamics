@@ -1,0 +1,22 @@
+{
+  "comment": "Ballistic Dynamics projectiles. Units are in the field names; every number has a provenance note (docs/data-format.md). Stepped G1 coefficients apply at and above their _min_fps.",
+  "projectiles": [
+    {
+      "id": "smk_308_175",
+      "name": ".308 175 gr Sierra MatchKing (#2275)",
+      "construction": "hollow point boat tail, copper jacket over a lead core",
+      "diameter_in": 0.308,
+      "mass_gr": 175,
+      "length_in": 1.24,
+      "bc_g1": [0.505, 0.496, 0.485],
+      "bc_g1_min_fps": [2800, 1800, 0],
+      "provenance": {
+        "diameter_in": "published: Sierra Bullets catalogue, #2275 .30 cal 175 gr HPBT MatchKing",
+        "mass_gr": "published: Sierra Bullets catalogue, #2275",
+        "length_in": "estimated: about 1.24 in as handloaders measure it; Sierra's catalogue page does not list it. To be replaced by a measurement before Milestone 3 uses it for stability",
+        "bc_g1": "published: Sierra Bullets catalogue, #2275: .505 at 2800 fps and above, .496 from 1800 to 2800 fps, .485 below 1800 fps",
+        "bc_g1_min_fps": "published: Sierra Bullets catalogue, #2275 velocity bands"
+      }
+    }
+  ]
+}

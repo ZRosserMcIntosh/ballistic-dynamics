@@ -1,0 +1,3 @@
+[submodule "extern/aviation-dynamics"]
+	path = extern/aviation-dynamics
+	url = https://github.com/ZRosserMcIntosh/Aviation-Dynamics.git
