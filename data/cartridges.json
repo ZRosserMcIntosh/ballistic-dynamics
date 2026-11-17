@@ -66,6 +66,28 @@
         "muzzle_velocity_fps": "published: Speer, 23618GD, 1150 fps",
         "test_barrel_in": "published: Speer, 23618GD, 4 in test barrel"
       }
+    },
+    {
+      "id": "cheytac_408_419",
+      "name": ".408 CheyTac 419 gr (CheyTac factory)",
+      "projectile": "cheytac_408_419",
+      "muzzle_velocity_fps": 2752,
+      "test_barrel_in": 29,
+      "provenance": {
+        "muzzle_velocity_fps": "published: CheyTac product page, .408/419 gr, 2752 fps (839 m/s)",
+        "test_barrel_in": "estimated: the M200 Intervention's 29 in barrel, which CheyTac's figures are generally quoted from"
+      }
+    },
+    {
+      "id": "hornady_65cm_147",
+      "name": "6.5 Creedmoor Hornady Match 147 gr ELD Match (81501)",
+      "projectile": "eldm_264_147",
+      "muzzle_velocity_fps": 2695,
+      "test_barrel_in": 24,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Hornady 81501, 2695 fps (as listed by retailers)",
+        "test_barrel_in": "published: Hornady, 24 in test barrel (GAP Precision listing)"
+      }
     }
   ]
 }

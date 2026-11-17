@@ -78,6 +78,19 @@
         "barrel_in": "published: Speer quotes 23618GD from a 4 in test barrel",
         "sight_height_in": "estimated: iron sights about 0.5 in over the bore of a service pistol"
       }
+    },
+    {
+      "id": "m200_408",
+      "name": "CheyTac M200 Intervention (.408 CheyTac)",
+      "twist_in": 13,
+      "twist_direction": "right",
+      "barrel_in": 29,
+      "sight_height_in": 2.4,
+      "provenance": {
+        "twist_in": "published: .408 CheyTac rifling 1 turn in 13 in (330.2 mm)",
+        "barrel_in": "published: CheyTac M200, 29 in barrel",
+        "sight_height_in": "estimated: a large tactical scope on the M200's raised rail, about 2.4 in over the bore"
+      }
     }
   ]
 }

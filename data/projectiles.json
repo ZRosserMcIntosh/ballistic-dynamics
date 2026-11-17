@@ -122,6 +122,44 @@
         "length_in": "estimated: about 0.6 in for a 124 gr 9 mm hollow point; not used before Milestone 3",
         "bc_g1": "published: Speer reloading data, 9 mm Luger 124 gr GDHP, G1 0.134"
       }
+    },
+    {
+      "id": "cheytac_408_419",
+      "name": ".408 419 gr CheyTac solid",
+      "construction": "monolithic solid (lathe-turned), boat tail",
+      "diameter_in": 0.408,
+      "mass_gr": 419,
+      "length_in": 2.0,
+      "bc_g1": [
+        0.949
+      ],
+      "provenance": {
+        "diameter_in": "published: CheyTac, .408 CheyTac 419 gr ammunition",
+        "mass_gr": "published: CheyTac, 419 gr",
+        "length_in": "estimated: about 2.0 in; not published. A solid is longer than a lead-core bullet of the same weight, and Miller's rule (fitted to lead cores) then under-states its stability",
+        "bc_g1": "published: CheyTac product page, G1 0.949 (average over 3,500 yd); Jamison quoted 0.940 (2009) and Doppler figures near 0.934 have been disputed"
+      }
+    },
+    {
+      "id": "eldm_264_147",
+      "name": "6.5 mm 147 gr Hornady ELD Match",
+      "construction": "polymer tip, boat tail, copper jacket over a lead core",
+      "diameter_in": 0.264,
+      "mass_gr": 147,
+      "length_in": 1.45,
+      "bc_g1": [
+        0.697
+      ],
+      "bc_g7": [
+        0.351
+      ],
+      "provenance": {
+        "diameter_in": "published: Hornady catalogue, 6.5 mm (.264) 147 gr ELD Match",
+        "mass_gr": "published: Hornady catalogue",
+        "length_in": "estimated: about 1.45 in for a 147 gr 6.5 mm VLD-class bullet",
+        "bc_g1": "published: Hornady 81501 data as listed by GAP Precision, G1 0.697",
+        "bc_g7": "published: Hornady 81501 data as listed by GAP Precision, G7 0.351"
+      }
     }
   ]
 }
