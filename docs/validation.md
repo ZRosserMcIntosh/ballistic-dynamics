@@ -70,6 +70,14 @@ validated model, but no published drop table for them has been checked. For
 the .408 solid, Miller's rule (fitted to lead-core bullets) under-states the
 stability of a longer monolithic bullet, and its length is estimated.
 
+The two Soviet 7.62×54R loads, the Type L light ball from the Mosin M91/30
+(G1 0.338, 865 m/s) and the 7N1 sniper load from the SVD (G7 0.206,
+830 m/s), are in the same position. Their BCs come from secondary pages that
+mark them "citation needed". The 865 m/s figure is the commonly quoted one and
+was not checked against a Soviet manual. The 830 m/s figure may belong to the
+later 7N14. Checking both against the Soviet firing tables (for example, the
+SVD manual's table for the PSO-1 drum) is an open item.
+
 ## Point mass: numerics
 
 | Check | Expected | Engine |

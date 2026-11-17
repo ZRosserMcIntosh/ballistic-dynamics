@@ -88,6 +88,28 @@
         "muzzle_velocity_fps": "published: Hornady 81501, 2695 fps (as listed by retailers)",
         "test_barrel_in": "published: Hornady, 24 in test barrel (GAP Precision listing)"
       }
+    },
+    {
+      "id": "ussr_762x54r_l",
+      "name": "7.62×54R Type L light ball (Soviet issue)",
+      "projectile": "l_762x54r_148",
+      "muzzle_velocity_fps": 2838,
+      "test_barrel_in": 28.7,
+      "provenance": {
+        "muzzle_velocity_fps": "estimated: 865 m/s, the figure commonly quoted for the light ball from the M91/30's 730 mm barrel; not checked against a Soviet manual here",
+        "test_barrel_in": "published: the M91/30 barrel, 730 mm (28.7 in)"
+      }
+    },
+    {
+      "id": "ussr_762x54r_7n1",
+      "name": "7.62×54R 7N1 sniper (Soviet issue)",
+      "projectile": "7n1_762x54r_151",
+      "muzzle_velocity_fps": 2723,
+      "test_barrel_in": 24.4,
+      "provenance": {
+        "muzzle_velocity_fps": "published: (secondary) Wikipedia, SVD article, 830 m/s from the SVD; another source ties 830 m/s to the later 7N14, so 7N1 may be a few m/s slower",
+        "test_barrel_in": "published: the SVD barrel, 620 mm (24.4 in)"
+      }
     }
   ]
 }

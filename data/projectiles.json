@@ -160,6 +160,48 @@
         "bc_g1": "published: Hornady 81501 data as listed by GAP Precision, G1 0.697",
         "bc_g7": "published: Hornady 81501 data as listed by GAP Precision, G7 0.351"
       }
+    },
+    {
+      "id": "l_762x54r_148",
+      "name": "7.62×54R Type L light ball (M1908)",
+      "construction": "flat-base spitzer, steel or cupronickel-clad jacket over a lead core",
+      "diameter_in": 0.312,
+      "mass_gr": 148,
+      "length_in": 1.26,
+      "bc_g1": [
+        0.338
+      ],
+      "bc_g7": [
+        0.185
+      ],
+      "provenance": {
+        "diameter_in": "published: 7.62×54R bullet diameter 7.92 mm (0.312 in)",
+        "mass_gr": "published: Type L light ball 9.6 g (148 gr)",
+        "length_in": "estimated: about 1.26 in (32 mm) for the L spitzer",
+        "bc_g1": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), L bullet G1 about 0.338",
+        "bc_g7": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), L bullet G7 about 0.185"
+      }
+    },
+    {
+      "id": "7n1_762x54r_151",
+      "name": "7.62×54R 7N1 sniper (9.8 g, steel core)",
+      "construction": "boat tail, steel-clad jacket, steel core with an air pocket in the nose and a lead base",
+      "diameter_in": 0.312,
+      "mass_gr": 151,
+      "length_in": 1.3,
+      "bc_g1": [
+        0.411
+      ],
+      "bc_g7": [
+        0.206
+      ],
+      "provenance": {
+        "diameter_in": "published: 7.62×54R bullet diameter 7.92 mm (0.312 in)",
+        "mass_gr": "published: 7N1 bullet 9.8 g (151.2 gr)",
+        "length_in": "estimated: about 1.30 in (33 mm) for the 7N1 boat tail",
+        "bc_g1": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), 7N1 G1 about 0.411",
+        "bc_g7": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), 7N1 G7 about 0.206"
+      }
     }
   ]
 }
