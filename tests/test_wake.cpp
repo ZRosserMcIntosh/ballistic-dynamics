@@ -113,6 +113,9 @@ TEST_CASE("wake: its optical strength is its heat, and above Mach 1 the shocks t
     thin.density = 0.6125;
     const UniformAir high(thin);
     // Half the density, half the index change (at the Mach it was shed at).
-    const Real thinRatio = indexOverDeficit("fgmm_308_175", high, &mThin) / (0.4 * mThin * mThin);
+    // Two statements: in one expression the order is unspecified, and MSVC read
+    // mThin (still 0) before the call set it.
+    const Real thinIndex = indexOverDeficit("fgmm_308_175", high, &mThin);
+    const Real thinRatio = thinIndex / (0.4 * mThin * mThin);
     CHECK_NEAR(thinRatio, 0.5, 1e-4);
 }
