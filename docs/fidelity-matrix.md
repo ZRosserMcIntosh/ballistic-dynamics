@@ -18,6 +18,7 @@ Legend: ✅ implemented and tested · 🟡 partial or simplified · ⛔ not star
 | Spin, stability, spin drift, jump | ✅ | Miller Sg at the muzzle, Sg ∝ p²/(ρV²C_mα) downrange; roll damping; yaw-of-repose lift (McCoy) for spin drift; Litz's aerodynamic jump; closed-form epicyclic wobble for drawing | Spin drift 0.79–0.98 of Litz's formula for five rifle loads without tuning; jump, twist direction, decay ([validation.md](validation.md)) | C_Lα, inertia, roll damping estimated per class, not measured per bullet |
 | Coriolis and Eötvös | ✅ | −2Ω×v at the latitude, every RK stage | Vacuum closed forms to 0.1 %; with drag against the integrated lateral equation to 0.3 % | — |
 | Transonic instability, tumbling | 🟡 | Gyroscopic: Sg with the C_mα rise through Mach 1, tumbling below Sg 1 (drag × 4, estimated) | A 1:20 twist tumbles | Dynamic stability (S_d, the wobble's damping) not modelled: the usual transonic upset is not caught |
+| Wake (the trace) | 🟡 | Self-similar axisymmetric far wake shed along the path, aged, carried by the wind (`wakeAt`) | Cube-root growth, two-thirds decay, advection, determinism (`tests/test_wake.cpp`) | Coefficients estimated; optical strength ∝ velocity deficit, not computed from the wake's temperature |
 | Round-to-round variation | ⛔ | RNG streams only | — | Milestone 4 |
 | Scope, cant, solver | ⛔ | — | — | Milestone 4 |
 | World query and material handoff | ⛔ | — | — | Milestone 5 |

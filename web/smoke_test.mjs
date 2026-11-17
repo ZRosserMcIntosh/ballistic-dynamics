@@ -75,5 +75,7 @@ B.bd_advance(0.5, 0);
 const r = B.round(), nose = B.noseAt(0.25);
 if (!(r.spin > 15000 && r.stability > sg)) fail('spin state ' + JSON.stringify(r));
 if (!(Math.abs(Math.hypot(...nose) - 1) < 1e-12)) fail('nose');
+const wk = B.wake(0.4, 1.0, 0.3, 175 * 6.479891e-5, 0.308 * inch);
+if (!(wk.length > 6 * 100 && wk.length % 6 === 0)) fail('wake ' + wk.length);
 
 console.log(`ok: hashes ${h.join(' ')}; bullet time ${frames} frames, at most ${(maxJump * 1000).toFixed(1)} mm per frame`);
