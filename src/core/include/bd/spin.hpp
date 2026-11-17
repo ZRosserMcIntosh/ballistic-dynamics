@@ -22,7 +22,7 @@
 //    0.5 rho u^2 S CLa alpha_R, is the spin drift.
 //  - Aerodynamic jump from a crosswind at the muzzle (Litz, Applied Ballistics
 //    for Long Range Shooting): Y = 0.01 Sg - 0.0024 l + 0.032 MOA per mph of
-//    crosswind, up for a wind from the left with a right-hand twist.
+//    crosswind, down for a wind from the left with a right-hand twist (up from the right).
 //  - The epicyclic wobble (fast nutation, slow precession) after the muzzle,
 //    damping out: computed in closed form for display (its net effect on the
 //    path is the jump above).

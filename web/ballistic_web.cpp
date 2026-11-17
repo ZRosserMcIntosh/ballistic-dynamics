@@ -407,10 +407,11 @@ BD_EXPORT const double* bd_state_at(double t) {
 }
 
 // A range card for cartridge i (preferred drag model, the set-up physics) in
-// the station air and wind, firing along `azimuth` from the origin: JSON rows
-// of range, drop, windage (m), time (s), speed (m/s), energy (J), Mach, Sg.
+// the station air and wind, firing along `azimuth` from the origin at engine
+// time t0 (the gusts it meets): JSON rows of range, drop, windage (m), time
+// (s), speed (m/s), energy (J), Mach, Sg.
 BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeight, double maxRange, double step,
-                               double azimuth) {
+                               double azimuth, double t0) {
     std::string o = "[";
     DragModel drag;
     const CartridgeDef* c;
@@ -426,6 +427,7 @@ BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeig
         s.azimuth = azimuth;
         s.physics = physicsFor(*p, c->muzzleVelocity);
         const Real e = zeroElevation(s, *sim().air);
+        s.time = std::isfinite(t0) ? t0 : 0.0;
         std::vector<Real> ranges;
         for (Real r = 0; r <= maxRange + 1e-9; r += step) ranges.push_back(r);
         bool first = true;
@@ -471,7 +473,8 @@ BD_EXPORT const double* bd_air(double x, double y, double z, double t) {
     Sim& S = sim();
     S.sample.assign(9, 0.0);
     if (S.air) {
-        const AirSample a = S.air->sample({x, y, z}, t);
+        // The air with its wind (the layers and gusts rounds fly through).
+        const AirSample a = flightAir()->sample({x, y, z}, t);
         S.sample = {a.pressure, a.temperature, a.density, a.speedOfSound, a.relativeHumidity, a.densityAltitude,
                     a.wind.x, a.wind.y, a.wind.z};
     }

@@ -13,7 +13,7 @@
 //    east); elevation is up from the horizontal.
 //
 // The trajectory is integrated in the world frame on a flat local tangent
-// plane; Earth rotation enters as the Coriolis and centrifugal terms
+// plane; Earth rotation enters as the Coriolis term (the centrifugal term is folded into g)
 // (Milestone 3), with the rotation vector below.
 #pragma once
 

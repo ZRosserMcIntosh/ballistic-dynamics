@@ -32,10 +32,14 @@ PointMassRound::PointMassRound(const DragModel& drag, const AirSource& air, cons
     if (o_.spin.enabled) {
         // The crosswind at the muzzle: the jump turns the bore up or down, and
         // the round starts yawed into the relative wind (display wobble).
+        // Both are set by the wind relative to the rifle (a moving rifle
+        // makes its own crosswind). A vertical bore has no right or left:
+        // east stands in for it.
         const AirSample a = air_.sample(launch.position, launch.time);
-        const Vec3 right = normalized(cross(dir, Vec3{0, 0, 1}));
+        Vec3 right = cross(dir, Vec3{0, 0, 1});
+        right = dot(right, right) > 1e-18 ? normalized(right) : Vec3{1, 0, 0};
         const Vec3 up = cross(right, dir);
-        const Real cw = dot(a.wind, right);
+        const Real cw = dot(a.wind - launch.carrierVelocity, right);
         jump_ = aerodynamicJump(cw, o_.spin.sgMuzzle, o_.spin.calibres(), o_.spin.twist);
         Real sj, cj;
         dm::sincos(jump_, sj, cj);
@@ -43,6 +47,8 @@ PointMassRound::PointMassRound(const DragModel& drag, const AirSource& air, cons
         if (launch.muzzleSpeed > 0) yaw0_ = {cw / launch.muzzleSpeed, 0};
         s_.spin = o_.spin.muzzleSpin();
         minSg_ = o_.spin.sgMuzzle;
+        // Unstable from the muzzle: it tumbles from the first step.
+        if (o_.spin.sgMuzzle > 0 && o_.spin.sgMuzzle < 1.0) tumbling_ = true;
     }
     s_.p = launch.position;
     s_.v = dir * launch.muzzleSpeed + launch.carrierVelocity;

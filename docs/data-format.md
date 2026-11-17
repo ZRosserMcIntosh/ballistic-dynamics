@@ -50,7 +50,7 @@ Units are in the field names and converted to SI on load:
 
 **drag_curves**: `id`, `name`, `family` (`G1`, `G7` for a standard
 projectile scaled by a BC, `bullet` for one bullet's own curve), `mach` (strictly
-ascending, from 0) and `cd` (positive), the same length, at least two points.
+ascending, not negative; below the first point the first C_D holds) and `cd` (positive), the same length, at least two points.
 
 **projectiles**: `id`, `name`, `construction` (text), `diameter_in`,
 `mass_gr`, `length_in`; at least one of `bc_g1` / `bc_g7` (one value, or

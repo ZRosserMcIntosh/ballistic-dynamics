@@ -35,6 +35,9 @@ DragModel DragModel::standard(const DragTable& reference, const BallisticCoeffic
     d.kind_ = Kind::StandardBc;
     d.table_ = reference;
     d.bc_ = bc;
+    // One BC per speed band. Bands left unset (a single BC built in code)
+    // mean "at any speed": no band can be read past its end.
+    if (d.bc_.minSpeeds.size() != d.bc_.values.size()) d.bc_.minSpeeds.assign(d.bc_.values.size(), 0.0);
     return d;
 }
 
@@ -71,18 +74,22 @@ Vec3 DragModel::acceleration(const Vec3& vAir, const AirSample& air) const {
 
 DragModel dragModelFor(const ProjectileDef& p, const Library& lib, const std::string& prefer, std::string& error) {
     error.clear();
-    const bool any = prefer.empty();
-    if ((any || prefer == "bullet") && !p.dragCurve.empty()) {
+    // "g1", "G1", "g7", "Bullet": the family names, in any case.
+    std::string want = prefer;
+    for (char& ch : want) ch = static_cast<char>(ch >= 'a' && ch <= 'z' ? ch - 32 : ch);
+    if (want == "BULLET") want = "bullet";
+    const bool any = want.empty();
+    if ((any || want == "bullet") && !p.dragCurve.empty()) {
         if (const DragCurveDef* c = lib.dragCurve(p.dragCurve)) return DragModel::bullet(DragTable(*c), p.mass, p.diameter);
         error = "projectile \"" + p.id + "\": unknown drag curve \"" + p.dragCurve + "\"";
         return {};
     }
-    if ((any || prefer == "G7") && !p.bcG7.empty()) {
+    if ((any || want == "G7") && !p.bcG7.empty()) {
         if (const DragCurveDef* g7 = lib.dragCurve("g7")) return DragModel::standard(DragTable(*g7), p.bcG7);
         error = "the library has no standard G7 table (id \"g7\")";
         return {};
     }
-    if ((any || prefer == "G1") && !p.bcG1.empty()) {
+    if ((any || want == "G1") && !p.bcG1.empty()) {
         if (const DragCurveDef* g1 = lib.dragCurve("g1")) return DragModel::standard(DragTable(*g1), p.bcG1);
         error = "the library has no standard G1 table (id \"g1\")";
         return {};

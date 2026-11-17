@@ -42,8 +42,11 @@ std::vector<WakeElement> wakeAt(const PointMassRound& r, Real mass, Real diamete
             const FlightSample at = hermite(a, b, te);
             const AirSample shed = air.sample(at.position, te);
             const Real U = length(at.velocity - shed.wind);
-            // Drag area from the model: |a| = factor rho U^2 = (1/2) rho U^2 Cd A / m.
-            const Real dragArea = 2.0 * mass * r.drag().factor(U, shed.speedOfSound);
+            // Drag area from the model: |a| = factor rho U^2 = (1/2) rho U^2 Cd A / m,
+            // several times larger for a tumbling round (taken as tumbling all
+            // the way: the usual case is a round unstable from the muzzle).
+            Real dragArea = 2.0 * mass * r.drag().factor(U, shed.speedOfSound);
+            if (r.tumbling()) dragArea *= r.options().tumbleDragFactor;
             WakeElement e;
             farWake(wakeMomentumThickness(dragArea), 0.5 * diameter, U * age, p, e.radius, e.deficit);
             if (e.deficit < p.minDeficit) continue;

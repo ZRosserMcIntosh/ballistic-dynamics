@@ -55,8 +55,11 @@ SpinParams spinParamsFor(const ProjectileDef& p, Real twist, Real muzzleSpeed, c
 Real aerodynamicJump(Real crosswindToRight, Real sg, Real calibres, Real twistSign) {
     const Real mph = crosswindToRight / 0.44704;
     const Real moaPerMph = 0.01 * sg - 0.0024 * calibres + 0.032;
-    // Right-hand twist: a wind from the left (blowing right) jumps the round up.
-    return (twistSign >= 0 ? 1.0 : -1.0) * moaPerMph * mph * units::kMoa;
+    // Right-hand twist: a wind from the left (blowing right) yaws the nose right
+    // of the airflow; the overturning moment then precesses it clockwise, as
+    // seen from behind, to down, and the lift on that yaw jumps the round down.
+    // A wind from the right jumps it up (the benchrest "10 o'clock to 4").
+    return -(twistSign >= 0 ? 1.0 : -1.0) * moaPerMph * mph * units::kMoa;
 }
 
 Real litzSpinDrift(Real sg, Real timeOfFlight) {
@@ -67,7 +70,9 @@ Real litzSpinDrift(Real sg, Real timeOfFlight) {
 Yaw2 epicyclicYaw(const SpinParams& s, Yaw2 y0, Real t) {
     if (!s.enabled || !(s.sgMuzzle > 1.0)) return {};
     const Real p = s.muzzleSpin();
-    const Real base = p / (2.0 * s.iyOverIx);
+    // In (right, up) a right-hand spin (p > 0) turns the arms clockwise as
+    // seen from behind: right to down. Hence the minus sign.
+    const Real base = -p / (2.0 * s.iyOverIx);
     const Real root = std::sqrt(1.0 - 1.0 / s.sgMuzzle);
     const Real wf = base * (1.0 + root), ws = base * (1.0 - root);
     // Estimated damping: the fast (nutation) arm dies in a few hundredths of
