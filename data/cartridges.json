@@ -11,6 +11,61 @@
         "muzzle_velocity_fps": "published: Federal Premium catalogue, GM308M2, 2600 fps",
         "test_barrel_in": "published: Federal Premium ballistics are from a 24 in test barrel for .308 Win"
       }
+    },
+    {
+      "id": "hornady_65cm_140",
+      "name": "6.5 Creedmoor Hornady Match 140 gr ELD Match (81500)",
+      "projectile": "eldm_264_140",
+      "muzzle_velocity_fps": 2710,
+      "test_barrel_in": 24,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Hornady, 81500, 2710 fps",
+        "test_barrel_in": "published: Hornady, 81500, 24 in test barrel"
+      }
+    },
+    {
+      "id": "lapua_338lm_250",
+      "name": ".338 Lapua Magnum Lapua 250 gr Scenar (4318017)",
+      "projectile": "scenar_338_250",
+      "muzzle_velocity_fps": 2920,
+      "test_barrel_in": 27.2,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Lapua product page 4318017, 890 m/s (2920 fps)",
+        "test_barrel_in": "estimated: Lapua's page does not state it here; CIP test barrels for .338 LM are about 690 mm (27.2 in)"
+      }
+    },
+    {
+      "id": "hornady_50bmg_750",
+      "name": ".50 BMG Hornady 750 gr A-MAX Match",
+      "projectile": "amax_510_750",
+      "muzzle_velocity_fps": 2820,
+      "test_barrel_in": 29,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Hornady, .50 BMG 750 gr A-MAX Match, 2820 fps",
+        "test_barrel_in": "estimated: .50 BMG factory velocities are usually from 29-30 in barrels; Hornady's summary does not state it"
+      }
+    },
+    {
+      "id": "federal_xm855",
+      "name": "5.56x45 mm Federal American Eagle XM855 62 gr",
+      "projectile": "m855_224_62",
+      "muzzle_velocity_fps": 3020,
+      "test_barrel_in": 20,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Federal XM855 load data, 3020 fps",
+        "test_barrel_in": "estimated: a 20 in barrel, the M16A2 length 5.56 factory data is usually quoted for"
+      }
+    },
+    {
+      "id": "speer_9mm_124gd",
+      "name": "9 mm Luger Speer Gold Dot 124 gr (23618GD)",
+      "projectile": "gdhp_355_124",
+      "muzzle_velocity_fps": 1150,
+      "test_barrel_in": 4,
+      "provenance": {
+        "muzzle_velocity_fps": "published: Speer, 23618GD, 1150 fps",
+        "test_barrel_in": "published: Speer, 23618GD, 4 in test barrel"
+      }
     }
   ]
 }

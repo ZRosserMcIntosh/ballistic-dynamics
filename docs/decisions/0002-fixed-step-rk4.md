@@ -1,7 +1,6 @@
 # ADR 0002: Fixed 1 ms step with RK4
 
-Status: accepted (Milestone 1); the step will be confirmed by the
-convergence tests of Milestone 2
+Status: accepted (Milestone 1); the step confirmed in Milestone 2 (below)
 
 ## Context
 
@@ -29,8 +28,9 @@ also independent of the host's frames.
 - **Classic RK4** (`bd::rk4`) for the translational state of the point-mass
   and modified-point-mass models. At 1 ms a 900 m/s round moves 0.9 m per
   step, and the drag time scale is about a thousand steps: the truncation
-  error is far below a millimetre at 1,000 m (to be shown by Milestone 2's
-  convergence test against a 0.1 ms run).
+  error is far below a millimetre at 1,000 m. Milestone 2 measured it: a
+  .308 175 gr G7 round at 1,000 yd lands within 0.1 mm and 1 µs of the same
+  round flown at 0.1 ms (`tests/test_point_mass.cpp`).
 - **The fast yaw motion is not integrated through at this step.** The
   modified point mass (McCoy, Milestone 3) carries the yaw of repose, which
   varies on the drag time scale; the epicyclic swerve after the muzzle and
@@ -47,6 +47,10 @@ also independent of the host's frames.
   host chops its frames") steps a body with drag and gravity at 60 Hz,
   144 Hz, one 1 s call and a jittery host with hitches, and checks the four
   end states are equal bit for bit. A fourth-order test checks RK4.
+- Rounds fired mid-frame keep their own clock from the launch time, so they
+  are frame-independent too (tested at 60 Hz, 144 Hz and a jittery host).
+- Rendering between steps (bullet time) uses the Hermite interpolant of the
+  step states, not smaller steps (bullet-time.md).
 - A round costs at most 1,000 RK4 steps per second of flight; Milestone 6
   measures what that costs for 5,000 rounds and adds the fast path for
   straight stretches between world queries.

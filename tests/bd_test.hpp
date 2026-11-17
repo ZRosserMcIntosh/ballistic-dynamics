@@ -92,7 +92,7 @@ inline std::string readFile(const std::string& path) {
 inline const bd::Library& library() {
     static bd::Library lib = [] {
         bd::Library l;
-        for (const char* f : {"/projectiles.json", "/cartridges.json", "/rifles.json"}) {
+        for (const char* f : {"/drag_standard.json", "/projectiles.json", "/cartridges.json", "/rifles.json"}) {
             const std::string text = readFile(std::string(BD_DATA_DIR) + f);
             if (text.empty()) {
                 std::cerr << "  library: cannot read " << f << "\n";

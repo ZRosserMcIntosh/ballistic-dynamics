@@ -18,4 +18,11 @@ inline constexpr std::uint64_t kDeterminismGolden = 0x7302405ad0a26843ull;
 
 std::uint64_t determinismProbe();
 
+// A whole trajectory: a round with a transonic drag table (built in, so the
+// probe needs no data files) flown 2.5 s through uniform air with wind, every
+// step state hashed. Golden value as above.
+inline constexpr std::uint64_t kTrajectoryGolden = 0x2ca1ba49af3e55d1ull;
+
+std::uint64_t trajectoryProbe();
+
 }  // namespace bd

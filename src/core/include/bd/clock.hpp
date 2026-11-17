@@ -47,6 +47,12 @@ public:
         }
         return k;
     }
+    // Runs exactly one step.
+    template <class Fn>
+    void stepOnce(Fn&& fn) {
+        fn(time(), dt_);
+        ++n_;
+    }
 
 private:
     Real dt_;
