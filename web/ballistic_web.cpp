@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -26,12 +27,23 @@ using namespace bd;
 
 namespace {
 
+// A round in flight, holding on to the air and wind it was fired into: new
+// air or wind for the next shot leaves the rounds already flying alone.
+struct Flight {
+    std::shared_ptr<const StationAir> air;
+    std::shared_ptr<const RangeWind> wind;
+    std::unique_ptr<PointMassRound> round;
+};
+constexpr std::size_t kMaxFlights = 256;  // past this, the oldest round is released
+
 struct Sim {
     Library lib;
     std::vector<std::string> errors;
-    std::unique_ptr<StationAir> air;
-    std::unique_ptr<RangeWind> wind;  // over `air`; the round flies through this
-    std::unique_ptr<PointMassRound> round;
+    std::shared_ptr<StationAir> air;
+    std::shared_ptr<RangeWind> wind;  // over `air`; new rounds fly through this
+    std::map<int, Flight> flights;    // by id, from 1
+    int current = 0;                  // the round the round calls read
+    int nextId = 1;
     // The gun's physics for zero, fire and table (bd_setup).
     Real twist = 0;          // m per turn, signed; 0: no spin
     Real latitude = 0;       // rad
@@ -47,9 +59,16 @@ Sim& sim() {
     return *g;
 }
 
+// The selected round, or null.
+PointMassRound* current() {
+    Sim& S = sim();
+    const auto it = S.flights.find(S.current);
+    return it == S.flights.end() ? nullptr : it->second.round.get();
+}
+
 const AirSource* flightAir() {
     Sim& S = sim();
-    if (!S.air) S.air = std::make_unique<StationAir>(StationReading{101325.0, 288.15, 0.0, 0.0});
+    if (!S.air) S.air = std::make_shared<StationAir>(StationReading{101325.0, 288.15, 0.0, 0.0});
     if (S.wind) return S.wind.get();
     return S.air.get();
 }
@@ -220,12 +239,11 @@ BD_EXPORT const char* bd_catalog() {
 }
 
 // The air from a station reading (Pa, K, 0..1, m MSL); the ENU origin is the station.
-// Clears the wind and any round in flight (they refer to the old air).
+// Clears the wind. Rounds already fired keep the air they were fired into.
 BD_EXPORT void bd_station(double pressure, double temperature, double relativeHumidity, double altitudeMsl) {
     Sim& S = sim();
-    S.round.reset();
     S.wind.reset();
-    S.air = std::make_unique<StationAir>(StationReading{pressure, temperature, relativeHumidity, altitudeMsl});
+    S.air = std::make_shared<StationAir>(StationReading{pressure, temperature, relativeHumidity, altitudeMsl});
 }
 
 // Wind along a line of fire from the origin at `azimuth` (rad): one layer per
@@ -233,7 +251,6 @@ BD_EXPORT void bd_station(double pressure, double temperature, double relativeHu
 // text buffer as doubles; n layers. n = 0 removes the wind.
 BD_EXPORT void bd_wind(double azimuth, int n) {
     Sim& S = sim();
-    S.round.reset();
     flightAir();
     if (n <= 0) {
         S.wind.reset();
@@ -250,7 +267,7 @@ BD_EXPORT void bd_wind(double azimuth, int n) {
         L.gust = v[4 * i + 3];
         layers.push_back(L);
     }
-    S.wind = std::make_unique<RangeWind>(*S.air, Vec3{}, azimuth, layers);
+    S.wind = std::make_shared<RangeWind>(*S.air, Vec3{}, azimuth, layers);
 }
 
 // The gun's physics for the calls below: twist (m per turn, + right-hand, 0
@@ -293,7 +310,10 @@ BD_EXPORT double bd_zero(int cartridge, double zeroRange, double sightHeight) {
 }
 
 // Fires cartridge i from (x, y, z) ENU along azimuth / elevation (rad) at
-// engine time t0, keeping its trace for bullet-time replay. 1 on success.
+// engine time t0, keeping its trace for bullet-time replay. Returns the new
+// round's id (from 1; 0 if it cannot fire) and selects it: bd_advance,
+// bd_round, bd_nose_at, bd_state_at and bd_wake read the selected round. Any
+// number of rounds can be in flight at once (bd_select, bd_release).
 BD_EXPORT int bd_fire(int cartridge, double x, double y, double z, double azimuth, double elevation, double t0) {
     DragModel drag;
     const CartridgeDef* c;
@@ -308,16 +328,40 @@ BD_EXPORT int bd_fire(int cartridge, double x, double y, double z, double azimut
     PointMassOptions o = physicsFor(*p, c->muzzleVelocity);
     o.keepTrace = true;
     o.maxTime = 15.0;
-    sim().round = std::make_unique<PointMassRound>(drag, *flightAir(), l, o);
-    return 1;
+    Sim& S = sim();
+    Flight f;
+    f.air = S.air;
+    f.wind = S.wind;
+    f.round = std::make_unique<PointMassRound>(drag, *flightAir(), l, o);
+    const int id = S.nextId++;
+    S.flights.emplace(id, std::move(f));
+    if (S.flights.size() > kMaxFlights) S.flights.erase(S.flights.begin());
+    S.current = id;
+    return id;
+}
+
+// Selects round `id` for the round calls. 1 if it exists.
+BD_EXPORT int bd_select(int id) {
+    Sim& S = sim();
+    S.current = id;
+    return S.flights.count(id) ? 1 : 0;
+}
+
+// Releases round `id` (0: every round).
+BD_EXPORT void bd_release(int id) {
+    Sim& S = sim();
+    if (id == 0)
+        S.flights.clear();
+    else
+        S.flights.erase(id);
 }
 
 // Advances the round to engine time t (whole 1 ms steps; at most maxSteps).
 // For bullet time, advance by less than real time: the steps are the same,
 // only the clock the page shows them on is slower.
 BD_EXPORT int bd_advance(double t, int maxSteps) {
-    Sim& S = sim();
-    return S.round ? static_cast<int>(S.round->advance(t, maxSteps > 0 ? maxSteps : (1 << 20))) : 0;
+    PointMassRound* r = current();
+    return r ? static_cast<int>(r->advance(t, maxSteps > 0 ? maxSteps : (1 << 20))) : 0;
 }
 
 // 16 doubles: engine time, position x y z, velocity x y z, stopped, spin
@@ -326,8 +370,8 @@ BD_EXPORT int bd_advance(double t, int maxSteps) {
 BD_EXPORT const double* bd_round() {
     Sim& S = sim();
     S.sample.assign(16, 0.0);
-    if (S.round) {
-        const auto& r = *S.round;
+    if (const PointMassRound* rp = current()) {
+        const auto& r = *rp;
         S.sample = {r.time(), r.position().x, r.position().y, r.position().z,
                     r.velocity().x, r.velocity().y, r.velocity().z, r.stopped() ? 1.0 : 0.0,
                     r.spinRate(), r.roll(), r.stability(), r.tumbling() ? 1.0 : 0.0, r.jumpAngle(),
@@ -341,8 +385,8 @@ BD_EXPORT const double* bd_round() {
 BD_EXPORT const double* bd_nose_at(double t) {
     Sim& S = sim();
     S.sample.assign(3, 0.0);
-    if (S.round) {
-        const Vec3 n = S.round->noseAt(t);
+    if (const PointMassRound* r = current()) {
+        const Vec3 n = r->noseAt(t);
         S.sample = {n.x, n.y, n.z};
     }
     return S.sample.data();
@@ -354,8 +398,8 @@ BD_EXPORT const double* bd_nose_at(double t) {
 BD_EXPORT const double* bd_state_at(double t) {
     Sim& S = sim();
     S.sample.assign(9, 0.0);
-    if (S.round) {
-        const FlightSample f = S.round->stateAt(t);
+    if (const PointMassRound* r = current()) {
+        const FlightSample f = r->stateAt(t);
         S.sample = {f.time, f.position.x, f.position.y, f.position.z, f.velocity.x, f.velocity.y, f.velocity.z,
                     f.spin, f.roll};
     }
@@ -409,11 +453,11 @@ BD_EXPORT const char* bd_table(int cartridge, double zeroRange, double sightHeig
 BD_EXPORT const float* bd_wake(double t, double spacing, double maxAge, double mass, double diameter) {
     Sim& S = sim();
     S.wake.assign(1, 0.0f);
-    if (S.round) {
+    if (const PointMassRound* r = current()) {
         WakeParams p;
         p.spacing = spacing;
         p.maxAge = maxAge;
-        for (const WakeElement& e : wakeAt(*S.round, mass, diameter, t, p))
+        for (const WakeElement& e : wakeAt(*r, mass, diameter, t, p))
             for (double v : {e.position.x, e.position.y, e.position.z, e.radius, e.deficit, e.age})
                 S.wake.push_back(static_cast<float>(v));
         S.wake[0] = static_cast<float>((S.wake.size() - 1) / 6);

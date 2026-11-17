@@ -78,4 +78,32 @@ if (!(Math.abs(Math.hypot(...nose) - 1) < 1e-12)) fail('nose');
 const wk = B.wake(0.4, 1.0, 0.3, 175 * 6.479891e-5, 0.308 * inch);
 if (!(wk.length > 6 * 100 && wk.length % 6 === 0)) fail('wake ' + wk.length);
 
+// Many rounds at once: each flies exactly as it would alone, in the air and
+// wind it was fired into, whatever is fired or changed after it.
+B.bd_station(101325, 288.15, 0, 0);
+B.wind(0, []);
+B.bd_setup(11.25 * inch, 45 * Math.PI / 180, 3);
+const soloId = B.bd_fire(i308, 0, 0, 0, 0, e, 0);
+B.bd_advance(1.0, 0);
+const solo = B.stateAt(0.8);
+B.bd_release(soloId);
+const ra = B.bd_fire(i308, 0, 0, 0, 0, e, 0);
+B.wind(0, [{ fromRange: 0, speed: 10, fromBearing: Math.PI / 2, gust: 0 }]);  // for the next round only
+const rb = B.bd_fire(i308, 0, 0, 0, 0, e, 0.3);
+if (!(ra > 0 && rb > ra)) fail('round ids ' + ra + ' ' + rb);
+for (let t = 0.01; t <= 1.31; t += 0.01) {  // interleaved, as a page draws them
+  B.bd_select(ra); B.bd_advance(t + 0.001, 0);
+  B.bd_select(rb); B.bd_advance(t + 0.001, 0);
+}
+B.bd_select(ra);
+const both = B.stateAt(0.8);
+if (both.position.some((x, k) => x !== solo.position[k]) || both.velocity.some((x, k) => x !== solo.velocity[k])) fail('a round in company flew differently');
+B.bd_select(rb);
+const blown = B.stateAt(1.1).position[0] - both.position[0];
+if (!(blown < -0.3)) fail('the second round in its own wind ' + blown);
+B.bd_release(ra);
+if (B.bd_select(ra) || !B.bd_select(rb)) fail('release');
+B.bd_release(0);
+if (B.bd_select(rb)) fail('release all');
+
 console.log(`ok: hashes ${h.join(' ')}; bullet time ${frames} frames, at most ${(maxJump * 1000).toFixed(1)} mm per frame`);
