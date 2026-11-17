@@ -22,6 +22,7 @@
 // v is the speed relative to the air and M = v / a_sound of the local air.
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -42,6 +43,11 @@ public:
     const std::vector<Real>& cds() const { return cd_; }
 
 private:
+    // A bucket index over Mach so a lookup is a multiply and a step or two
+    // instead of a binary search; it finds the same interval, so the same
+    // bits (ADR 0006).
+    std::vector<std::uint16_t> index_;
+    Real indexStart_ = 0, indexScale_ = 0;
     std::vector<Real> mach_, cd_;
 };
 

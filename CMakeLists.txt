@@ -40,6 +40,7 @@ add_library(bd_core
   src/core/src/spin.cpp
   src/core/src/wake.cpp
   src/core/src/variation.cpp
+  src/core/src/world.cpp
 )
 add_library(bd::core ALIAS bd_core)
 target_include_directories(bd_core PUBLIC src/core/include)
@@ -66,9 +67,16 @@ target_include_directories(bd_aviation PUBLIC src/aviation/include)
 target_link_libraries(bd_aviation PUBLIC bd_core bd_avd_air)
 target_compile_options(bd_aviation PRIVATE ${BD_WARNINGS})
 
+# ---- The shooter layer: trigger to launch, recoil, the hip cone (ADR 0005) ----
+add_library(bd_shooter src/shooter/src/shooter.cpp)
+add_library(bd::shooter ALIAS bd_shooter)
+target_include_directories(bd_shooter PUBLIC src/shooter/include)
+target_link_libraries(bd_shooter PUBLIC bd_core)
+target_compile_options(bd_shooter PRIVATE ${BD_WARNINGS})
+
 if(BD_BUILD_TOOLS)
-  add_executable(bdemo tools/bdemo/main.cpp)
-  target_link_libraries(bdemo PRIVATE bd_core bd_aviation)
+  add_executable(bdemo tools/bdemo/main.cpp tools/bdemo/bench.cpp)
+  target_link_libraries(bdemo PRIVATE bd_core bd_aviation bd_shooter)
   target_compile_options(bdemo PRIVATE ${BD_WARNINGS})
 endif()
 
