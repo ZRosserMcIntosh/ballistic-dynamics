@@ -29,7 +29,14 @@ TEST_CASE("data: the shipped library loads, resolves and is in SI") {
     const CartridgeDef* c = lib.cartridge("fgmm_308_175");
     CHECK(c && c->projectile == "smk_308_175");
     CHECK(c && std::abs(c->muzzleVelocity - 792.48) < 1e-9);
+    // Milestone 4's spreads, in SI: 12 fps SD, 1.5 fps per F, 70 F, 0.75 % BC, a 0.9 MOA rifle.
+    CHECK(c && std::abs(c->velocitySd - 12 * 0.3048) < 1e-12);
+    CHECK(c && std::abs(c->tempCoefficient - 1.5 * 0.3048 * 1.8) < 1e-12);
+    CHECK(c && std::abs(c->tempReference - 294.261111111111) < 1e-9);
+    CHECK_NEAR(p->bcSd, 0.0075, 1e-15);
+    for (const CartridgeDef& k : lib.cartridges()) CHECK(k.velocitySd > 0 && k.tempReference > 0);
     const RifleDef* r = lib.rifle("m24_sws");
+    CHECK(r && std::abs(r->groupMoa - 0.9) < 1e-12);
     CHECK(r && r->rightHandTwist);
     CHECK(r && std::abs(r->twist - 11.25 * 0.0254) < 1e-12);
 }

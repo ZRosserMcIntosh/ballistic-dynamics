@@ -59,6 +59,7 @@ struct ProjectileDef {
     Real length = 0;    // m
     BallisticCoefficient bcG1, bcG7;
     std::string dragCurve;  // optional id of a bullet-specific curve
+    Real bcSd = 0;          // shot-to-shot spread of the BC, a fraction (0.01 = 1 % SD); 0: none known
     ProvenanceMap provenance;
 };
 
@@ -66,6 +67,10 @@ struct CartridgeDef {
     std::string id, name, projectile;
     Real muzzleVelocity = 0;  // m/s, as published
     Real testBarrel = 0;      // m, the barrel length that velocity was measured in
+    // Milestone 4 (all optional; 0 when not known):
+    Real velocitySd = 0;      // m/s, shot-to-shot standard deviation of the muzzle velocity
+    Real tempCoefficient = 0; // m/s per K: how the muzzle velocity follows the powder's temperature
+    Real tempReference = 0;   // K, the powder temperature the published velocity is for
     ProvenanceMap provenance;
 };
 
@@ -75,6 +80,7 @@ struct RifleDef {
     bool rightHandTwist = true;
     Real barrel = 0;         // m
     Real sightHeight = 0;    // m, bore axis to the optic's axis
+    Real groupMoa = 0;       // mean 5-shot group (extreme spread, MOA) of this rifle with its load; 0: unknown
     ProvenanceMap provenance;
 };
 

@@ -76,7 +76,30 @@ const r = B.round(), nose = B.noseAt(0.25);
 if (!(r.spin > 15000 && r.stability > sg)) fail('spin state ' + JSON.stringify(r));
 if (!(Math.abs(Math.hypot(...nose) - 1) < 1e-12)) fail('nose');
 const wk = B.wake(0.4, 1.0, 0.3, 175 * 6.479891e-5, 0.308 * inch);
-if (!(wk.length > 6 * 100 && wk.length % 6 === 0)) fail('wake ' + wk.length);
+if (!(wk.length > 7 * 100 && wk.length % 7 === 0)) fail('wake ' + wk.length);
+// The optical strength: hot (index > 0) and weaker with age.
+if (!(wk[6] > 0 && wk[6] < wk[wk.length - 1])) fail('wake index ' + wk[6] + ' ' + wk[wk.length - 1]);
+
+// Milestone 4: every round unique. The same (seed, stream) is the same round;
+// another stream another; the powder's cold slows it.
+B.bd_station(101325, 288.15, 0, 0);
+B.wind(0, []);
+B.bd_group(0.9);
+const flyRound = (stream) => { B.bd_fire_round(0, 0, 0, 0, 0, 0.01, 0, 1234567, stream); B.bd_advance(0.5, 0); return B.round().position; };
+const r1 = flyRound(3), r2 = flyRound(3), r3 = flyRound(4);
+if (!(r1.every((v, i) => v === r2[i]) && r1.some((v, i) => v !== r3[i]))) fail('unique rounds ' + r1 + ' / ' + r2 + ' / ' + r3);
+const d3 = (B.bd_fire_round(0, 0, 0, 0, 0, 0.01, 0, 1234567, 3), B.lastDraw());
+if (!(Math.abs(d3.velocityOffset) < 0.3048 * 12 * 5 && d3.bcFactor !== 1 && d3.up !== 0)) fail('draw ' + JSON.stringify(d3));
+B.bd_powder(273.15 - 10);
+B.bd_fire(0, 0, 0, 0, 0, 0.01, 0);
+const cold = B.lastDraw().speed;
+B.bd_powder(0);
+B.bd_fire(0, 0, 0, 0, 0, 0.01, 0);
+if (!(cold < B.lastDraw().speed - 20)) fail('powder temperature ' + cold + ' vs ' + B.lastDraw().speed);
+const spr = B.spread(0, 91.44, 0.0381, 914.4);
+if (!(spr.vertical > 0.1 && spr.vertical < 0.4 && spr.horizontal > 0.05)) fail("spread " + JSON.stringify(spr));
+B.bd_group(0);
+console.log(`unique rounds: same seed same bits; -10 C powder ${(cold / 0.3048).toFixed(0)} fps; 1000 yd spread ${(spr.vertical / 0.0254).toFixed(1)} in vertical`);
 
 // Many rounds at once: each flies exactly as it would alone, in the air and
 // wind it was fired into, whatever is fired or changed after it.

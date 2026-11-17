@@ -343,4 +343,12 @@ TEST_CASE("validation: published drop, drift and velocity figures") {
     // Speer's reloading-data BC 0.134: 959 fps (-1.0 %); with the 0.151 Speer
     // also lists: 974 (+0.5 %).
     CHECK_NEAR(units::toFps(publishedRow("speer_9mm_124gd", "G1", 0, 25, 0.5, 0, 100).speed) / 969.0, 1.0, 0.015);
+    // Federal American Eagle charts (each with Federal's own BC):
+    // 9 mm 124 FMJ (AE9AP) 1095 / 1049 / 1010 / 977 fps at 25 / 50 / 75 /
+    // 100 yd; .45 Auto 230 FMJ (AE45A) 824 at 100 yd; .357 Magnum 158 JSP
+    // (AE357A) 1063 at 100 yd. Engine: within 0.4 %.
+    for (const auto& [yd, ref] : std::vector<std::pair<Real, Real>>{{25.0, 1095}, {50.0, 1049}, {75.0, 1010}, {100.0, 977}})
+        CHECK_NEAR(units::toFps(publishedRow("federal_9mm_124_fmj", "G1", 0, 25, 0.5, 0, yd).speed) / ref, 1.0, 0.006);
+    CHECK_NEAR(units::toFps(publishedRow("federal_45acp_230_fmj", "G1", 0, 25, 0.5, 0, 100).speed) / 824.0, 1.0, 0.006);
+    CHECK_NEAR(units::toFps(publishedRow("federal_357mag_158_jsp", "G1", 0, 25, 0.5, 0, 100).speed) / 1063.0, 1.0, 0.006);
 }

@@ -39,6 +39,7 @@ add_library(bd_core
   src/core/src/solver.cpp
   src/core/src/spin.cpp
   src/core/src/wake.cpp
+  src/core/src/variation.cpp
 )
 add_library(bd::core ALIAS bd_core)
 target_include_directories(bd_core PUBLIC src/core/include)

@@ -45,6 +45,9 @@ Units are in the field names and converted to SI on load:
 | `_in` | inch | m (× 0.0254) |
 | `_fps` | foot per second | m/s (× 0.3048) |
 | `bc_g1`, `bc_g7` | lb/in² | kg/m² (× 703.0696) |
+| `_f` | degree Fahrenheit | K |
+| `_fps_per_f` | ft/s per °F | m/s per K (× 0.3048 × 1.8) |
+| `_percent` | per cent | fraction (× 0.01) |
 
 ## Records
 
@@ -56,14 +59,20 @@ ascending, not negative; below the first point the first C_D holds) and `cd` (po
 `mass_gr`, `length_in`; at least one of `bc_g1` / `bc_g7` (one value, or
 stepped values with `bc_g1_min_fps` descending to 0: each value applies at
 and above its speed, as Sierra publishes them) or `drag_curve` (the id of a
-`bullet` curve).
+`bullet` curve). Optional: `bc_sd_percent`, the BC's shot-to-shot standard
+deviation.
 
 **cartridges**: `id`, `name`, `projectile` (an id), `muzzle_velocity_fps`
-and the `test_barrel_in` it was measured from.
+and the `test_barrel_in` it was measured from. Optional: `velocity_sd_fps`
+(shot-to-shot standard deviation), `temp_coefficient_fps_per_f` and
+`temp_reference_f` (how the velocity follows the powder's temperature, and the
+temperature the published figure is for; the coefficient needs the
+reference).
 
 **rifles**: `id`, `name`, `twist_in` (inches per turn), `twist_direction`
 (`right` or `left`, default right), `barrel_in`, `sight_height_in`
-(optional).
+(optional), `group_moa` (optional: the mean 5-shot group, extreme spread in
+MOA, of the gun with its load).
 
 The standard tables must have the ids `g1` and `g7`; a projectile with a
 `bc_g7` or `bc_g1` is flown on them.

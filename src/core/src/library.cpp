@@ -252,6 +252,7 @@ std::vector<std::string> Library::load(const std::string& jsonText) {
                 p.bcG1 = readBc(r, "G1", "bc_g1", "bc_g1_min_fps");
                 p.bcG7 = readBc(r, "G7", "bc_g7", "bc_g7_min_fps");
                 p.dragCurve = r.str("drag_curve", false);
+                p.bcSd = r.num("bc_sd_percent", 0.01, false, true);
                 if (p.bcG1.empty() && p.bcG7.empty() && p.dragCurve.empty())
                     r.bad("needs a ballistic coefficient (bc_g1 or bc_g7) or a drag_curve");
                 if (p.length > 0 && p.diameter > 0 && p.length < p.diameter)
@@ -265,6 +266,14 @@ std::vector<std::string> Library::load(const std::string& jsonText) {
                 c.projectile = r.str("projectile");
                 c.muzzleVelocity = r.num("muzzle_velocity_fps", units::kFoot);
                 c.testBarrel = r.num("test_barrel_in", units::kInch);
+                c.velocitySd = r.num("velocity_sd_fps", units::kFoot, false, true);
+                // fps per degree F -> m/s per K; degrees F -> K.
+                c.tempCoefficient = r.num("temp_coefficient_fps_per_f", units::kFoot * 1.8, false, true);
+                if (const json::Value* t = rec.find("temp_reference_f")) {
+                    if (!t->isNumber()) r.bad("\"temp_reference_f\" must be a number");
+                    else c.tempReference = (t->asNumber() - 32.0) / 1.8 + 273.15;
+                }
+                if (c.tempCoefficient > 0 && !(c.tempReference > 0)) r.bad("\"temp_coefficient_fps_per_f\" needs \"temp_reference_f\"");
                 c.provenance = std::move(prov);
                 if (r.ok && errors.size() == before) insert(cartridges_, std::move(c), where, errors);
             } else {
@@ -277,6 +286,7 @@ std::vector<std::string> Library::load(const std::string& jsonText) {
                 f.rightHandTwist = dir != "left";
                 f.barrel = r.num("barrel_in", units::kInch);
                 f.sightHeight = r.num("sight_height_in", units::kInch, false, true);
+                f.groupMoa = r.num("group_moa", 1.0, false, true);
                 f.provenance = std::move(prov);
                 if (r.ok && errors.size() == before) insert(rifles_, std::move(f), where, errors);
             }

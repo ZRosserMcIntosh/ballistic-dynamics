@@ -24,11 +24,13 @@
         "length_in": "estimated: about 1.24 in as handloaders measure it; Sierra's catalogue page does not list it. To be replaced by a measurement before Milestone 3 uses it for stability",
         "bc_g1": "published: Sierra Bullets catalogue, #2275: .505 at 2800 fps and above, .496 from 1800 to 2800 fps, .485 below 1800 fps",
         "bc_g1_min_fps": "published: Sierra Bullets catalogue, #2275 velocity bands",
-        "bc_g7": "published: B. Litz, Applied Ballistics for Long Range Shooting, measured G7 BC of the 175 gr SMK, 0.243 (Federal's GM308M2 page lists 0.25)"
+        "bc_g7": "published: B. Litz, Applied Ballistics for Long Range Shooting, measured G7 BC of the 175 gr SMK, 0.243 (Federal's GM308M2 page lists 0.25)",
+        "bc_sd_percent": "estimated: match bullets vary about 0.5 to 1 % shot to shot (Litz measures lot-to-lot changes of about 1 %)"
       },
       "bc_g7": [
         0.243
-      ]
+      ],
+      "bc_sd_percent": 0.75
     },
     {
       "id": "eldm_264_140",
@@ -48,8 +50,10 @@
         "mass_gr": "published: Hornady catalogue",
         "length_in": "estimated: about 1.40 in, typical of 140 gr 6.5 mm VLD-class bullets; not used before Milestone 3",
         "bc_g1": "published: Hornady, 81500 load data as listed by retailers, G1 0.646 (Hornady's current page lists 0.610 from its Doppler re-measurement; see docs/validation.md)",
-        "bc_g7": "published: Hornady, 81500 load data as listed by retailers, G7 0.326"
-      }
+        "bc_g7": "published: Hornady, 81500 load data as listed by retailers, G7 0.326",
+        "bc_sd_percent": "estimated: match bullets vary about 0.5 to 1 % shot to shot (Litz measures lot-to-lot changes of about 1 %)"
+      },
+      "bc_sd_percent": 0.75
     },
     {
       "id": "scenar_338_250",
@@ -62,15 +66,17 @@
         0.648
       ],
       "bc_g7": [
-        0.32
+        0.322
       ],
       "provenance": {
         "diameter_in": "published: Lapua catalogue, .338 16.2 g Scenar",
         "mass_gr": "published: Lapua catalogue, 16.2 g (250 gr)",
         "length_in": "estimated: about 1.63 in for a 250 gr .338 match hollow point; not used before Milestone 3",
         "bc_g1": "published: Lapua product page 4318017, G1 0.648",
-        "bc_g7": "published: Applied Ballistics (Litz), Lapua 250 Scenar G7 0.320"
-      }
+        "bc_g7": "published: Lapua product page 4318017, G7 0.322 (as quoted by search summaries and Eurooptic); Applied Ballistics (Litz) measured 0.320",
+        "bc_sd_percent": "estimated: match bullets vary about 0.5 to 1 % shot to shot (Litz measures lot-to-lot changes of about 1 %)"
+      },
+      "bc_sd_percent": 0.75
     },
     {
       "id": "amax_510_750",
@@ -86,8 +92,10 @@
         "diameter_in": "published: Hornady catalogue, .50 (.510) 750 gr A-MAX",
         "mass_gr": "published: Hornady catalogue",
         "length_in": "estimated: about 2.3 in for a 750 gr .50 match bullet; not used before Milestone 3",
-        "bc_g1": "published: Hornady catalogue, G1 1.050 (Graf & Sons listing)"
-      }
+        "bc_g1": "published: Hornady catalogue, G1 1.050 (Graf & Sons listing)",
+        "bc_sd_percent": "estimated: a large match bullet, about 1 %"
+      },
+      "bc_sd_percent": 1.0
     },
     {
       "id": "m855_224_62",
@@ -103,8 +111,10 @@
         "diameter_in": "published: 5.56x45 mm NATO bullet diameter, 0.224 in",
         "mass_gr": "published: M855 ball, 62 gr (4.0 g)",
         "length_in": "estimated: about 0.91 in as commonly measured for M855; not used before Milestone 3",
-        "bc_g1": "published: Federal XM855 load data, G1 0.304"
-      }
+        "bc_g1": "published: Federal XM855 load data, G1 0.304",
+        "bc_sd_percent": "estimated: ball and pistol bullets, about 2 % (looser jackets and tips)"
+      },
+      "bc_sd_percent": 2.0
     },
     {
       "id": "gdhp_355_124",
@@ -120,8 +130,10 @@
         "diameter_in": "published: Speer reloading data, 9 mm Luger .355 in",
         "mass_gr": "published: Speer reloading data, 124 gr GDHP",
         "length_in": "estimated: about 0.6 in for a 124 gr 9 mm hollow point; not used before Milestone 3",
-        "bc_g1": "published: Speer reloading data, 9 mm Luger 124 gr GDHP, G1 0.134"
-      }
+        "bc_g1": "published: Speer reloading data, 9 mm Luger 124 gr GDHP, G1 0.134",
+        "bc_sd_percent": "estimated: ball and pistol bullets, about 2 % (looser jackets and tips)"
+      },
+      "bc_sd_percent": 2.0
     },
     {
       "id": "cheytac_408_419",
@@ -137,8 +149,10 @@
         "diameter_in": "published: CheyTac, .408 CheyTac 419 gr ammunition",
         "mass_gr": "published: CheyTac, 419 gr",
         "length_in": "estimated: about 2.0 in; not published. A solid is longer than a lead-core bullet of the same weight, and Miller's rule (fitted to lead cores) then under-states its stability",
-        "bc_g1": "published: CheyTac product page, G1 0.949 (average over 3,500 yd); Jamison quoted 0.940 (2009) and Doppler figures near 0.934 have been disputed"
-      }
+        "bc_g1": "published: CheyTac product page, G1 0.949 (average over 3,500 yd); Jamison quoted 0.940 (2009) and Doppler figures near 0.934 have been disputed",
+        "bc_sd_percent": "estimated: match bullets vary about 0.5 to 1 % shot to shot (Litz measures lot-to-lot changes of about 1 %)"
+      },
+      "bc_sd_percent": 0.75
     },
     {
       "id": "eldm_264_147",
@@ -158,8 +172,10 @@
         "mass_gr": "published: Hornady catalogue",
         "length_in": "estimated: about 1.45 in for a 147 gr 6.5 mm VLD-class bullet",
         "bc_g1": "published: Hornady 81501 data as listed by GAP Precision, G1 0.697",
-        "bc_g7": "published: Hornady 81501 data as listed by GAP Precision, G7 0.351"
-      }
+        "bc_g7": "published: Hornady 81501 data as listed by GAP Precision, G7 0.351",
+        "bc_sd_percent": "estimated: match bullets vary about 0.5 to 1 % shot to shot (Litz measures lot-to-lot changes of about 1 %)"
+      },
+      "bc_sd_percent": 0.75
     },
     {
       "id": "l_762x54r_148",
@@ -179,8 +195,10 @@
         "mass_gr": "published: Type L light ball 9.6 g (148 gr)",
         "length_in": "estimated: about 1.26 in (32 mm) for the L spitzer",
         "bc_g1": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), L bullet G1 about 0.338",
-        "bc_g7": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), L bullet G7 about 0.185"
-      }
+        "bc_g7": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), L bullet G7 about 0.185",
+        "bc_sd_percent": "estimated: surplus flat-base ball, about 3 %"
+      },
+      "bc_sd_percent": 3.0
     },
     {
       "id": "7n1_762x54r_151",
@@ -200,8 +218,105 @@
         "mass_gr": "published: 7N1 bullet 9.8 g (151.2 gr)",
         "length_in": "estimated: about 1.30 in (33 mm) for the 7N1 boat tail",
         "bc_g1": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), 7N1 G1 about 0.411",
-        "bc_g7": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), 7N1 G7 about 0.206"
-      }
+        "bc_g7": "published: (secondary) Wikipedia, 7.62×54mmR article (via search summaries; the figure is marked 'citation needed' there), 7N1 G7 about 0.206",
+        "bc_sd_percent": "estimated: a production sniper or varmint bullet, about 1.5 %"
+      },
+      "bc_sd_percent": 1.5
+    },
+    {
+      "id": "fmj_355_115",
+      "name": "9 mm 115 gr full metal jacket (Federal American Eagle)",
+      "construction": "round-nose full metal jacket over a lead core",
+      "diameter_in": 0.355,
+      "mass_gr": 115,
+      "length_in": 0.57,
+      "bc_g1": [
+        0.12
+      ],
+      "provenance": {
+        "diameter_in": "published: SAAMI 9 mm Luger bullet diameter 0.355 in",
+        "mass_gr": "published: Federal AE9DP, 115 gr (7.45 g)",
+        "length_in": "estimated: about 0.57 in, typical of 115 gr 9 mm round-nose FMJ",
+        "bc_g1": "published: Federal AE9DP ballistic chart, BC 0.12",
+        "bc_sd_percent": "estimated: ball and pistol bullets, about 2 % (looser jackets and tips)"
+      },
+      "bc_sd_percent": 2.0
+    },
+    {
+      "id": "fmj_355_124",
+      "name": "9 mm 124 gr full metal jacket (NATO-weight ball)",
+      "construction": "round-nose full metal jacket over a lead core",
+      "diameter_in": 0.355,
+      "mass_gr": 124,
+      "length_in": 0.61,
+      "bc_g1": [
+        0.15
+      ],
+      "provenance": {
+        "diameter_in": "published: SAAMI 9 mm Luger bullet diameter 0.355 in",
+        "mass_gr": "published: Federal AE9AP, 124 gr",
+        "length_in": "estimated: about 0.61 in, typical of 124 gr 9 mm round-nose FMJ (the NATO ball weight)",
+        "bc_g1": "published: Federal AE9AP ballistic chart, BC 0.15",
+        "bc_sd_percent": "estimated: ball and pistol bullets, about 2 % (looser jackets and tips)"
+      },
+      "bc_sd_percent": 2.0
+    },
+    {
+      "id": "fmj_452_230",
+      "name": ".45 ACP 230 gr full metal jacket round nose",
+      "construction": "round-nose full metal jacket over a lead core",
+      "diameter_in": 0.452,
+      "mass_gr": 230,
+      "length_in": 0.68,
+      "bc_g1": [
+        0.19
+      ],
+      "provenance": {
+        "diameter_in": "published: SAAMI .45 Auto bullet diameter 0.452 in",
+        "mass_gr": "published: Federal AE45A, 230 gr (14.9 g)",
+        "length_in": "estimated: about 0.68 in, typical of the 230 gr .45 ball round nose",
+        "bc_g1": "published: Federal AE45A ballistic chart, BC 0.19 (a retailer's table gives G1 0.193)",
+        "bc_sd_percent": "estimated: ball and pistol bullets, about 2 % (looser jackets and tips)"
+      },
+      "bc_sd_percent": 2.0
+    },
+    {
+      "id": "jsp_357_158",
+      "name": ".357 158 gr jacketed soft point",
+      "construction": "flat-nose jacketed soft point, lead core",
+      "diameter_in": 0.357,
+      "mass_gr": 158,
+      "length_in": 0.69,
+      "bc_g1": [
+        0.2
+      ],
+      "provenance": {
+        "diameter_in": "published: SAAMI .357 Magnum bullet diameter 0.357 in",
+        "mass_gr": "published: Federal AE357A, 158 gr",
+        "length_in": "estimated: about 0.69 in for a 158 gr .357 flat-nose JSP",
+        "bc_g1": "published: Federal AE357A ballistic chart, BC 0.2 (Magtech's 158 gr SJSP lists 0.172)",
+        "bc_sd_percent": "estimated: ball and pistol bullets, about 2 % (looser jackets and tips)"
+      },
+      "bc_sd_percent": 2.0
+    },
+    {
+      "id": "vmax_224_40_57",
+      "name": "5.7 mm 40 gr V-MAX (FN SS197SR)",
+      "construction": "polymer tip, boat tail, copper jacket over a lead core",
+      "diameter_in": 0.224,
+      "mass_gr": 40,
+      "length_in": 0.68,
+      "bc_g1": [
+        0.2
+      ],
+      "provenance": {
+        "diameter_in": "published: 5.7x28 mm bullet diameter 5.70 mm (0.224 in)",
+        "mass_gr": "published: FN SS197SR, 40 gr Hornady V-MAX",
+        "length_in": "estimated: about 0.68 in, as Hornady's 40 gr .224 V-MAX",
+        "bc_g1": "estimated: Hornady's published G1 0.200 for its 40 gr .224 V-MAX (#22241); FN does not publish a BC for SS197SR, whose bullet may differ in shape",
+        "bc_sd_percent": "estimated: a production sniper or varmint bullet, about 1.5 %"
+      },
+      "bc_sd_percent": 1.5
     }
   ]
 }

@@ -296,3 +296,30 @@ TEST_CASE("determinism: a spinning round on a rotating Earth gives the same bits
                      static_cast<unsigned long long>(kSpinGolden));
     }
 }
+
+TEST_CASE("spin: the pistols and sub-machine guns are stable and drift with their twist") {
+    // Each short-barrel pairing as the Ballistics Range fires it: stable from
+    // the muzzle (Sg over 1.3), and the drift at 50 m on the side of the
+    // twist. The 1911 is rifled left-hand, so its .45 drifts left.
+    const Library& lib = bdtest::library();
+    const std::vector<std::pair<const char*, const char*>> pairs = {
+        {"federal_9mm_115_fmj", "glock_17"}, {"federal_9mm_124_fmj", "glock_17"}, {"mp5_9mm_124_fmj", "mp5a3"},
+        {"federal_45acp_230_fmj", "colt_1911"}, {"thompson_45acp_230", "thompson_m1a1"},
+        {"federal_357mag_158_jsp", "sw_686"}, {"fn_57_ss197sr", "fn_fiveseven"}, {"fn_57_ss197sr_p90", "fn_p90"}};
+    for (const auto& [cartridge, gun] : pairs) {
+        const Shot s = shotFor(cartridge);
+        const RifleDef* r = lib.rifle(gun);
+        CHECK(r != nullptr);
+        if (!r) continue;
+        const Real twist = r->rightHandTwist ? r->twist : -r->twist;
+        const PointMassOptions o = withSpin(s, twist);
+        CHECK(o.spin.sgMuzzle > 1.3);
+        const FlightSample c = flyTo(s, icao(), o, 50.0);
+        const FlightSample plain = flyTo(s, icao(), PointMassOptions{}, 50.0);
+        // ENU, fired north: east is right.
+        const Real drift = c.position.x - plain.position.x;
+        if (std::getenv("BD_VERBOSE")) std::printf("%-24s %-14s Sg %5.2f  drift at 50 m %+5.1f mm\n", cartridge, gun, o.spin.sgMuzzle, drift * 1e3);
+        CHECK(r->rightHandTwist ? drift > 0 : drift < 0);
+        CHECK(std::abs(drift) < 0.01);  // under 1 cm at 50 m: spin drift is a long-range effect
+    }
+}

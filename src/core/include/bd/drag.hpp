@@ -63,6 +63,8 @@ public:
     // The BC in force at an air-relative speed (kg/m^2; 0 for a bullet curve).
     Real bcAt(Real speed) const;
     const DragTable& table() const { return table_; }
+    // The same model with the BC multiplied by k (a bullet curve: its drag divided by k).
+    DragModel scaledBc(Real k) const;
 
 private:
     Kind kind_ = Kind::None;
