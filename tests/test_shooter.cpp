@@ -2,6 +2,8 @@
 // magazine on the 1 ms clock, the recoil from momentum, the view's kick and
 // the gun's, the hip cone and the sight.
 // SPDX-License-Identifier: MIT
+#include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <string>
@@ -356,6 +358,75 @@ TEST_CASE("shooter: at the sight, firing, turning and moving open no cone; at th
     }
 }
 
+TEST_CASE("shooter: six positions from bench to standing; the hold wanders by its sway") {
+    // The page's six positions, now stances: steadier from standing to the bench.
+    const char* ids[] = {"standing", "kneeling", "sitting", "prone", "prone_bipod", "bench"};
+    for (int i = 1; i < 6; ++i) CHECK(stance(ids[i]).sway < stance(ids[i - 1]).sway);
+    // The sight's wander, sideways (no breath on that axis): RMS near 1.15 x sway.
+    const WeaponSpec w = specOf("m24_sws", "fgmm_308_175");
+    for (const char* id : {"standing", "prone"}) {
+        const StanceDef& s = stance(id);
+        Weapon g(w, s, 11);
+        std::vector<ShooterEvent> ev;
+        ShooterInput in;
+        in.ads = true;
+        Real sum2 = 0;
+        int n = 0;
+        for (int k = 1; k <= 6000; ++k) {  // 60 s, every 10 ms
+            g.advance(0.01 * k, in, ev);
+            if (k > 100) { sum2 += g.viewYaw() * g.viewYaw(); ++n; }
+        }
+        const Real rms = std::sqrt(sum2 / n) / (1.15 * s.sway);
+        if (verbose()) std::printf("  %s: sideways wander %.3f of 1.15 sway\n", id, rms);
+        CHECK_RANGE(rms, 0.8, 1.15);
+    }
+}
+
+TEST_CASE("shooter: holding the breath steadies the hold, for about 6 s; at 12 s the shooter must breathe") {
+    const WeaponSpec w = specOf("m24_sws", "fgmm_308_175");
+    const StanceDef& s = stance("prone");
+    const auto spread = [&](bool hold, Real from, Real to, Real& heldAt, bool& gasped) {
+        Weapon g(w, s, 21);
+        std::vector<ShooterEvent> ev;
+        ShooterInput in;
+        in.ads = true;
+        g.advance(2.0, in, ev);  // into the sight, breathing
+        in.holdBreath = hold;
+        Real lo = 1, hi = -1;
+        gasped = false;
+        for (Real t = 2.0; t < 2.0 + to; t += 0.005) {
+            g.advance(t, in, ev);
+            if (t - 2.0 > from) { lo = std::min(lo, g.viewPitch()); hi = std::max(hi, g.viewPitch()); }
+            if (t - 2.0 > 1.0 && t - 2.0 < 1.01) heldAt = g.breathHeld();
+            gasped = gasped || g.gasping();
+        }
+        return hi - lo;
+    };
+    Real held = 0;
+    bool gasp = false;
+    const Real breathing = spread(false, 1.0, 5.0, held, gasp);
+    const Real holding = spread(true, 1.0, 5.0, held, gasp);
+    CHECK_NEAR(held, 1.0, 0.02);
+    CHECK(!gasp);
+    // The breath's swing is gone and the wander is at 0.55: well under half.
+    CHECK(holding < 0.5 * breathing);
+    // Held on and on: out of air at 12 s, a gasp, and a shakier hold.
+    Weapon g(w, s, 21);
+    std::vector<ShooterEvent> ev;
+    ShooterInput in;
+    in.ads = true;
+    in.holdBreath = true;
+    g.advance(11.9, in, ev);
+    CHECK(!g.gasping() && g.breathHeld() > 11.8);
+    g.advance(12.1, in, ev);
+    CHECK(g.gasping() && g.breathHeld() == 0);
+    CHECK(g.breathDebt() > 11.5);
+    // Breathing again, the debt comes back at half the rate.
+    in.holdBreath = false;
+    g.advance(16.1, in, ev);
+    CHECK_RANGE(g.breathDebt(), 9.9, 10.1);
+}
+
 TEST_CASE("shooter: a shot's draws follow its round's, and the string is the same everywhere") {
     // z1..z4 are bd::drawRound's; the recoil takes the next ones from the same stream.
     Rng r(11, 3);
@@ -399,7 +470,7 @@ TEST_CASE("shooter: a shot's draws follow its round's, and the string is the sam
         std::printf("  shooter golden hash %s, %zu events\n", hex, ev.size());
     }
     CHECK(count(ev, EventKind::ReloadStart) == 1 && count(ev, EventKind::ReloadEnd) == 1);
-    CHECK(std::string(hex) == "535c7230c9b51317");
+    CHECK(std::string(hex) == "f4942fa42ee61732");
 }
 
 TEST_CASE("shooter: the round flies from the shot, and close shots land within frames") {
@@ -466,7 +537,7 @@ TEST_CASE("shooter: the browser's scripted string (web/smoke_test.mjs) has these
     std::snprintf(hex, sizeof hex, "%016llx", static_cast<unsigned long long>(h.h));
     if (verbose()) std::printf("  web string: %d shots, hash %s\n", shots, hex);
     CHECK(shots == 14);  // 800 rpm for 1 s: shots at 0, 75, ..., 975 ms
-    CHECK(std::string(hex) == "5bcdfaece1f41fd9");
+    CHECK(std::string(hex) == "9817588c56bb5f2d");
 }
 
 TEST_CASE("shooter: western guns trace red, eastern green, one round in five") {

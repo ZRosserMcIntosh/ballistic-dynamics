@@ -106,6 +106,7 @@ struct ShooterInput {
     bool sprinting = false;
     bool airborne = false;
     bool reload = false;     // asks for a reload when the magazine is not full
+    bool holdBreath = false; // holding the breath at the natural pause (steadies the hold for a while)
     Real turnRate = 0;       // rad/s the view is turning
     Real moveSpeed = 0;      // m/s over the ground
     int mode = 0;            // index into the weapon's fire modes
@@ -161,6 +162,12 @@ public:
     // Where a shot would go now, without the hip cone.
     Vec3 boreDirection() const;
 
+    // The breath: seconds held now, the oxygen debt (s), and whether the
+    // shooter is gasping after holding too long.
+    Real breathHeld() const { return breathHeld_; }
+    Real breathDebt() const { return breathDebt_; }
+    bool gasping() const { return gasp_ > 0; }
+
     int magazine() const { return magazine_; }
     bool reloading() const { return reloadLeft_ > 0; }
     int shotsFired() const { return shots_; }
@@ -181,13 +188,19 @@ private:
     void stepKick(KickAxis& k, Real dt) const;
     void stepGun(GunAxis& g, Real dt) const;
     Real wobble(int axis) const;
+    void stepBreath(bool hold, Real dt);
     Vec3 offsetDirection(Real pitch, Real yaw) const;
 
     WeaponSpec spec_;
     StanceDef stance_;
     std::uint64_t seed_, streamBase_;
     Real startTime_;
-    Real wobblePhase_[4] = {};
+    Real wobblePhase_[8] = {};        // the wander's six sines, the breath and the pulse
+    // The breath (estimated, as the range page modelled it): held at the
+    // natural pause it steadies the wander for about 6 s; longer, the debt
+    // grows and the hold worsens; at 12 s the shooter must breathe.
+    Real breathHeld_ = 0, breathDebt_ = 0, breathLevel_ = 1, breathPhase_ = 0, pulsePhase_ = 0, gasp_ = 0;
+    bool holdingBreath_ = false;
     Vec3 look_{0, 1, 0};
 
     std::int64_t step_ = 0;

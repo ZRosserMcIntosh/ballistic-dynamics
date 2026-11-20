@@ -382,9 +382,22 @@ zero: a laser.
 A shot's place in the cone is `u9` (radius) and `u10` (angle) of its stream,
 weighted to the centre.
 
-The hold's wander at the sight is two incommensurate sines per axis near a
-breath's period, scaled by the sight fraction. It is part of the camera
-offset, so the bore goes where the camera shows.
+**The hold at the sight.** Nobody holds a rifle still. The model comes from the range page (Sao-Paulo #84) and now lives in the engine. It has three parts, scaled by the sight fraction:
+
+1. **The wander.** Three slow, incommensurate sines per axis (0.3–1.1 Hz) with seeded phases, RMS about 1. They are scaled by the stance's sway (1 SD of the sight picture's wander) and by 1.15 sideways.
+2. **The breath.** A vertical swing with the stance's amplitude, one breath every 4 s.
+3. **The pulse.** A short kick up and a little left, 66 times a minute at rest.
+
+There are six stances, from the bench (0.06 MOA of sway) to standing offhand (6.5 MOA). The figures are estimated from marksmanship manuals' wobble areas.
+
+**Holding the breath.** The shooter can hold the breath at the natural pause:
+- The breath's swing eases out within about 0.2 s.
+- The wander drops to 0.55 of itself.
+- The oxygen debt grows a second a second. Past 6 s of debt the hold worsens (× (1 + 0.45 s⁻¹ (debt − 6 s))) and the breathing quickens.
+- At 12 s the shooter must breathe and gasps for 2.5 s at twice the wander.
+- The debt returns at half the rate it was spent.
+
+All of this runs on the weapon's 1 ms clock, so it is the same at any frame rate. The hold is part of the camera offset, so the bore goes where the camera shows.
 
 **Draws.** A shot draws z5..z8, u9 and u10 from its round's stream, after
 `bd::drawRound`'s z1..z4. One `(seed, stream)` is the whole round, its recoil

@@ -366,8 +366,10 @@ std::vector<std::string> Library::load(const std::string& jsonText) {
                 st.bloomPerMetre = r.num("bloom_per_m_moved", 1.0, true, true);
                 st.bloomAirborne = r.num("bloom_per_s_airborne", 1.0, true, true);
                 st.bloomRecovery = r.num("bloom_recovery_per_s", 1.0);
-                st.holdWobble = r.num("hold_wobble_moa", units::kMoa, true, true);
-                st.wobblePeriod = r.num("wobble_period_s", 1.0);
+                st.sway = r.num("sway_moa", units::kMoa, true, true);
+                st.breath = r.num("breath_moa", units::kMoa, true, true);
+                st.pulse = r.num("pulse_moa", units::kMoa, true, true);
+                st.breathPeriod = r.num("breath_period_s", 1.0);
                 if (st.returnFraction > 1) r.bad("\"return_percent\" must be at most 100");
                 if (st.bracedReduction > 1) r.bad("\"braced_reduction_percent\" must be at most 100");
                 if (st.hipConeMax < st.hipConeMin) r.bad("\"hip_cone_max_moa\" is below \"hip_cone_min_moa\"");

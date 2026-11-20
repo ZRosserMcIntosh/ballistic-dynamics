@@ -112,7 +112,7 @@ required):
 - **The hip cone:** `hip_cone_min_moa`, `hip_cone_max_moa`, `bloom_per_shot`,
   `bloom_per_deg_turned`, `bloom_per_m_moved`, `bloom_per_s_airborne`,
   `bloom_recovery_per_s`.
-- **The hold at the sight:** `hold_wobble_moa`, `wobble_period_s`.
+- **The hold at the sight:** `sway_moa` (1 SD of the sight picture's wander), `breath_moa` (the breath's swing), `pulse_moa` (the pulse's kick), `breath_period_s` (one breath at rest).
 
 docs/physics.md section 7 says what each one does.
 

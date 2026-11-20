@@ -129,8 +129,11 @@ struct StanceDef {
     Real bloomPerMetre = 0;    // per metre moved at the hip
     Real bloomAirborne = 0;    // per second off the ground
     Real bloomRecovery = 0;    // per second, the cone closing
-    Real holdWobble = 0;       // rad: amplitude of the hold's wander at the sight
-    Real wobblePeriod = 0;     // s: its period (about a breath)
+    // The hold at the sight (the shooter layer's hold model):
+    Real sway = 0;             // rad: 1 SD of the wander of the sight picture
+    Real breath = 0;           // rad: the breath's vertical swing (amplitude)
+    Real pulse = 0;            // rad: the pulse's kick at the sight
+    Real breathPeriod = 0;     // s: one breath at rest
     ProvenanceMap provenance;
 };
 
