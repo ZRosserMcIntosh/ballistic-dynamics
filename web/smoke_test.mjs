@@ -142,7 +142,7 @@ if (at0 === at9) fail('table start time');
 
 // The shooter layer (ADR 0005): the scripted string of tests/test_shooter.cpp
 // ("the browser's scripted string") through the C ABI must hash the same bits.
-const SHOOTER_GOLDEN = '5bcdfaece1f41fd9';
+const SHOOTER_GOLDEN = '9817588c56bb5f2d';
 // bd::Hash64's start value, exactly as in src/core/include/bd/math.hpp.
 const fnv = { h: 1469598103934665603n };
 const dv = new DataView(new ArrayBuffer(8));
@@ -196,6 +196,14 @@ if (!id) fail('bd_fire_shot');
 let tof = 0;
 for (let t = 0.001; t < 0.5; t += 0.001) { B.bd_advance(t, 0); if (B.round().position[1] >= 50) { tof = B.round().time; break; } }
 if (!(tof > 0.050 && tof < 0.062)) fail(`shooter: M855 to 50 m in ${tof} s`);
+// The breath held through the C ABI: 3 s held, then out of air at 12 s.
+if (cat.stances.length !== 6 || sIdx('bench') < 0 || sIdx('prone_bipod') < 0 || sIdx('sitting') < 0) fail('six stances');
+B.bd_weapon(rIdx('m24_sws'), cIdx('fgmm_308_175'), sIdx('prone'), 3, 0, 0);
+B.weaponInput({ ads: true, holdBreath: true });
+B.weaponAdvance(3);
+if (Math.abs(B.weaponState().breathHeld - 3) > 0.01) fail('shooter: breath held ' + B.weaponState().breathHeld);
+B.weaponAdvance(12.5);
+if (!B.weaponState().gasping) fail('shooter: no gasp after 12 s');
 const rec = B.recoil(rIdx('m16a2'), cIdx('federal_xm855'), sIdx('standing'));
 if (!(rec.energy > 4 && rec.energy < 6)) fail(`shooter: M16A2 free recoil ${rec.energy} J`);
 console.log(`shooter: ${shotCount} shots (${tracers} red tracers), hash ${shooterHash}; M855 to 50 m in ${(tof * 1e3).toFixed(1)} ms; M16A2 free recoil ${rec.energy.toFixed(2)} J`);

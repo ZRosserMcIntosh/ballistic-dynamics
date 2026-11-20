@@ -65,10 +65,16 @@ Two IW choices are kept out on purpose:
   - **The binary gate (point 3).** At the sight the cone is only what remains
     of the bloom, and nothing adds to it there. Short of the sight it is the
     hip cone.
-  - **The hold's wander:** two slow sines per axis at about a breath, scaled
-    by the sight fraction. It is part of the view offset, so the camera shows
-    what the bore does: what you see is where it goes, except for the hip
-    cone.
+  - **The hold at the sight:** the stance's sway (a wander of three slow sines
+    per axis), the breath's swing and the pulse, scaled by the sight fraction.
+    It is part of the view offset, so the camera shows what the bore does:
+    what you see is where it goes, except for the hip cone.
+  - **Amended November 2026: the breath held.** The range page's model (Sao-Paulo #84) moved into the engine, so the page and the game share one model.
+    - **Stances.** Six positions: bench, prone on a bipod, prone with a sling, sitting, kneeling and standing.
+    - **Breath-hold.** An input flag. It steadies the wander for about 6 s; past 6 s of debt the hold worsens, and at 12 s the shooter must breathe and gasps for 2.5 s.
+    - **Clock.** The breath runs on the weapon's 1 ms clock.
+    - **Data.** The stance fields `hold_wobble_moa` and `wobble_period_s` gave way to `sway_moa`, `breath_moa`, `pulse_moa` and `breath_period_s`.
+    - **Hashes.** The shooter golden hashes changed with the model.
 - **One stream per round.** A shot's recoil and cone draws are z5..z8, u9 and
   u10 of its round's stream, after the z1..z4 that `bd::drawRound` takes.
   The round and its recoil are one draw everywhere, and existing draws do not

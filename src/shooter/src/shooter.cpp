@@ -14,6 +14,9 @@ constexpr std::int64_t kStepUs = 1000;  // the 1 ms step (ADR 0002), in microsec
 constexpr Real kStep = kDefaultStep;
 // The hold's wander is its own stream of the weapon's seed, apart from the shots'.
 constexpr std::uint64_t kWobbleSalt = 0x5ca1ab1ec0ffee11ull;
+// The breath (s): at 12 s held the shooter must breathe, and gasps for 2.5 s;
+// past 6 s of debt the hold worsens.
+constexpr Real kBreathMax = 12.0, kGasp = 2.5, kBreathEasy = 6.0;
 
 ShooterEvent eventOf(EventKind kind, Real time, std::int64_t step) {
     ShooterEvent e;
@@ -123,6 +126,8 @@ Weapon::Weapon(const WeaponSpec& spec, const StanceDef& stance, std::uint64_t se
     magazine_ = spec_.magazine;
     Rng rng(seed ^ kWobbleSalt, streamBase);
     for (auto& p : wobblePhase_) p = kTwoPi * rng.uniform();
+    breathPhase_ = wobblePhase_[6];
+    pulsePhase_ = wobblePhase_[7] / kTwoPi;
 }
 
 Real Weapon::time() const { return startTime_ + static_cast<Real>(step_) * kStep; }
@@ -139,8 +144,32 @@ std::int64_t Weapon::advance(Real t, const ShooterInput& in, std::vector<Shooter
     return k;
 }
 
+void Weapon::stepBreath(bool hold, Real dt) {
+    const bool want = hold && gasp_ <= 0 && breathHeld_ < kBreathMax;
+    if (want) {
+        breathHeld_ += dt;
+        breathDebt_ = breathDebt_ + dt < kBreathMax ? breathDebt_ + dt : kBreathMax;
+    } else {
+        if (hold && breathHeld_ >= kBreathMax) gasp_ = kGasp;  // out of air
+        breathHeld_ = 0;
+        breathDebt_ = breathDebt_ - 0.5 * dt > 0 ? breathDebt_ - 0.5 * dt : 0;  // air returns at half the rate
+        gasp_ = gasp_ - dt > 0 ? gasp_ - dt : 0;
+        const Real period = stance_.breathPeriod * (breathDebt_ > kBreathEasy ? 0.55 : 1.0);  // harder after a long hold
+        if (period > 0) breathPhase_ += kTwoPi * dt / period;
+        if (breathPhase_ > kTwoPi) breathPhase_ -= kTwoPi;
+    }
+    holdingBreath_ = want;
+    // The breath's swing eases out while held, and back in after.
+    const Real rate = dt * (want ? 5.0 : 2.5);
+    breathLevel_ += ((want ? 0.0 : 1.0) - breathLevel_) * (rate < 1 ? rate : 1.0);
+    // The pulse: 66 a minute at rest, faster with the debt.
+    pulsePhase_ += dt * (1.1 + 0.03 * breathDebt_);
+    if (pulsePhase_ >= 1) pulsePhase_ -= 1;
+}
+
 void Weapon::stepOnce(const ShooterInput& in, std::vector<ShooterEvent>& events) {
     const Real dt = kStep;
+    stepBreath(in.holdBreath, dt);
     const std::int64_t nowUs = step_ * kStepUs;
 
     // The trigger re-arms when released (semi, manual, and between bursts).
@@ -320,13 +349,24 @@ void Weapon::stepGun(GunAxis& g, Real dt) const {
     }
 }
 
+// The hold at the sight (rad; axis 0 up, 1 right): a wander of three slow
+// sines an axis (RMS about 1, times the stance's sway), steadier with the
+// breath held and worse with the debt; the breath's swing; the pulse's
+// short kick up and a little left. Estimated, as the range page had it.
 Real Weapon::wobble(int axis) const {
-    if (!(stance_.wobblePeriod > 0) || stance_.holdWobble == 0) return 0;
-    const Real w = kTwoPi * (static_cast<Real>(step_) * kStep) / stance_.wobblePeriod;
-    // Two incommensurate sines per axis: a breath and a quicker tremor.
-    if (axis == 0)
-        return stance_.holdWobble * (0.8 * dm::sin(w + wobblePhase_[0]) + 0.2 * dm::sin(2.7 * w + wobblePhase_[1]));
-    return 0.6 * stance_.holdWobble * (0.8 * dm::sin(0.71 * w + wobblePhase_[2]) + 0.2 * dm::sin(2.3 * w + wobblePhase_[3]));
+    const Real t = static_cast<Real>(step_) * kStep;
+    const Real* f = wobblePhase_;
+    const Real steady = (holdingBreath_ && breathHeld_ > 0 ? 0.55 : 1.0) *
+                        (1.0 + (breathDebt_ > kBreathEasy ? (breathDebt_ - kBreathEasy) * 0.45 : 0.0)) *
+                        (gasp_ > 0 ? 2.0 : 1.0);
+    const Real beat = dm::exp(-pulsePhase_ * 9.0) * dm::sin(pulsePhase_ * 30.0);
+    if (axis == 0) {
+        const Real w = (dm::sin(2.31 * t + f[3]) + 0.7 * dm::sin(3.77 * t + f[4]) + 0.35 * dm::sin(7.1 * t + f[5])) / 0.93;
+        const Real b = dm::sin(breathPhase_) * stance_.breath * breathLevel_ * (breathDebt_ > kBreathEasy ? 1.4 : 1.0);
+        return w * stance_.sway * steady + b + beat * stance_.pulse;
+    }
+    const Real w = (dm::sin(1.93 * t + f[0]) + 0.7 * dm::sin(3.17 * t + f[1]) + 0.35 * dm::sin(6.4 * t + f[2])) / 0.93;
+    return w * stance_.sway * steady * 1.15 - beat * stance_.pulse * 0.4;
 }
 
 Real Weapon::viewPitch() const { return kick_[0].angle + ads_ * wobble(0); }

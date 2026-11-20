@@ -665,7 +665,8 @@ BD_EXPORT void bd_weapon_look(double x, double y, double z) {
 }
 
 // This frame's input, held for every step of the next bd_weapon_advance.
-// flags: 1 trigger, 2 aim down the sight, 4 sprinting, 8 airborne, 16 reload.
+// flags: 1 trigger, 2 aim down the sight, 4 sprinting, 8 airborne, 16 reload,
+// 32 holding the breath.
 // turnRate rad/s, moveSpeed m/s, mode an index into the rifle's fire modes.
 BD_EXPORT void bd_weapon_input(int flags, double turnRate, double moveSpeed, int mode) {
     shooter::ShooterInput& in = sim().input;
@@ -674,6 +675,7 @@ BD_EXPORT void bd_weapon_input(int flags, double turnRate, double moveSpeed, int
     in.sprinting = (flags & 4) != 0;
     in.airborne = (flags & 8) != 0;
     in.reload = (flags & 16) != 0;
+    in.holdBreath = (flags & 32) != 0;
     in.turnRate = turnRate;
     in.moveSpeed = moveSpeed;
     in.mode = mode;
@@ -716,19 +718,20 @@ BD_EXPORT int bd_fire_shot(int cartridge, double x, double y, double z, int i) {
     return fireAlong(cartridge, {x, y, z}, e.direction, e.time, e.seed, e.stream);
 }
 
-// The weapon now, 12 doubles: add to the camera (pitch, yaw, rad: the kick
+// The weapon now, 15 doubles: add to the camera (pitch, yaw, rad: the kick
 // and the hold), the kick alone (pitch, yaw), the gun in the hands (pitch,
 // yaw, the viewmodel's only), the sight fraction (0 hip, 1 sight), the hip
 // cone's half-angle (rad), its bloom (0..1), rounds in the magazine,
-// reloading (0/1), shots fired.
+// reloading (0/1), shots fired, the breath held (s), the oxygen debt (s),
+// gasping (0/1).
 BD_EXPORT const double* bd_weapon_state() {
     Sim& S = sim();
-    S.sample.assign(12, 0.0);
+    S.sample.assign(15, 0.0);
     if (!S.weapon) return S.sample.data();
     const shooter::Weapon& g = *S.weapon;
     S.sample = {g.viewPitch(), g.viewYaw(), g.kickPitch(), g.kickYaw(), g.gunPitch(), g.gunYaw(), g.adsFraction(),
                 g.cone(), g.bloom(), static_cast<double>(g.magazine()), g.reloading() ? 1.0 : 0.0,
-                static_cast<double>(g.shotsFired())};
+                static_cast<double>(g.shotsFired()), g.breathHeld(), g.breathDebt(), g.gasping() ? 1.0 : 0.0};
     return S.sample.data();
 }
 

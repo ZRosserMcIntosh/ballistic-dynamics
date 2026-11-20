@@ -217,7 +217,7 @@ unbraked M107.
 | Glock: 18 presses | 17 shots, a click, a reload; full after `reload_s` | as expected |
 | MP5 at the sight, firing, turning 30°/s, moving 3 m/s | no cone | every shot on the bore; bloom 0 |
 | M855 from the shot to 25, 50, 100 m | the flight times quoted in ADR 0005 | 28, 56, 116 ms |
-| A scripted string, native and browser | the same bits | `535c7230c9b51317` native (gcc, clang, sanitizers); the browser string `5bcdfaece1f41fd9` native and in wasm32 |
+| A scripted string, native and browser | the same bits | `f4942fa42ee61732` native (gcc, clang, sanitizers); the browser string `9817588c56bb5f2d` native and in wasm32 |
 
 ## The world and the budget (ADR 0006)
 
