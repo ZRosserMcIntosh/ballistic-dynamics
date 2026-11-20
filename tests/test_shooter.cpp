@@ -358,6 +358,24 @@ TEST_CASE("shooter: at the sight, firing, turning and moving open no cone; at th
     }
 }
 
+TEST_CASE("shooter: every gun in the library has shooter data, with a sane free recoil") {
+    // The seven added for the range: free-recoil energy (J) within commonly quoted ranges.
+    struct Expect { const char* rifle; const char* cartridge; Real lo, hi; };
+    const Expect guns[] = {
+        {"bolt_65cm", "hornady_65cm_140", 10, 20},     {"bolt_338lm", "lapua_338lm_250", 35, 60},
+        {"m200_408", "cheytac_408_419", 30, 60},       {"m9130_pu", "ussr_762x54r_l", 15, 30},
+        {"pistol_9mm", "speer_9mm_124gd", 3, 8},       {"sw_686", "federal_357mag_158_jsp", 8, 16},
+        {"fn_fiveseven", "fn_57_ss197sr", 1.5, 6},
+    };
+    for (const Expect& g : guns) {
+        const WeaponSpec w = specOf(g.rifle, g.cartridge);
+        const Real e = freeRecoil(w).energy;
+        if (verbose()) std::printf("  %s: free recoil %.1f J\n", g.rifle, e);
+        CHECK_RANGE(e, g.lo, g.hi);
+    }
+    for (const RifleDef& r : bdtest::library().rifles()) CHECK(!r.fireModes.empty());
+}
+
 TEST_CASE("shooter: six positions from bench to standing; the hold wanders by its sway") {
     // The page's six positions, now stances: steadier from standing to the bench.
     const char* ids[] = {"standing", "kneeling", "sitting", "prone", "prone_bipod", "bench"};
